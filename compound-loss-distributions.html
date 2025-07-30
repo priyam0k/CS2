@@ -153,26 +153,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#objectives-loss-distributions"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#theory-loss-distributions"><i class="fa fa-check"></i>Theory</a></li>
-<li class="chapter" data-level="2.1" data-path="loss-distributions.html"><a href="loss-distributions.html#probability-distributions-for-modelling-insurance-losses"><i class="fa fa-check"></i><b>2.1</b> Probability distributions for modelling insurance losses</a></li>
-<li class="chapter" data-level="2.2" data-path="loss-distributions.html"><a href="loss-distributions.html#mechanisms-for-limiting-insurance-losses"><i class="fa fa-check"></i><b>2.2</b> Mechanisms for limiting insurance losses</a></li>
-<li class="chapter" data-level="2.3" data-path="loss-distributions.html"><a href="loss-distributions.html#proportional-and-excess-of-loss-reinsurance"><i class="fa fa-check"></i><b>2.3</b> Proportional and Excess of Loss reinsurance</a></li>
-<li class="chapter" data-level="2.4" data-path="loss-distributions.html"><a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-complete-data"><i class="fa fa-check"></i><b>2.4</b> Estimating parameters of loss distributions with complete data</a></li>
-<li class="chapter" data-level="2.5" data-path="loss-distributions.html"><a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-incomplete-data"><i class="fa fa-check"></i><b>2.5</b> Estimating parameters of loss distributions with incomplete data</a></li>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#practice-loss-distributions"><i class="fa fa-check"></i><code>R</code> Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html"><i class="fa fa-check"></i><b>3</b> Compound loss distributions</a>
 <ul>
 <li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#objectives-compound-loss-distributions"><i class="fa fa-check"></i>Learning Objectives</a></li>
-<li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#theory-compound-loss-distributions"><i class="fa fa-check"></i>Theory</a></li>
-<li class="chapter" data-level="3.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#modelling-frequency-of-insurance-claims"><i class="fa fa-check"></i><b>3.1</b> Modelling frequency of insurance claims</a></li>
-<li class="chapter" data-level="3.2" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#modelling-severity-of-insurance-claims"><i class="fa fa-check"></i><b>3.2</b> Modelling severity of insurance claims</a></li>
-<li class="chapter" data-level="3.3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-loss-distributions-1"><i class="fa fa-check"></i><b>3.3</b> Compound loss distributions</a>
+<li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#theory-compound-loss-distributions"><i class="fa fa-check"></i>Theory</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-binomial"><i class="fa fa-check"></i><b>3.3.1</b> Compound binomial</a></li>
-<li class="chapter" data-level="3.3.2" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-poisson"><i class="fa fa-check"></i><b>3.3.2</b> Compound Poisson</a></li>
-<li class="chapter" data-level="3.3.3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-negative-binomial"><i class="fa fa-check"></i><b>3.3.3</b> Compound negative binomial</a></li>
+<li class="chapter" data-level="3.0.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#chapter-compound-loss-distributions"><i class="fa fa-check"></i><b>3.0.1</b> <strong>Chapter: Compound Loss Distributions</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-loss-distributions-after-reinsurance"><i class="fa fa-check"></i><b>3.4</b> Compound loss distributions after reinsurance</a></li>
 <li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#practice-compound-loss-distributions"><i class="fa fa-check"></i><code>R</code> Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="copulas.html"><a href="copulas.html"><i class="fa fa-check"></i><b>4</b> Copulas</a>
@@ -310,28 +299,268 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="theory-compound-loss-distributions" class="section level2 unnumbered hasAnchor">
 <h2>Theory<a href="compound-loss-distributions.html#theory-compound-loss-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>TO ADD THEORY ABOUT COMPOUND MODELLING HERE</strong></p>
+<p>As your dedicated Actuarial Note Builder and Exam Coach for CS2: Risk Modelling and Survival Analysis, let’s construct a comprehensive set of structured notes on <strong>Compound Loss Distributions</strong>, covering all the learning objectives as per your CS2 CMP. This topic is central to understanding aggregate claims in short-term insurance contracts.</p>
+<hr />
+<div id="chapter-compound-loss-distributions" class="section level3 hasAnchor" number="3.0.1">
+<h3><span class="header-section-number">3.0.1</span> <strong>Chapter: Compound Loss Distributions</strong><a href="compound-loss-distributions.html#chapter-compound-loss-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This section primarily falls under Syllabus Topic 1: Random variables and distributions for risk modelling, specifically focusing on loss distributions. We aim to provide you with the foundational knowledge and practical application skills required for modelling aggregate claims.</p>
+<div id="construct-models-appropriate-for-short-term-insurance-contracts-in-terms-of-the-numbers-of-claims-and-the-amounts-of-individual-claims." class="section level4 hasAnchor" number="3.0.1.1">
+<h4><span class="header-section-number">3.0.1.1</span> <strong>1. Construct models appropriate for short term insurance contracts in terms of the numbers of claims and the amounts of individual claims.</strong><a href="compound-loss-distributions.html#construct-models-appropriate-for-short-term-insurance-contracts-in-terms-of-the-numbers-of-claims-and-the-amounts-of-individual-claims." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Short-term insurance contracts are typically defined as policies lasting for a fixed, relatively short period, often one year. During this term, the insurance company receives premiums and, in return, pays claims that arise. Unlike long-term business, premiums for short-term contracts are generally set to cover claims arising <em>only</em> during that short term.</p>
+<p>A fundamental aspect of risk modelling in general insurance is the assessment of the <strong>aggregate claim amount (S)</strong>, which represents the total claims paid by the insurer over a specified period for a given risk or portfolio. To construct these models, a crucial first step is to decompose <span class="math inline">\(S\)</span> into two main components:
+* <strong>Number of claims (N):</strong> A random variable representing the frequency of claims occurring during the period.
+* <strong>Amount of each individual claim (X_i):</strong> A sequence of random variables representing the severity of each claim.</p>
+<p>The relationship is expressed as:
+<span class="math inline">\(S = X_1 + X_2 + \dots + X_N\)</span>.
+If <span class="math inline">\(N=0\)</span>, then <span class="math inline">\(S\)</span> is taken to be zero.</p>
+<p>This decomposition is highly advantageous because the factors influencing claim numbers (frequency) and claim amounts (severity) are often different, allowing for separate analysis. For example, bad weather might affect claim numbers in motor insurance, while inflation impacts individual claim amounts. This approach of considering claims from a group of policies as a whole is known as the <strong>collective risk model</strong>. The random variable <span class="math inline">\(S\)</span>, being the sum of a random number of random quantities, is thus said to have a <strong>compound distribution</strong>.</p>
+<p>The primary purposes for which general insurance companies investigate claims experience using these mathematical techniques include:
+* Premium rating (deciding what premium rates to charge policyholders).
+* Reserving (assessing money for claims).
+* Reviewing reinsurance arrangements.
+* Testing for solvency.</p>
 </div>
-<div id="modelling-frequency-of-insurance-claims" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Modelling frequency of insurance claims<a href="compound-loss-distributions.html#modelling-frequency-of-insurance-claims" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="describe-the-major-simplifying-assumptions-underlying-such-models." class="section level4 hasAnchor" number="3.0.1.2">
+<h4><span class="header-section-number">3.0.1.2</span> <strong>2. Describe the major simplifying assumptions underlying such models.</strong><a href="compound-loss-distributions.html#describe-the-major-simplifying-assumptions-underlying-such-models." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The models for short-term insurance contracts, particularly the collective risk model, rely on several simplifying assumptions. These assumptions allow for mathematical tractability, though it’s important to be aware of their practical implications.</p>
+<p>The two most important assumptions are:
+* The individual claim amount random variables <span class="math inline">\(\{X_i\}_{i=1}^N\)</span> are <strong>independent and identically distributed (IID)</strong>. This implies:
+* The amount of a given individual claim is not affected by any other individual claim.
+* The distribution of individual claim amounts does not change over the (short) term of the policy.
+* The random variable <span class="math inline">\(N\)</span> (number of claims) is <strong>independent</strong> of the individual claim amounts <span class="math inline">\(\{X_i\}_{i=1}^N\)</span>. This means the number of claims is not affected by the amount of individual claims.</p>
+<p>Other major simplifying assumptions typically made in elementary models include:
+* <strong>Known parameters:</strong> The moments, and sometimes the distributions, of <span class="math inline">\(N\)</span> and <span class="math inline">\(X_i\)</span> are known with certainty.
+* <strong>Immediate settlement:</strong> Claims are settled more or less as soon as the incident causing the claim occurs. In practice, there can be significant delays.
+* <strong>Ignoring expenses and interest:</strong> These financial factors, though important in real operations, are often ignored in elementary models for simplicity.
+* <strong>Non-negative claim amounts:</strong> It is assumed that all claims are for non-negative amounts.</p>
+<p>These simplifications enable the derivation of theoretical properties for compound distributions.</p>
 </div>
-<div id="modelling-severity-of-insurance-claims" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Modelling severity of insurance claims<a href="compound-loss-distributions.html#modelling-severity-of-insurance-claims" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="define-a-compound-poisson-distribution-and-show-that-the-sum-of-independent-random-variables-each-having-a-compound-poisson-distribution-also-has-a-compound-poisson-distribution." class="section level4 hasAnchor" number="3.0.1.3">
+<h4><span class="header-section-number">3.0.1.3</span> <strong>3. Define a compound Poisson distribution and show that the sum of independent random variables each having a compound Poisson distribution also has a compound Poisson distribution.</strong><a href="compound-loss-distributions.html#define-a-compound-poisson-distribution-and-show-that-the-sum-of-independent-random-variables-each-having-a-compound-poisson-distribution-also-has-a-compound-poisson-distribution." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Definition of a Compound Poisson Distribution:</strong>
+A compound Poisson process is a stochastic process that represents the sum of independent and identically distributed random variables, where the number of terms in the sum is a Poisson process.
+Specifically, for aggregate claims <span class="math inline">\(S = \sum_{j=1}^N X_j\)</span>, if the number of claims <span class="math inline">\(N\)</span> follows a Poisson distribution with mean <span class="math inline">\(\lambda\)</span> (i.e., <span class="math inline">\(N \sim \text{Poi}(\lambda)\)</span>), then <span class="math inline">\(S\)</span> is said to have a <strong>compound Poisson distribution</strong> with parameter <span class="math inline">\(\lambda\)</span>. The individual claim amounts <span class="math inline">\(X_j\)</span> are IID random variables, independent of <span class="math inline">\(N\)</span>. A Poisson process itself models events occurring randomly and independently over time at a constant average rate.</p>
+<p><strong>Additive Property: Sum of Independent Compound Poisson Random Variables:</strong>
+A very useful property of the compound Poisson distribution is that <strong>the sum of independent compound Poisson random variables is itself a compound Poisson random variable</strong>.</p>
+<p>Let <span class="math inline">\(S_1, S_2, \dots, S_n\)</span> be independent random variables, where each <span class="math inline">\(S_i\)</span> has a compound Poisson distribution with parameter <span class="math inline">\(\lambda_i\)</span> and individual claim amount CDF <span class="math inline">\(F_i(x)\)</span>.
+Let <span class="math inline">\(A = S_1 + S_2 + \dots + S_n\)</span>.</p>
+<p><strong>Proof using Moment Generating Functions (MGFs):</strong>
+The MGF of a compound Poisson random variable <span class="math inline">\(S\)</span> with Poisson parameter <span class="math inline">\(\lambda\)</span> and individual claim amount MGF <span class="math inline">\(M_X(t)\)</span> is given by:
+<span class="math inline">\(M_S(t) = \exp\{\lambda(M_X(t) - 1)\}\)</span></p>
+<p>For each <span class="math inline">\(S_i\)</span>, its MGF is <span class="math inline">\(M_{S_i}(t) = \exp\{\lambda_i(M_{X_i}(t) - 1)\}\)</span>.
+Since <span class="math inline">\(S_1, S_2, \dots, S_n\)</span> are independent, the MGF of their sum <span class="math inline">\(A\)</span> is the product of their individual MGFs:
+<span class="math inline">\(M_A(t) = M_{S_1}(t) \times M_{S_2}(t) \times \dots \times M_{S_n}(t)\)</span>.
+<span class="math inline">\(M_A(t) = \exp\{\lambda_1(M_{X_1}(t) - 1)\} \times \exp\{\lambda_2(M_{X_2}(t) - 1)\} \times \dots \times \exp\{\lambda_n(M_{X_n}(t) - 1)\}\)</span>.
+<span class="math inline">\(M_A(t) = \exp\{\sum_{i=1}^n \lambda_i (M_{X_i}(t) - 1)\}\)</span>.
+<span class="math inline">\(M_A(t) = \exp\{\left(\sum_{i=1}^n \lambda_i\right) \left(\frac{\sum_{i=1}^n \lambda_i M_{X_i}(t)}{\sum_{i=1}^n \lambda_i} - 1\right)\}\)</span>.</p>
+<p>Let <span class="math inline">\(\Lambda = \sum_{i=1}^n \lambda_i\)</span>.
+And let <span class="math inline">\(M_X^*(t) = \frac{\sum_{i=1}^n \lambda_i M_{X_i}(t)}{\sum_{i=1}^n \lambda_i}\)</span>.
+Then, <span class="math inline">\(M_A(t) = \exp\{\Lambda(M_X^*(t) - 1)\}\)</span>.</p>
+<p>This form is precisely the MGF of a compound Poisson distribution with Poisson parameter <span class="math inline">\(\Lambda\)</span> and a new individual claim amount MGF <span class="math inline">\(M_X^*(t)\)</span>. By the uniqueness property of MGFs, <span class="math inline">\(A\)</span> indeed has a compound Poisson distribution. The individual claim amount distribution for <span class="math inline">\(A\)</span> has CDF <span class="math inline">\(F(x) = \frac{\sum_{i=1}^n \lambda_i F_i(x)}{\Lambda}\)</span>.</p>
+<p>This property is highly beneficial for modelling combined portfolios. For example, if claims from two independent insurance companies, A and B, follow Poisson processes with rates <span class="math inline">\(\lambda_A\)</span> and <span class="math inline">\(\lambda_B\)</span> respectively, their combined number of claims is a Poisson process with rate <span class="math inline">\(\lambda_A + \lambda_B\)</span>.</p>
 </div>
-<div id="compound-loss-distributions-1" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Compound loss distributions<a href="compound-loss-distributions.html#compound-loss-distributions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="compound-binomial" class="section level3 hasAnchor" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> Compound binomial<a href="compound-loss-distributions.html#compound-binomial" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="derive-the-mean-variance-and-coefficient-of-skewness-for-compound-binomial-compound-poisson-and-compound-negative-binomial-random-variables." class="section level4 hasAnchor" number="3.0.1.4">
+<h4><span class="header-section-number">3.0.1.4</span> <strong>4. Derive the mean, variance and coefficient of skewness for compound binomial, compound Poisson and compound negative binomial random variables.</strong><a href="compound-loss-distributions.html#derive-the-mean-variance-and-coefficient-of-skewness-for-compound-binomial-compound-poisson-and-compound-negative-binomial-random-variables." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For a general compound distribution <span class="math inline">\(S = \sum_{i=1}^N X_i\)</span>, where <span class="math inline">\(N\)</span> is the number of claims and <span class="math inline">\(X_i\)</span> are IID individual claim amounts, the mean, variance, and MGF can be derived using conditional expectation. These general formulae are crucial and often provided in actuarial tables:</p>
+<ul>
+<li><p><strong>Mean of S:</strong>
+<span class="math inline">\(E[S] = E[N] E[X]\)</span>.
+(Where <span class="math inline">\(E[X]\)</span> is the mean of a single individual claim amount, <span class="math inline">\(m_1\)</span>).</p></li>
+<li><p><strong>Variance of S:</strong> (using the conditional variance formula)
+<span class="math inline">\(\text{Var}[S] = E[N] \text{Var}[X] + \text{Var}[N] (E[X])^2\)</span>.
+(Where <span class="math inline">\(\text{Var}[X]\)</span> is the variance of a single individual claim amount).</p></li>
+<li><p><strong>Moment Generating Function of S:</strong>
+<span class="math inline">\(M_S(t) = M_N(\ln(M_X(t)))\)</span>.
+This shows how the MGF of the aggregate claim amount is expressed in terms of the MGFs of the number of claims and individual claim amounts.</p></li>
+</ul>
+<p>Now, let’s apply these general formulae to specific claim number distributions:</p>
+<p><strong>a) Compound Poisson Distribution:</strong>
+If <span class="math inline">\(N \sim \text{Poi}(\lambda)\)</span>, then <span class="math inline">\(E[N] = \lambda\)</span> and <span class="math inline">\(\text{Var}[N] = \lambda\)</span>.
+Let <span class="math inline">\(m_1 = E[X]\)</span>, <span class="math inline">\(m_2 = E[X^2]\)</span>, and <span class="math inline">\(m_3 = E[X^3]\)</span> be the moments about zero for the individual claim amounts. Note that <span class="math inline">\(\text{Var}[X] = m_2 - m_1^2\)</span>.</p>
+<ul>
+<li><p><strong>Mean of S:</strong>
+<span class="math inline">\(E[S] = \lambda E[X] = \lambda m_1\)</span>.</p></li>
+<li><p><strong>Variance of S:</strong>
+<span class="math inline">\(\text{Var}[S] = \lambda \text{Var}[X] + \lambda (E[X])^2 = \lambda (m_2 - m_1^2) + \lambda m_1^2 = \lambda m_2\)</span>.</p></li>
+<li><p><strong>Coefficient of Skewness of S:</strong>
+The third central moment of <span class="math inline">\(S\)</span> is <span class="math inline">\(\text{Skew}[S] = \lambda m_3\)</span>.
+The coefficient of skewness is <span class="math inline">\(\frac{\text{Skew}[S]}{(\text{Var}[S])^{1.5}} = \frac{\lambda m_3}{(\lambda m_2)^{1.5}}\)</span>.
+Since <span class="math inline">\(\lambda &gt; 0\)</span> and <span class="math inline">\(m_3 &gt; 0\)</span> for non-negative claims, a compound Poisson distribution is always positively skewed.</p></li>
+</ul>
+<p><strong>b) Compound Binomial Distribution:</strong>
+If <span class="math inline">\(N \sim \text{Bin}(n, p)\)</span>, then <span class="math inline">\(E[N] = np\)</span> and <span class="math inline">\(\text{Var}[N] = np(1-p)\)</span>.
+Let <span class="math inline">\(m_1 = E[X]\)</span> and <span class="math inline">\(m_2 = E[X^2]\)</span>.</p>
+<ul>
+<li><p><strong>Mean of S:</strong>
+<span class="math inline">\(E[S] = np E[X] = np m_1\)</span>.</p></li>
+<li><p><strong>Variance of S:</strong>
+<span class="math inline">\(\text{Var}[S] = np \text{Var}[X] + np(1-p) (E[X])^2 = np(m_2 - m_1^2) + np(1-p)m_1^2\)</span>.</p></li>
+</ul>
+<p><strong>c) Compound Negative Binomial Distribution:</strong>
+If <span class="math inline">\(N\)</span> has a negative binomial distribution with parameters <span class="math inline">\(k\)</span> and <span class="math inline">\(p\)</span> (e.g., Type 2 negative binomial), then <span class="math inline">\(E[N] = \frac{kq}{p}\)</span> and <span class="math inline">\(\text{Var}[N] = \frac{kq}{p^2}\)</span> where <span class="math inline">\(q = 1-p\)</span>.
+Let <span class="math inline">\(m_1 = E[X]\)</span> and <span class="math inline">\(m_2 = E[X^2]\)</span>.</p>
+<ul>
+<li><p><strong>Mean of S:</strong>
+<span class="math inline">\(E[S] = \frac{kq}{p} E[X] = \frac{kq}{p} m_1\)</span>.</p></li>
+<li><p><strong>Variance of S:</strong>
+<span class="math inline">\(\text{Var}[S] = \frac{kq}{p} \text{Var}[X] + \frac{kq}{p^2} (E[X])^2 = \frac{kq}{p}(m_2 - m_1^2) + \frac{kq}{p^2}m_1^2\)</span>.</p></li>
+</ul>
+<p>The MGFs for these specific compound distributions can be derived by substituting the respective MGFs of <span class="math inline">\(N\)</span> into the general formula <span class="math inline">\(M_S(t) = M_N(\ln(M_X(t)))\)</span>.</p>
 </div>
-<div id="compound-poisson" class="section level3 hasAnchor" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> Compound Poisson<a href="compound-loss-distributions.html#compound-poisson" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="repeat-this-for-both-the-insurer-and-the-reinsurer-after-the-operation-of-simple-forms-of-proportional-and-excess-of-loss-reinsurance." class="section level4 hasAnchor" number="3.0.1.5">
+<h4><span class="header-section-number">3.0.1.5</span> <strong>5. Repeat this for both the insurer and the reinsurer after the operation of simple forms of proportional and excess of loss reinsurance.</strong><a href="compound-loss-distributions.html#repeat-this-for-both-the-insurer-and-the-reinsurer-after-the-operation-of-simple-forms-of-proportional-and-excess-of-loss-reinsurance." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Reinsurance is an essential tool for insurers to protect themselves against large claims and reduce the uncertainty or volatility of their claims experience. When reinsurance is in place, the distribution of claim amounts paid by the insurer and reinsurer will change.</p>
+<p>We use the following notation:
+* <span class="math inline">\(X\)</span>: Gross claim amount random variable.
+* <span class="math inline">\(Y\)</span>: Net claim amount paid by the insurer (after reinsurance recovery).
+* <span class="math inline">\(Z\)</span>: Amount paid by the reinsurer.
+Note that <span class="math inline">\(X = Y + Z\)</span> for any given claim.</p>
+<p><strong>a) Proportional Reinsurance:</strong>
+Under proportional reinsurance, the insurer and reinsurer agree to split every claim in fixed proportions. If <span class="math inline">\(\alpha\)</span> is the <strong>retained proportion</strong> (where <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>), then:
+* The insurer pays <span class="math inline">\(Y = \alpha X\)</span>.
+* The reinsurer pays <span class="math inline">\(Z = (1-\alpha)X\)</span>.</p>
+<p>Since <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> are simply scaled versions of <span class="math inline">\(X\)</span>, their distributions, moments, and MGFs can be easily derived from those of <span class="math inline">\(X\)</span>. If <span class="math inline">\(S\)</span> is the aggregate gross claims, then the aggregate claims paid by the insurer (<span class="math inline">\(S_I\)</span>) and reinsurer (<span class="math inline">\(S_R\)</span>) are <span class="math inline">\(S_I = \alpha S\)</span> and <span class="math inline">\(S_R = (1-\alpha)S\)</span> respectively.</p>
+<p><strong>For the Insurer (Y or <span class="math inline">\(S_I = \alpha S\)</span>):</strong>
+* <strong>Mean:</strong> <span class="math inline">\(E[Y] = \alpha E[X]\)</span>.
+<span class="math inline">\(E[S_I] = \alpha E[S] = \alpha E[N] E[X]\)</span>.
+* <strong>Variance:</strong> <span class="math inline">\(\text{Var}[Y] = \alpha^2 \text{Var}[X]\)</span>.
+<span class="math inline">\(\text{Var}[S_I] = \alpha^2 \text{Var}[S]\)</span>.
+* <strong>Coefficient of Skewness:</strong> <span class="math inline">\(\text{Skew}[Y] = \alpha^3 \text{Skew}[X]\)</span>.
+<span class="math inline">\(\text{Skew}[S_I] = \alpha^3 \text{Skew}[S]\)</span>.
+* <strong>MGF:</strong> <span class="math inline">\(M_Y(t) = M_X(\alpha t)\)</span>.
+<span class="math inline">\(M_{S_I}(t) = M_N(\ln(M_X(\alpha t)))\)</span>.</p>
+<p><strong>For the Reinsurer (Z or <span class="math inline">\(S_R = (1-\alpha)S\)</span>):</strong>
+Similar formulae apply by replacing <span class="math inline">\(\alpha\)</span> with <span class="math inline">\((1-\alpha)\)</span>.
+* <strong>Mean:</strong> <span class="math inline">\(E[Z] = (1-\alpha)E[X]\)</span>.
+<span class="math inline">\(E[S_R] = (1-\alpha)E[S]\)</span>.
+* <strong>Variance:</strong> <span class="math inline">\(\text{Var}[Z] = (1-\alpha)^2 \text{Var}[X]\)</span>.
+<span class="math inline">\(\text{Var}[S_R] = (1-\alpha)^2 \text{Var}[S]\)</span>.
+* <strong>Coefficient of Skewness:</strong> <span class="math inline">\(\text{Skew}[Z] = (1-\alpha)^3 \text{Skew}[X]\)</span>.
+<span class="math inline">\(\text{Skew}[S_R] = (1-\alpha)^3 \text{Skew}[S]\)</span>.
+* <strong>MGF:</strong> <span class="math inline">\(M_Z(t) = M_X((1-\alpha)t)\)</span>.
+<span class="math inline">\(M_{S_R}(t) = M_N(\ln(M_X((1-\alpha)t)))\)</span>.</p>
+<p><strong>b) Individual Excess of Loss (XoL) Reinsurance:</strong>
+Under XoL reinsurance, the insurer pays claims up to a specified <strong>retention limit (M)</strong>, and the reinsurer pays the amount exceeding <span class="math inline">\(M\)</span>.</p>
+<ul>
+<li><p><strong>Insurer’s payment (Y):</strong>
+<span class="math inline">\(Y = \min(X, M)\)</span>.
+This means if <span class="math inline">\(X \le M\)</span>, <span class="math inline">\(Y=X\)</span>; if <span class="math inline">\(X &gt; M\)</span>, <span class="math inline">\(Y=M\)</span>. The insurer’s data is thus “capped” or “censored” at <span class="math inline">\(M\)</span>.</p></li>
+<li><p><strong>Reinsurer’s payment (Z):</strong>
+<span class="math inline">\(Z = \max(0, X - M)\)</span>.
+This means if <span class="math inline">\(X \le M\)</span>, <span class="math inline">\(Z=0\)</span>; if <span class="math inline">\(X &gt; M\)</span>, <span class="math inline">\(Z=X-M\)</span>. The reinsurer typically only observes claims that exceed <span class="math inline">\(M\)</span>, leading to a <strong>truncated distribution</strong>. The reinsurer’s conditional claim payment, given it is involved (i.e., <span class="math inline">\(Z&gt;0\)</span>), is <span class="math inline">\(W = Z | Z&gt;0 = X-M | X&gt;M\)</span>.</p></li>
+</ul>
+<p><strong>Deriving Moments and Distributions:</strong>
+Unlike proportional reinsurance, the impact of XoL is not a simple scaling. Calculating moments often involves integrals, as the functions <span class="math inline">\(\min(X,M)\)</span> and <span class="math inline">\(\max(0,X-M)\)</span> are non-linear.</p>
+<p><strong>For the Insurer (Y):</strong>
+* <strong>Mean:</strong> <span class="math inline">\(E[Y] = \int_0^M x f(x) dx + M P(X &gt; M)\)</span>.
+* <strong>Variance:</strong> <span class="math inline">\(\text{Var}[Y] = E[Y^2] - (E[Y])^2\)</span>, where <span class="math inline">\(E[Y^2] = \int_0^M x^2 f(x) dx + M^2 P(X &gt; M)\)</span>.
+* <strong>MGF:</strong> <span class="math inline">\(M_Y(t) = \int_0^M e^{tx} f(x) dx + e^{tM} P(X &gt; M)\)</span>.</p>
+<p><strong>For the Reinsurer (Z):</strong>
+* <strong>Mean:</strong> <span class="math inline">\(E[Z] = \int_M^\infty (x-M) f(x) dx\)</span>.
+* <strong>Variance:</strong> <span class="math inline">\(\text{Var}[Z] = E[Z^2] - (E[Z])^2\)</span>, where <span class="math inline">\(E[Z^2] = \int_M^\infty (x-M)^2 f(x) dx\)</span>.
+* <strong>MGF:</strong> <span class="math inline">\(M_Z(t) = \int_M^\infty e^{t(x-M)} f(x) dx\)</span>.</p>
+<p><strong>Reinsurer’s Conditional Claim Payment (W):</strong>
+The PDF of <span class="math inline">\(W = Z | Z&gt;0\)</span> is <span class="math inline">\(f_W(w) = \frac{f_X(w+M)}{P(X &gt; M)}\)</span> for <span class="math inline">\(w&gt;0\)</span>.
+For certain distributions, the conditional distribution of exceedances over a threshold retains the same distributional form (e.g., exponential distribution remains exponential, Pareto remains Pareto with adjusted parameters).</p>
+<p><strong>Impact on Aggregate Claims (<span class="math inline">\(S_I\)</span> and <span class="math inline">\(S_R\)</span>):</strong>
+If <span class="math inline">\(N\)</span> follows a Poisson distribution, <span class="math inline">\(S_I\)</span> and <span class="math inline">\(S_R\)</span> will also have compound Poisson distributions, but with individual claim amount distributions <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span> respectively. The Poisson parameter <span class="math inline">\(\lambda\)</span> remains unchanged, as it’s the frequency of <em>gross</em> claims.</p>
+<p><strong>Parameter Estimation with Incomplete Data:</strong>
+When XoL reinsurance is in place, the observed data may be incomplete (censored or truncated). For instance, the insurer’s claims are capped, and the reinsurer may only be notified of claims above the retention. Maximum Likelihood Estimation (MLE) is a suitable method to estimate parameters in such cases, often requiring custom negative log-likelihood functions for numerical optimization.</p>
+<p>The process involves defining a log-likelihood function that accounts for both completely observed claims and partially observed (censored/truncated) claims. For example, claims below <span class="math inline">\(M\)</span> are fully observed, while those above <span class="math inline">\(M\)</span> contribute their probability <span class="math inline">\(P(X&gt;M)\)</span> to the likelihood for censored data (insurer’s perspective). For truncated data (reinsurer’s perspective), it involves the conditional density of <span class="math inline">\(W\)</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="compound-loss-distributions.html#cb1-1" tabindex="-1"></a><span class="co"># R Practice Scenario (Continued from previous turn, integrating reinsurance aspects)</span></span>
+<span id="cb1-2"><a href="compound-loss-distributions.html#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="compound-loss-distributions.html#cb1-3" tabindex="-1"></a><span class="co"># Re-run data loading and Pareto function definitions if not in current session</span></span>
+<span id="cb1-4"><a href="compound-loss-distributions.html#cb1-4" tabindex="-1"></a><span class="co"># Load the data (assuming Losses.txt is in your working directory)</span></span>
+<span id="cb1-5"><a href="compound-loss-distributions.html#cb1-5" tabindex="-1"></a>Losses_df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;Losses.txt&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-6"><a href="compound-loss-distributions.html#cb1-6" tabindex="-1"></a>Losses <span class="ot">&lt;-</span> Losses_df[, <span class="dv">1</span>]</span>
+<span id="cb1-7"><a href="compound-loss-distributions.html#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="compound-loss-distributions.html#cb1-8" tabindex="-1"></a><span class="co"># Define the Probability Density Function (PDF) for the two-parameter Pareto distribution</span></span>
+<span id="cb1-9"><a href="compound-loss-distributions.html#cb1-9" tabindex="-1"></a>dpareto <span class="ot">&lt;-</span> <span class="cf">function</span>(x, a, lambda) {</span>
+<span id="cb1-10"><a href="compound-loss-distributions.html#cb1-10" tabindex="-1"></a>  a <span class="sc">*</span> (lambda<span class="sc">^</span>a) <span class="sc">/</span> ((lambda <span class="sc">+</span> x)<span class="sc">^</span>(a <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb1-11"><a href="compound-loss-distributions.html#cb1-11" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="compound-loss-distributions.html#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="compound-loss-distributions.html#cb1-13" tabindex="-1"></a><span class="co"># Define the Cumulative Distribution Function (CDF) for the two-parameter Pareto distribution</span></span>
+<span id="cb1-14"><a href="compound-loss-distributions.html#cb1-14" tabindex="-1"></a>ppareto <span class="ot">&lt;-</span> <span class="cf">function</span>(q, a, lambda) {</span>
+<span id="cb1-15"><a href="compound-loss-distributions.html#cb1-15" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> (lambda <span class="sc">/</span> (lambda <span class="sc">+</span> q))<span class="sc">^</span>a</span>
+<span id="cb1-16"><a href="compound-loss-distributions.html#cb1-16" tabindex="-1"></a>}</span>
+<span id="cb1-17"><a href="compound-loss-distributions.html#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="compound-loss-distributions.html#cb1-18" tabindex="-1"></a><span class="co"># Define the negative log-likelihood for Pareto MLE (as used previously)</span></span>
+<span id="cb1-19"><a href="compound-loss-distributions.html#cb1-19" tabindex="-1"></a>neg_log_likelihood_pareto <span class="ot">&lt;-</span> <span class="cf">function</span>(params, data_vector) {</span>
+<span id="cb1-20"><a href="compound-loss-distributions.html#cb1-20" tabindex="-1"></a>  a <span class="ot">&lt;-</span> params</span>
+<span id="cb1-21"><a href="compound-loss-distributions.html#cb1-21" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> params</span>
+<span id="cb1-22"><a href="compound-loss-distributions.html#cb1-22" tabindex="-1"></a>  <span class="cf">if</span> (a <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span> lambda <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb1-23"><a href="compound-loss-distributions.html#cb1-23" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">Inf</span>)</span>
+<span id="cb1-24"><a href="compound-loss-distributions.html#cb1-24" tabindex="-1"></a>  }</span>
+<span id="cb1-25"><a href="compound-loss-distributions.html#cb1-25" tabindex="-1"></a>  log_likelihood_values <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="fu">dpareto</span>(data_vector, a, lambda))</span>
+<span id="cb1-26"><a href="compound-loss-distributions.html#cb1-26" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">sum</span>(log_likelihood_values)</span>
+<span id="cb1-27"><a href="compound-loss-distributions.html#cb1-27" tabindex="-1"></a>}</span>
+<span id="cb1-28"><a href="compound-loss-distributions.html#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="compound-loss-distributions.html#cb1-29" tabindex="-1"></a><span class="co"># Re-estimate parameters if needed (from previous turn)</span></span>
+<span id="cb1-30"><a href="compound-loss-distributions.html#cb1-30" tabindex="-1"></a>initial_params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1500</span>) <span class="co"># Re-using example starting values</span></span>
+<span id="cb1-31"><a href="compound-loss-distributions.html#cb1-31" tabindex="-1"></a>mle_result <span class="ot">&lt;-</span> <span class="fu">nlm</span>(neg_log_likelihood_pareto, <span class="at">p =</span> initial_params, <span class="at">data_vector =</span> Losses)</span>
+<span id="cb1-32"><a href="compound-loss-distributions.html#cb1-32" tabindex="-1"></a>estimated_alpha <span class="ot">&lt;-</span> mle_result<span class="sc">$</span>estimate</span>
+<span id="cb1-33"><a href="compound-loss-distributions.html#cb1-33" tabindex="-1"></a>estimated_lambda <span class="ot">&lt;-</span> mle_result<span class="sc">$</span>estimate</span>
+<span id="cb1-34"><a href="compound-loss-distributions.html#cb1-34" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="compound-loss-distributions.html#cb1-35" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Estimated alpha:&quot;</span>, estimated_alpha, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-36"><a href="compound-loss-distributions.html#cb1-36" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Estimated lambda:&quot;</span>, estimated_lambda, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-37"><a href="compound-loss-distributions.html#cb1-37" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Optimization convergence code (1 or 2 is good):&quot;</span>, mle_result<span class="sc">$</span>code, <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-38"><a href="compound-loss-distributions.html#cb1-38" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="compound-loss-distributions.html#cb1-39" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="compound-loss-distributions.html#cb1-40" tabindex="-1"></a><span class="co"># --- New Section: Applying Reinsurance to Simulated Loss Data ---</span></span>
+<span id="cb1-41"><a href="compound-loss-distributions.html#cb1-41" tabindex="-1"></a><span class="co"># For demonstration, let&#39;s simulate a larger dataset based on the estimated Pareto parameters</span></span>
+<span id="cb1-42"><a href="compound-loss-distributions.html#cb1-42" tabindex="-1"></a><span class="co"># This allows us to work with a dataset where the true underlying distribution is known</span></span>
+<span id="cb1-43"><a href="compound-loss-distributions.html#cb1-43" tabindex="-1"></a><span class="co"># In a real scenario, you&#39;d apply this to the actual observed &#39;Losses&#39; data, or aggregate simulated data.</span></span>
+<span id="cb1-44"><a href="compound-loss-distributions.html#cb1-44" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="compound-loss-distributions.html#cb1-45" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># For reproducibility</span></span>
+<span id="cb1-46"><a href="compound-loss-distributions.html#cb1-46" tabindex="-1"></a>simulated_losses <span class="ot">&lt;-</span> <span class="fu">qpareto</span>(<span class="fu">runif</span>(<span class="dv">10000</span>), estimated_alpha, estimated_lambda) <span class="co"># Generate 10,000 losses</span></span>
+<span id="cb1-47"><a href="compound-loss-distributions.html#cb1-47" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="compound-loss-distributions.html#cb1-48" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Simulated Losses Summary:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-49"><a href="compound-loss-distributions.html#cb1-49" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(simulated_losses))</span>
+<span id="cb1-50"><a href="compound-loss-distributions.html#cb1-50" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-51"><a href="compound-loss-distributions.html#cb1-51" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="compound-loss-distributions.html#cb1-52" tabindex="-1"></a><span class="co"># Scenario 1: Proportional Reinsurance</span></span>
+<span id="cb1-53"><a href="compound-loss-distributions.html#cb1-53" tabindex="-1"></a><span class="co"># Retained proportion (alpha) = 75%</span></span>
+<span id="cb1-54"><a href="compound-loss-distributions.html#cb1-54" tabindex="-1"></a>alpha_retained <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
+<span id="cb1-55"><a href="compound-loss-distributions.html#cb1-55" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="compound-loss-distributions.html#cb1-56" tabindex="-1"></a><span class="co"># Insurer&#39;s payments (Y) and Reinsurer&#39;s payments (Z)</span></span>
+<span id="cb1-57"><a href="compound-loss-distributions.html#cb1-57" tabindex="-1"></a><span class="co"># For individual claims (conceptual, if applied to aggregate, you&#39;d scale S directly)</span></span>
+<span id="cb1-58"><a href="compound-loss-distributions.html#cb1-58" tabindex="-1"></a>insurer_payments_prop <span class="ot">&lt;-</span> alpha_retained <span class="sc">*</span> simulated_losses <span class="co"># Y = alpha * X</span></span>
+<span id="cb1-59"><a href="compound-loss-distributions.html#cb1-59" tabindex="-1"></a>reinsurer_payments_prop <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> alpha_retained) <span class="sc">*</span> simulated_losses <span class="co"># Z = (1-alpha) * X</span></span>
+<span id="cb1-60"><a href="compound-loss-distributions.html#cb1-60" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="compound-loss-distributions.html#cb1-61" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;--- Proportional Reinsurance (alpha = 75%) ---</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-62"><a href="compound-loss-distributions.html#cb1-62" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Mean Insurer Payment (Proportional):&quot;</span>, <span class="fu">mean</span>(insurer_payments_prop), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-63"><a href="compound-loss-distributions.html#cb1-63" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Mean Reinsurer Payment (Proportional):&quot;</span>, <span class="fu">mean</span>(reinsurer_payments_prop), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-64"><a href="compound-loss-distributions.html#cb1-64" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Variance Insurer Payment (Proportional):&quot;</span>, <span class="fu">var</span>(insurer_payments_prop), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-65"><a href="compound-loss-distributions.html#cb1-65" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Variance Reinsurer Payment (Proportional):&quot;</span>, <span class="fu">var</span>(reinsurer_payments_prop), <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-66"><a href="compound-loss-distributions.html#cb1-66" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="compound-loss-distributions.html#cb1-67" tabindex="-1"></a><span class="co"># Verify: E[Y] = alpha * E[X] and Var[Y] = alpha^2 * Var[X]</span></span>
+<span id="cb1-68"><a href="compound-loss-distributions.html#cb1-68" tabindex="-1"></a><span class="co"># Note: For Pareto, variance only exists if alpha &gt; 2</span></span>
+<span id="cb1-69"><a href="compound-loss-distributions.html#cb1-69" tabindex="-1"></a><span class="co"># From Tables for Actuarial Examinations: Mean(Pa(a,l)) = l/(a-1) for a &gt; 1; Var(Pa(a,l)) = (l^2 * a) / ((a-1)^2 * (a-2)) for a &gt; 2</span></span>
+<span id="cb1-70"><a href="compound-loss-distributions.html#cb1-70" tabindex="-1"></a><span class="co"># Let&#39;s use empirical mean/var of simulated_losses as E[X], Var[X]</span></span>
+<span id="cb1-71"><a href="compound-loss-distributions.html#cb1-71" tabindex="-1"></a>mean_X <span class="ot">&lt;-</span> <span class="fu">mean</span>(simulated_losses)</span>
+<span id="cb1-72"><a href="compound-loss-distributions.html#cb1-72" tabindex="-1"></a>var_X <span class="ot">&lt;-</span> <span class="fu">var</span>(simulated_losses)</span>
+<span id="cb1-73"><a href="compound-loss-distributions.html#cb1-73" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="compound-loss-distributions.html#cb1-74" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Empirical Mean of X:&quot;</span>, mean_X, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-75"><a href="compound-loss-distributions.html#cb1-75" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Empirical Var of X:&quot;</span>, var_X, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-76"><a href="compound-loss-distributions.html#cb1-76" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Expected Mean Insurer Payment (Proportional) via formula:&quot;</span>, alpha_retained <span class="sc">*</span> mean_X, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-77"><a href="compound-loss-distributions.html#cb1-77" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Expected Var Insurer Payment (Proportional) via formula:&quot;</span>, alpha_retained<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> var_X, <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-78"><a href="compound-loss-distributions.html#cb1-78" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="compound-loss-distributions.html#cb1-79" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="compound-loss-distributions.html#cb1-80" tabindex="-1"></a><span class="co"># Scenario 2: Individual Excess of Loss Reinsurance</span></span>
+<span id="cb1-81"><a href="compound-loss-distributions.html#cb1-81" tabindex="-1"></a><span class="co"># Retention limit (M) = 25000 (example value for a heavy-tailed distribution)</span></span>
+<span id="cb1-82"><a href="compound-loss-distributions.html#cb1-82" tabindex="-1"></a>retention_M <span class="ot">&lt;-</span> <span class="dv">25000</span></span>
+<span id="cb1-83"><a href="compound-loss-distributions.html#cb1-83" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="compound-loss-distributions.html#cb1-84" tabindex="-1"></a><span class="co"># Insurer&#39;s payments (Y) and Reinsurer&#39;s payments (Z)</span></span>
+<span id="cb1-85"><a href="compound-loss-distributions.html#cb1-85" tabindex="-1"></a>insurer_payments_xol <span class="ot">&lt;-</span> <span class="fu">pmin</span>(simulated_losses, retention_M) <span class="co"># Y = min(X, M)</span></span>
+<span id="cb1-86"><a href="compound-loss-distributions.html#cb1-86" tabindex="-1"></a>reinsurer_payments_xol <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, simulated_losses <span class="sc">-</span> retention_M) <span class="co"># Z = max(0, X - M)</span></span>
+<span id="cb1-87"><a href="compound-loss-distributions.html#cb1-87" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="compound-loss-distributions.html#cb1-88" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;--- Individual Excess of Loss Reinsurance (M = £&quot;</span>, retention_M, <span class="st">&quot;) ---</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-89"><a href="compound-loss-distributions.html#cb1-89" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Mean Insurer Payment (XoL):&quot;</span>, <span class="fu">mean</span>(insurer_payments_xol), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-90"><a href="compound-loss-distributions.html#cb1-90" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Mean Reinsurer Payment (XoL):&quot;</span>, <span class="fu">mean</span>(reinsurer_payments_xol), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-91"><a href="compound-loss-distributions.html#cb1-91" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Variance Insurer Payment (XoL):&quot;</span>, <span class="fu">var</span>(insurer_payments_xol), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-92"><a href="compound-loss-distributions.html#cb1-92" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Variance Reinsurer Payment (XoL):&quot;</span>, <span class="fu">var</span>(reinsurer_payments_xol), <span class="st">&quot;\</span></span></code></pre></div>
 </div>
-<div id="compound-negative-binomial" class="section level3 hasAnchor" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> Compound negative binomial<a href="compound-loss-distributions.html#compound-negative-binomial" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 </div>
-</div>
-<div id="compound-loss-distributions-after-reinsurance" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Compound loss distributions after reinsurance<a href="compound-loss-distributions.html#compound-loss-distributions-after-reinsurance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
 <div id="practice-compound-loss-distributions" class="section level2 unnumbered hasAnchor">
 <h2><code>R</code> Practice<a href="compound-loss-distributions.html#practice-compound-loss-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
