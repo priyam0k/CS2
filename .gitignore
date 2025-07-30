@@ -17,5 +17,5 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 # bookdown related
-_book
+
 _bookdown_files
