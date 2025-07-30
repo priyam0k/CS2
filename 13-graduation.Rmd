@@ -1,1 +1,172 @@
 # Graduation {#graduation}
+
+### **I. Introduction to Graduation**
+
+Graduation is the process of applying statistical techniques to enhance the estimates derived from crude (raw) mortality or transition rates. These crude estimates, calculated directly from observed data, often exhibit irregularities or random fluctuations due to sampling variability. The primary objective of graduation is to produce a smoother, more consistent set of rates suitable for practical use in actuarial calculations.
+
+**Why is Graduation Necessary? (Reasons/Aims)**
+
+1.  **To Produce Smooth Rates:** Actuaries intuitively assume that underlying mortality rates should change smoothly with age, without erratic jumps or dips. Crude rates often contradict this expectation due to finite observation periods and populations. Graduation ensures this desired smoothness, which is also important for client expectations regarding premium rates and benefits.
+2.  **To Remove Random Sampling Errors:** Observed deaths are a random variable, and thus crude rates are subject to sampling errors. Graduation "improves" these estimates by reducing their variance, leveraging information from adjacent ages to make the estimate at any given age more reliable.
+3.  **To Improve Reliability:** By incorporating information from neighbouring ages, graduation helps to improve the overall reliability of the estimates.
+4.  **For Practical Application:** Graduated rates are essential for financial calculations, such as setting premiums and reserves. They ensure that financial quantities like premiums vary steadily and logically with age, avoiding anomalies that would be difficult to justify.
+5.  **For Standard Table Construction:** When building new standard mortality tables (e.g., for national populations or large insurance groups), graduation is crucial to produce unbiased and smooth estimates that can be widely adopted.
+
+It is important to note that while graduation can reduce random errors, it *cannot* remove any inherent bias in the data stemming from faulty data collection or other systemic issues.
+
+### **II. Desirable Features of a Graduation**
+
+A successful graduation strikes a careful balance among three key desirable features:
+
+1.  **Smoothness:** The graduated rates should progress smoothly across ages. This reflects the underlying belief that mortality is a smooth function of age. A common way to assess smoothness is by examining the third differences of the graduated rates; they should be small in magnitude and progress regularly with age.
+2.  **Adherence to Data (Goodness of Fit):** The graduated rates must remain representative of the observed crude data. Too much smoothing can lead to a loss of the actual experience information. This is tested using various statistical tests to compare observed versus expected deaths.
+3.  **Suitability for Purpose:** The graduated rates must be fit for their intended use. For instance, in life insurance, underestimating mortality can lead to unprofitable business, while in pensions/annuities, overestimating mortality can lead to undervaluation of liabilities or uncompetitive pricing.
+
+**The Smoothness-Adherence Trade-off**
+
+Smoothness and adherence to data are often conflicting requirements.
+*   **Overgraduation:** Occurs when too much emphasis is placed on smoothness, resulting in rates that are very smooth but show poor adherence to the data. This implies that the graduation formula might be too simplistic or ignores important features of the data.
+*   **Undergraduation:** Occurs when insufficient smoothing is performed, leading to rates that adhere too closely to the crude data but exhibit inadequate smoothness and an irregular progression.
+
+The "art" of graduation lies in finding a satisfactory compromise between these two conflicting requirements.
+
+### **III. Methods of Graduation**
+
+The choice of graduation method depends on the quality and volume of data, and the specific purpose for which the rates are intended. The general methodology involves selecting a model, fitting it to the crude rates, and testing the resulting graduation.
+
+Here are three common methods of graduation:
+
+#### **A. Graduation by Parametric Formula**
+
+*   **Overview:** This method assumes that the underlying force of mortality (or transition intensity) can be described by a specific mathematical formula with a small number of unknown parameters (e.g., Gompertz, Makeham).
+*   **Process/Steps:**
+    1.  **Select a Formula:** Choose an appropriate parametric family of curves (e.g., Gompertz: $\mu_x = Bc^x$, Makeham: $\mu_x = A + Bc^x$). These models are often used because the force of mortality typically increases exponentially with age, with Makeham's adding a constant term for age-independent deaths.
+    2.  **Estimate Parameters:** Calculate the parameters of the chosen formula. This is typically done using statistical methods like Maximum Likelihood Estimation (MLE) or Weighted Least Squares (WLS). Weights based on inverse of estimated variance are sensible, as they give more importance to ages with more data.
+    3.  **Calculate Graduated Rates:** Use the estimated parameters to compute the graduated rates.
+    4.  **Test Graduation:** Subject the resulting rates to tests for adherence to data and smoothness.
+*   **Advantages:**
+    *   **Smoothness:** Formulas with a small number of parameters naturally produce acceptably smooth graduations.
+    *   **Statistical Foundation:** It's a natural extension of probabilistic models, with well-developed statistical theory for estimation and standard errors.
+    *   **Comparability:** Useful for comparing different experiences by fitting the same formula and analyzing parameter differences.
+    *   **Standard Table Production:** Well-suited for creating new standard mortality tables from large datasets.
+    *   **Quantitative Allowance for Data:** Can incorporate weighting factors to reflect the amount of data at each age, giving more confidence to ages with more data.
+*   **Disadvantages:**
+    *   **Formula Selection:** Difficult to find a single formula that accurately fits mortality rates across an entire broad age range.
+    *   **Extreme Ages:** The fit at extreme ages (very young or very old) can be poor due to sparse data or the formula being optimized for central ages. Extrapolation beyond data limits requires caution.
+*   **Suitability:** Appropriate when a large amount of reliable data is available, and a suitable mathematical formula can adequately describe mortality over the entire age range of interest.
+
+#### **B. Graduation by Reference to a Standard Table**
+
+*   **Overview:** This method involves adjusting the rates from an existing, widely accepted standard mortality table to align with the observed crude rates.
+*   **Rationale:** Assumes that if the study population is similar to that underlying a standard table, their mortality patterns should also be similar, even if overall levels differ. This is particularly useful when the data from the investigation itself are limited.
+*   **Process/Steps:**
+    1.  **Choose Standard Table:** Select an appropriate standard table that is believed to have a similar pattern of mortality (e.g., national life tables like ELT15, or tables for specific groups like AM92).
+    2.  **Find Link Function:** Identify a simple mathematical relationship (link function) between the crude rates from the investigation and the rates from the chosen standard table (e.g., $x\mu^\circ = a + b \mu_x^s$). Plots can help identify linear or other simple relationships.
+    3.  **Estimate Parameters:** Estimate the parameters of the link function (e.g., $a$ and $b$) using methods like weighted least squares or maximum likelihood.
+    4.  **Calculate Graduated Rates:** Apply the estimated link function to the standard table rates to obtain the graduated rates.
+    5.  **Test Graduation:** Assess goodness-of-fit to the data; smoothness is often assumed if the standard table and link function are simple.
+*   **Advantages:**
+    *   **Small Data Sets:** Can be effective for relatively small datasets where a suitable standard table exists.
+    *   **Smoothness (Inherited):** If the standard table is already smooth and a simple link function is used, the graduated rates will also be smooth.
+    *   **Extreme Ages:** Provides collateral information from the standard table, which is very useful for determining the shape of the graduation at extreme ages with sparse data.
+*   **Disadvantages:**
+    *   **Not for Standard Table Production:** Not suitable for creating new standard tables from large amounts of data.
+    *   **Appropriate Table:** Requires finding a suitable standard table, which is not always easy.
+    *   **Shape Distortion:** Choosing an inappropriate standard table can impose the wrong shape on the entire graduation.
+*   **Suitability:** Appropriate when there is a suitable existing standard table whose features are similar to the rates needing graduation, especially for medium-sized pension schemes or life insurer policyholders, and when data might be scarce at certain ages.
+
+#### **C. Graduation Using Spline Functions**
+
+*   **Overview:** Spline functions are piecewise polynomials of a specified degree, defined across the age range. These pieces are joined at "knots," where continuity conditions for the functions and their derivatives are enforced to ensure smoothness. Cubic splines are commonly used.
+*   **Process/Steps:**
+    1.  **Choose Knots:** Determine the number and placement of knots across the age range.
+    2.  **Fit Equation:** Fit an equation (e.g., a polynomial) using weighted least squares, where weights are inversely proportional to the estimated variance of the crude rates.
+    3.  **Test Graduation:** Subject the results to goodness-of-fit tests. The number of knots directly influences the trade-off between adherence and smoothness: more knots lead to closer adherence but less smoothness.
+*   **Advantages:**
+    *   **Flexibility:** Particularly useful when the pattern of mortality rates exhibits significant changes in shape, like an "accident hump" at younger ages.
+    *   **Smoothness (Controllable):** Provides inherent smoothness if the number of knots is kept small.
+    *   **Adaptability:** Alternative graduations can be explored by varying the number and position of knots.
+    *   **Broad Applicability:** Suitable for both relatively small and very large experiences (e.g., national populations), and can be used to produce standard tables.
+*   **Disadvantages:**
+    *   **Very Small Experiences:** Not suitable for very small experiences with scanty data at many ages.
+*   **Suitability:** Appropriate when the mortality pattern shows significant changes in shape, as it allows for flexibility in the curve, e.g., for males under 30 in a deprived area with potentially complex mortality patterns.
+
+### **IV. Statistical Tests of Graduation (Adherence to Data)**
+
+After a graduation is performed, it is crucial to test its reasonableness and validate that it meets the desired criteria of smoothness and adherence to data. These tests often involve hypotheses about the true underlying rates matching the graduated rates.
+
+Here are the key statistical tests:
+
+#### **A. Chi-squared ($\chi^2$) Test**
+
+*   **Purpose:** Assesses the overall goodness of fit of the graduated rates to the observed data. It is a good test for detecting if the graduated rates deviate significantly from the observed data in aggregate.
+*   **Null Hypothesis ($H_0$):** The true underlying rates at each age ($x$) for the experience are equal to the graduated rates ($x\mu^\circ$).
+*   **Test Statistic:** $\sum \frac{(O-E)^2}{E}$, where $O$ is the observed number of deaths ($d_x$) and $E$ is the corresponding expected number of deaths ($E_x^c \mu_x^\circ$). This is the sum of squared standardised deviations.
+*   **Distribution:** Under $H_0$, the test statistic approximately follows a chi-squared distribution ($\chi^2$).
+*   **Degrees of Freedom (DOF):** The number of age groups minus the number of parameters estimated in the graduation formula. For example, if there are 'n' age groups and 'p' parameters estimated, the DOF is $n-p$. If the rates are compared against a standard table without fitting parameters, the DOF is simply the number of age groups.
+*   **Interpretation:**
+    *   If the test statistic exceeds the critical value (e.g., upper 5% point of $\chi^2$ distribution), it indicates a poor fit or overgraduation.
+    *   A very low chi-squared statistic might suggest undergraduation or that the test is not sensitive enough to detect issues.
+*   **Strengths:** Good for overall goodness of fit.
+*   **Weaknesses:** Does *not* indicate the direction of any bias (whether rates are consistently too high or too low) or the nature of any lack of adherence (e.g., clumping of deviations). It treats all deviations as positive due to squaring.
+
+#### **B. Standardised Deviations (ISDs) Test**
+
+*   **Purpose:** Helps to identify individual ages where the fit is poor or to assess overall patterns of deviations (e.g., indicating over/undergraduation or duplicate policies).
+*   **Formula:** The standardised deviation at age $x$ is $Z_x = \frac{\text{Actual deaths} - \text{Expected deaths}}{\sqrt{\text{Expected deaths}}} = \frac{d_x - E_x^c \mu_x^\circ}{\sqrt{E_x^c \mu_x^\circ}}$. Under $H_0$, $Z_x \sim N(0,1)$ approximately.
+*   **Interpretation:**
+    *   Individual $Z_x$ values: Large magnitudes (e.g., $|Z_x| > 2$ or 2.5) indicate individual ages with poor fit.
+    *   Distribution of $Z_x$ values: Can reveal overall patterns. Too few values near zero or too many in the tails might indicate overgraduation or an inappropriate formula. Symmetry of the distribution indicates absence of overall bias.
+*   **Strengths:** A good "all-round" test that can reveal most problems in a graduation.
+
+#### **C. Signs Test**
+
+*   **Purpose:** Checks for overall bias in the graduated rates by examining the number of positive versus negative standardised deviations.
+*   **Null Hypothesis ($H_0$):** There is no overall bias in the graduated rates (i.e., the number of positive and negative deviations should be roughly equal).
+*   **Statistical Basis:** Under $H_0$, the number of positive deviations ($N$) out of $m$ age groups follows a Binomial distribution $N \sim \text{Binomial}(m, 0.5)$.
+*   **Interpretation:**
+    *   **Two-tailed test:** If the number of positive deviations is significantly higher than expected, it suggests the graduated rates are too low (negative bias). If it's significantly lower, it suggests the rates are too high (positive bias).
+    *   The p-value is calculated based on the binomial distribution or its normal approximation for larger $m$.
+*   **Strengths:** Simple to apply and directly tests for overall bias.
+*   **Weaknesses:** Qualitative rather than quantitative; it does not indicate the magnitude of the discrepancies.
+
+#### **D. Cumulative Deviations Test**
+
+*   **Purpose:** Checks for overall bias and systematic deviations that might "cancel out" in the chi-squared test. It detects features present over a range of ages or the whole age range.
+*   **Statistical Basis:** Sums the standardised deviations over a chosen age range. Under $H_0$, the cumulative standardised deviation follows approximately a $N(0,1)$ distribution.
+*   **Test Statistic:** $\sum Z_x$ or $\frac{\sum(d_x - E_x^c \mu_x^\circ)}{\sqrt{\sum E_x^c \mu_x^\circ}}$.
+*   **Interpretation:** A large positive value suggests graduated rates are too low; a large negative value suggests they are too high.
+*   **Limitations:** Cannot be used if the graduation method automatically forces the cumulative deviation to zero as part of its fitting process.
+
+#### **E. Grouping of Signs Test (Runs Test)**
+
+*   **Purpose:** Detects "clumping" or "runs" of deviations of the same sign, which suggests overgraduation or an incorrect shape for the graduated rates. Too few runs indicate overgraduation.
+*   **Statistical Basis:** Compares the observed number of "runs" (consecutive sequences of the same sign) with the expected number under random variation. Critical values are available in tables, or a normal approximation can be used for large sample sizes.
+*   **Interpretation:** A significantly low number of runs indicates that the rates are overgraduated and do not adhere closely enough to the crude data.
+
+#### **F. Serial Correlation Test**
+
+*   **Purpose:** Checks for correlation between consecutive standardised deviations (or other differences in rates). Positive serial correlation suggests that the shape of the graduated rates might be incorrect, indicating undergraduation if negative, or overgraduation if positive.
+*   **Strengths:** Takes into account the actual numerical values of the deviations, unlike the grouping of signs test.
+*   **Weaknesses:** Correlations can cancel out across different age ranges, making it less powerful than the grouping of signs test in some cases.
+
+### **V. R Implementation/Practical Aspects**
+
+The CS2B practical exam emphasizes the application of these concepts using R. The Course Notes provide R code for various calculations related to graduation.
+
+**Key R functionalities include:**
+
+*   **Data Loading and Manipulation:** Reading data from CSV files and performing basic operations.
+*   **Calculating Crude Rates:** Dividing observed deaths by exposed to risk (`Grad$CRUDE = Grad$DEATHS / Grad$ETR`).
+*   **Calculating Graduated Rates:** Often done by fitting a model (e.g., `Grad$GRAD <- B * c ^ Grad$AGE` for Gompertz law).
+*   **Plotting:** Visualizing crude and graduated rates on the same chart using `plot()` and `lines()` functions to assess overall fit and smoothness visually.
+*   **Smoothness Test:** Calculating third differences of graduated rates to assess their regularity and magnitude (`diff(Grad$GRAD, differences = 3)`).
+*   **Goodness-of-Fit Tests:**
+    *   **Chi-squared Test:** Calculating expected deaths (`Grad$EXP = Grad$GRAD * Grad$ETR`), then standardised deviations (`Grad$ZX = (Grad$DEATHS - Grad$EXP) / sqrt(Grad$EXP)`), and summing their squares (`sum(Grad$ZX^2)`). The result is compared to a `qchisq()` value.
+    *   **Signs Test:** Counting positive/negative standardised deviations and comparing to binomial probabilities or using `binom.test()` or `phyper()` for exact p-values.
+    *   **Standardised Deviations Test:** Examining the distribution and magnitude of `Grad$ZX` values, e.g., checking how many fall outside certain thresholds (`abs(Grad$ZX) > 2.5`).
+    *   **Cumulative Deviations Test:** Summing standardised deviations.
+    *   **Grouping of Signs Test:** Applying functions like `rle()` to count runs of signs, often combined with `phyper()` for p-value calculation.
+    *   **Serial Correlation Test:** Calculating `cor(z1x, z2x)` for lagged standardised deviations.
+
+Remember, a strong understanding of these concepts and the ability to apply them practically in R is essential for success in CS2. Practice with past exam questions and the Paper B Online Resources (PBOR) will solidify your skills.

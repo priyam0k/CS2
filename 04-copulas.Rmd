@@ -8,12 +8,165 @@
 
 ## Theory {-#theory-copulas}
 
-**TO ADD THEORY ABOUT COPULAS HERE**
+---
 
-### Characteristics of a copula
+### **Chapter: Copulas – Modelling Dependency Structures**
 
-### Gaussian copula
+This chapter, covered in detail in Chapter 17 of your CS2 Course Notes, is all about understanding and quantifying the relationships between random variables, particularly in complex risk scenarios. Insurance and investment firms frequently need to compute the joint probability of events, such as combined losses across different business lines or simultaneous defaults on investments. While traditional methods involving joint Probability Density Functions (PDFs) or probability functions exist, they often come with drawbacks, such as the difficulty in fully specifying the joint distribution or clearly seeing the nature of the association. This is where copulas shine, offering an elegant alternative.
 
-### Archimedan family of copulas
+---
+
+**Learning Objective 1: Describe how a copula can be characterised as a multivariate distribution function which is a function of the marginal distribution functions of its variates, and explain how this allows the marginal distributions to be investigated separately from the dependency between them.**
+
+At its core, a copula is a **function** that translates marginal Cumulative Distribution Functions (CDFs) into a joint CDF. Think of it as a blueprint for dependence: it *explicitly* describes how variables are interdependent, allowing us to disentangle this dependency from their individual (marginal) distributions.
+
+1.  **Definition and Characterisation:**
+    *   For a bivariate distribution, the copula, denoted $C$, is defined such that:
+        $C(F_X(x), F_Y(y)) = P(X \le x, Y \le y) = F_{X,Y}(x,y)$.
+    *   This is often written in a more compact form: $C(u,v) = F_{X,Y}(x,y)$, where $u = F_X(x)$ and $v = F_Y(y)$ are the marginal probabilities (and thus restricted to the range $$).
+    *   This definition extends directly to the multivariate case with $d$ dimensions: $C(u_1, u_2, ..., u_d) = F_{X_1, X_2, ..., X_d}(x_1, x_2, ..., x_d)$, where $u_i = F_{X_i}(x_i)$.
+    *   **Key Insight:** This formulation implies that the copula captures the dependency structure based on the *rankings* or *percentiles* of the data, rather than their exact values.
+
+2.  **Separation of Marginals and Dependency:**
+    *   The beauty of copulas lies in this decomposition. Traditional joint distributions implicitly blend the marginal behaviour with the dependence structure. With copulas, we can:
+        *   **Specify marginals independently:** We can model each variable's distribution ($F_X(x)$, $F_Y(y)$, etc.) using appropriate statistical distributions (e.g., a Gamma for losses, a Normal for returns), without worrying about how they interact.
+        *   **Model dependence separately:** The copula function then explicitly defines how these marginals are linked. This "deconstruction" allows actuaries to adjust either the marginal distributions or the dependence structure without affecting the other, providing immense flexibility in risk modelling.
+
+3.  **Sklar's Theorem – The Mathematical Foundation:**
+    *   This fundamental theorem, demonstrated by Sklar in 1959, rigorously proves the existence of such a decomposition:
+        *   **Theorem:** If $F$ is a joint CDF with marginal CDFs $F_1, ..., F_d$, then there exists a copula $C$ such that for all $x_1, ..., x_d$ in $\mathbb{R}$: $F(x_1, ..., x_d) = C(F_1(x_1), ..., F_d(x_d))$.
+        *   **Uniqueness:** For variables with continuous distributions, this copula $C$ is unique.
+        *   **Converse:** The converse also holds: if $C$ is a copula and $F_1, ..., F_d$ are univariate CDFs, then the function $F$ defined as $C(F_1(x_1), ..., F_d(x_d))$ is a valid joint CDF with the specified marginals.
+
+4.  **Properties of Copulas:**
+    *   To ensure they correctly capture properties expected of a joint distribution, copulas must satisfy three technical properties:
+        1.  **Monotonicity:** A copula must be an increasing function of each of its inputs.
+        2.  **Boundary Conditions:** If all but one marginal CDF input is equal to 1, the copula's output is equal to the value of the remaining marginal CDF. For example, $C(1, ..., u_i, ..., 1) = u_i$.
+        3.  **Range:** A copula function must always return a valid probability, meaning its output value must be within the range $$.
+
+---
+
+**Learning Objective 2: Explain the meaning of the terms dependence or concordance, upper and lower tail dependence; and state in general terms how tail dependence can be used to help select a copula suitable for modelling particular types of risk.**
+
+Understanding dependence is paramount in risk modelling, especially when extreme events are concerned. Copulas offer nuanced measures beyond simple correlation.
+
+1.  **Dependence, Association, and Concordance [1.3.2, 76, 81, 133, 134, 458, 493, 615]:**
+    *   **Association/Dependence:** Variables are associated if there is *any* form of statistical relationship between them, whether causal or not.
+    *   **Concordance:** Two random variables are concordant if small values of one are likely to be associated with small values of the other, and vice versa. Conversely, they are discordant if small values of one are associated with large values of the other.
+    *   **Measures of Association:**
+        *   **Pearson's Rho ($\rho$):** This measures *linear* correlation, taking values between -1 and +1.
+            *   $\rho = +1$: Perfect positive linear relationship.
+            *   $\rho = -1$: Perfect negative linear relationship.
+            *   $\rho = 0$: No *linear* relationship (uncorrelated). This does not necessarily imply independence; non-linear relationships could still exist.
+        *   **Rank Correlation (Spearman's Rho, Kendall's Tau):** These measures assess *monotonic* association and are more robust to non-linear transformations. Kendall's Tau is particularly relevant for fitting Archimedean copulas, as it can often be expressed as a function of the copula's parameters.
+
+2.  **Upper and Lower Tail Dependence [1.3.2, 76, 90, 92, 124, 142, 458, 461, 493, 615]:**
+    *   These concepts measure the strength of dependence between random variables specifically in the *extreme tails* of their joint distribution, i.e., when both variables take on very small (lower tail) or very large (upper tail) values. This is crucial for risks like large losses that tend to occur together.
+    *   **Coefficient of Lower Tail Dependence ($\lambda_L$):** Measures dependence when variables are simultaneously small [1.3.2, 90, 91, 124, 142, 330, 461, 465, 494]. It is defined as:
+        $\lambda_L = \lim_{u \to 0^+} P(X \le F_X^{-1}(u) | Y \le F_Y^{-1}(u))$.
+        In terms of the copula function: $\lambda_L = \lim_{u \to 0^+} \frac{C(u,u)}{u}$.
+        It ranges from 0 (no dependence) to 1 (full dependence).
+    *   **Coefficient of Upper Tail Dependence ($\lambda_U$):** Measures dependence when variables are simultaneously large [1.3.2, 92, 124, 143, 461, 467, 494]. It is defined as:
+        $\lambda_U = \lim_{u \to 1^-} P(X > F_X^{-1}(u) | Y > F_Y^{-1}(u))$.
+        In terms of the copula function: $\lambda_U = \lim_{u \to 1^-} \frac{1 - 2u + C(u,u)}{1-u}$.
+        Alternatively, using the *survival copula* $\bar{C}(u,v) = P(X>x, Y>y)$: $\lambda_U = \lim_{u \to 0^+} \frac{\bar{C}(u,u)}{u}$. (Note: The survival copula is related to the original copula by $\bar{C}(u,v) = u + v - 1 + C(1-u, 1-v)$.)
+
+3.  **Using Tail Dependence for Copula Selection [1.3.2, 76, 124, 144, 356, 458, 479, 492, 500]:**
+    *   The presence and degree of upper or lower tail dependence in empirical data are crucial indicators for selecting an appropriate copula model.
+    *   For instance, if large general insurance claims stemming from a common underlying cause are being modelled, where severe claims are likely to occur together, a copula with strong upper tail dependence would be suitable.
+    *   Conversely, if modelling scenarios where poor returns on investments are highly correlated (e.g., during a market crash), a copula with strong lower tail dependence would be preferred.
+    *   The table below summarizes the tail dependence characteristics for key copulas:
+
+| Copula Name        | $\lambda_L$                                     | $\lambda_U$                                     |
+| :----------------- | :---------------------------------------------- | :---------------------------------------------- |
+| Independence       | 0                                               | 0                                               |
+| Co-monotonic       | 1                                               | 1                                               |
+| Counter-monotonic  | 0                                               | 0                                               |
+| Gumbel             | 0                                               | $2 - 2^{1/\alpha}$ (for $\alpha \ge 1$)         |
+| Clayton            | $2^{-1/\alpha}$ (for $\alpha > 0$); 0 (for $\alpha \le 0$) | 0                                               |
+| Frank              | 0                                               | 0                                               |
+| Gaussian           | 0 (if $\rho < 1$); 1 (if $\rho = 1$)            | 0 (if $\rho < 1$); 1 (if $\rho = 1$)            |
+| Student's t        | >0 (if $\gamma < \infty$); 0 (if $\gamma = \infty, \rho \ne 1$) | >0 (if $\gamma < \infty$); 0 (if $\gamma = \infty, \rho \ne 1$) |
+
+    *   For instance, if data exhibits high upper tail dependence but no lower tail dependence, the Gumbel copula is appropriate. If it shows high lower tail dependence but no upper tail dependence, the Clayton copula is suitable. If there is no tail dependence, the Frank or Gaussian copulas could be used. If both upper and lower tail dependence are present, the Student's t copula is a strong candidate.
+
+---
+
+**Learning Objective 3: Describe the form and characteristics of the Gaussian copula and the Archimedean family of copulas.**
+
+Copulas are broadly classified into fundamental, explicit (including Archimedean), and implicit types.
+
+1.  **Fundamental Copulas:**
+    *   These represent the three basic dependency extremes: independence, perfect positive interdependence, and perfect negative interdependence. They are specific cases of Fréchet-Höffding copulas and form the upper and lower bounds for all copulas.
+    *   **Independence (Product) Copula:**
+        *   Form: $C(u,v) = uv$.
+        *   Characteristics: Captures independence between variables. It has zero dependence in both tails ($\lambda_L = 0, \lambda_U = 0$).
+    *   **Co-monotonic (Minimum) Copula:**
+        *   Form: $C(u,v) = \min(u,v)$.
+        *   Characteristics: Describes perfect positive interdependence. Both upper and lower tail dependence coefficients are 1 ($\lambda_L = 1, \lambda_U = 1$).
+    *   **Counter-monotonic (Maximum) Copula:**
+        *   Form: $C(u,v) = \max(u+v-1, 0)$.
+        *   Characteristics: Captures perfect negative interdependence. It has zero dependence in both tails ($\lambda_L = 0, \lambda_U = 0$).
+        *   **Important Limitation:** This copula *cannot* be extended to the multivariate case (three or more variables), as it's impossible for every pair to have a direct inverse relationship.
+    *   **Graphical Representation:** Scatterplots vividly illustrate these dependencies:
+        *   Product copula: Points are scattered randomly within the square.
+        *   Co-monotonic copula: Points lie along the diagonal $u=v$.
+        *   Counter-monotonic copula: Points lie along the diagonal $u=1-v$.
+        *   3D representations and contour plots also provide visual insights into the copula's surface.
+
+2.  **Archimedean Family of Copulas [1.3.3, 76, 114, 137, 348, 472, 497]:**
+    *   This is a significant subclass of explicit copulas, meaning they have simple closed-form expressions. They are defined by a **generator function**, $\psi(x)$, which simplifies the process of creating valid copulas.
+    *   **General Form (bivariate):** $C(u,v) = \psi^{-1}(\psi(u) + \psi(v))$. This process involves transforming probabilities, summing them, and then transforming back.
+    *   **Generator Function Properties:** For $\psi(x)$ to be a valid generator for a copula, it must be:
+        1.  Continuous and strictly decreasing on $$.
+        2.  Convex.
+        3.  $\psi(1) = 0$.
+    *   **Examples:** The Gumbel, Clayton, Frank, and even the Independence copulas are all Archimedean. The parameter $\alpha$ in these copulas allows for adjusting the strength of dependence.
+
+    *   **Gumbel Copula [1.3.3, 76, 109, 138, 341, 471, 498]:**
+        *   Form: $C(u,v) = \exp \left( -[(\ln u)^\alpha + (\ln v)^\alpha]^{1/\alpha} \right)$ for $\alpha \ge 1$. (Also known as Gumbel-Hougaard copula).
+        *   Generator Function: $\psi(t) = -(\ln t)^\alpha$.
+        *   Characteristics: Exhibits **upper tail dependence** but **no lower tail dependence**. As $\alpha$ increases, the degree of upper tail dependence increases. Suitable for modelling risks where large values tend to occur together.
+
+    *   **Clayton Copula [1.3.3, 76, 111, 138, 343, 472, 498]:**
+        *   Form: $C(u,v) = (u^{-\alpha} + v^{-\alpha} - 1)^{-1/\alpha}$ for $\alpha \ge -1, \alpha \ne 0$. For $\alpha > 0$, it simplifies nicely.
+        *   Generator Function: $\psi(t) = \frac{1}{\alpha}(t^{-\alpha} - 1)$.
+        *   Characteristics: Exhibits **lower tail dependence** but **no upper tail dependence**. Increasing $\alpha$ increases the lower tail dependence. Useful when extreme low or negative events are thought to happen together (e.g., market crashes).
+
+    *   **Frank Copula [1.3.3, 76, 113, 139, 346, 472, 498]:**
+        *   Form: $C(u,v) = -\frac{1}{\alpha} \ln\left(1 + \frac{(e^{-\alpha u}-1)(e^{-\alpha v}-1)}{e^{-\alpha}-1}\right)$ for $\alpha \ne 0$.
+        *   Generator Function: $\psi(t) = -\ln\left(\frac{e^{-\alpha t}-1}{e^{-\alpha}-1}\right)$.
+        *   Characteristics: Exhibits **no upper or lower tail dependence**. Useful when variables are uncorrelated in their tails, like equity and bond returns.
+
+3.  **Gaussian Copula [1.3.3, 76, 120, 140, 352, 476, 499]:**
+    *   This is an example of an **implicit copula**, meaning it's based on well-known multivariate distributions but doesn't have a simple closed-form expression from a generator function.
+    *   Form (bivariate): $C(u,v) = \Phi_\rho^{-1}(\Phi^{-1}(u), \Phi^{-1}(v))$.
+        *   Here, $\Phi$ is the CDF of the standard normal distribution, and $\Phi_\rho$ is the CDF of a bivariate normal distribution with correlation $\rho$.
+    *   Characteristics:
+        *   When applied to normal marginal distributions, it results in a bivariate normal distribution with correlation $\rho$.
+        *   Exhibits **zero dependence in both tails** when $\rho < 1$, but full dependence when $\rho = 1$.
+        *   Special cases: The independence ($\rho=0$), co-monotonic ($\rho=+1$), and counter-monotonic ($\rho=-1$) copulas are all special cases of the Gaussian copula.
+
+4.  **Student's t Copula [1.3.3, 123, 141, 354, 478, 499]:**
+    *   Another implicit copula, based on the multivariate Student's t distribution.
+    *   Form (bivariate): $C(u,v) = t_{\gamma,\rho}^{-1}(t_\gamma^{-1}(u), t_\gamma^{-1}(v))$.
+        *   Here, $t_\gamma$ is the CDF of a Student's t distribution with $\gamma$ degrees of freedom, and $t_{\gamma,\rho}$ is the CDF of a bivariate Student's t distribution with $\gamma$ degrees of freedom and correlation $\rho$.
+    *   Characteristics:
+        *   Offers **more flexibility** than the Gaussian copula due to the extra parameter, $\gamma$ (degrees of freedom).
+        *   Exhibits **equal positive dependence in both tails** if $\gamma$ is finite. This tail dependence increases as $\gamma$ decreases.
+        *   The Gaussian copula is the **limiting case** of the Student's t copula as the number of degrees of freedom ($\gamma$) tends to infinity. Suitable when both extreme positive and negative events are correlated.
+
+---
+
+**Choosing and Fitting a Suitable Copula Function:**
+
+When constructing a mathematical model for real-world phenomena, such as financial or insurance risks, the selection of an appropriate copula is crucial. The process generally involves:
+1.  **Marginal Distribution Selection:** Parameterising the marginal distributions for each relevant variable.
+2.  **Dependence Structure Examination:** Describing and quantifying the form and extent of associations between the variables. This is where insights from tail dependence measures play a vital role. For instance, if you observe strong positive correlation in the extreme upper tail of your data (e.g., very large losses occurring together), a Gumbel copula might be a strong candidate.
+3.  **Parameter Estimation:** Once a copula type is chosen, its parameters need to be estimated. For Archimedean copulas, a "method of moments" approach using Kendall's tau is common. The observed Kendall's tau from the data is equated to its theoretical formula for the chosen copula, and the copula's parameter (e.g., $\alpha$) is solved for. Maximum Likelihood Estimation (MLE) is another widely used method for fitting copula parameters.
+
+---
+
+By thoroughly grasping these concepts, you'll be well-prepared to tackle CS2 exam questions on copulas, not just calculating probabilities, but also critically evaluating their suitability for various risk modelling applications. Keep practising with diverse scenarios!
 
 ## `R` Practice {-#practice-copulas}

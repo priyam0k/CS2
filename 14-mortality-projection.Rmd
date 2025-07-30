@@ -1,1 +1,90 @@
 # Mortality projection {#mortality-projection}
+
+## 14. Mortality Projection
+
+The projection of future mortality rates is paramount for numerous actuarial applications, notably in life insurance, pensions, and government planning. Inaccurate mortality forecasts can lead to significant financial repercussions. For instance, if a life insurance company underestimates future mortality, it may set premiums too low, potentially leading to financial distress. Conversely, overestimating mortality for annuities or pensions can result in uncompetitive product pricing and loss of business. Governments also rely on accurate mortality forecasts for planning state pensions and healthcare provision, especially in ageing populations.
+
+### 14.1 Approaches to Forecasting Future Mortality Rates
+
+There are three primary approaches to forecasting future mortality rates:
+1.  **Expectation-based methods**.
+2.  **Extrapolation-based methods**.
+3.  **Explanation-based methods**.
+
+#### 14.1.1 Expectation-Based Methods
+
+These methods are rooted in expert opinion and the fitting of deterministic functions to recent mortality trends, often setting 'targets' for future mortality.
+
+*   **Reduction Factors:** A common approach involves the use of reduction factors, denoted as $R_{x,t}$. This factor quantifies the proportion by which the mortality rate at age $x$ ($q_x$) is expected to decrease by a future year $t$.
+    The formula for reduction factors is typically:
+    $R_{x,t} = \alpha_x + (1 - \alpha_x)(1 - f_{n,x})^{t/n}$.
+    *   **Interpretation of Parameters:**
+        *   $\alpha_x$: Represents the ultimate reduction factor or the lowest level to which the mortality rate at age $x$ can reduce in the distant future, expressed as a proportion of the current mortality rate.
+        *   $f_{n,x}$: Represents the proportion of the total possible decline (i.e., $(1 - \alpha_x)$) that is expected to occur in $n$ years.
+    *   **Behaviour of $R_{x,t}$:**
+        *   When $t = 0$: $R_{x,0} = \alpha_x + (1 - \alpha_x)(1 - f_{n,x})^0 = \alpha_x + (1 - \alpha_x) = 1$. This correctly predicts the mortality rate for the current year to be the same as the base mortality rate.
+        *   When $t = n$: $R_{x,n} = \alpha_x + (1 - \alpha_x)(1 - f_{n,x}) = \alpha_x + (1 - \alpha_x) - (1 - \alpha_x)f_{n,x} = 1 - (1 - \alpha_x)f_{n,x}$. This indicates that a proportion $f_{n,x}$ of the maximum possible reduction $(1 - \alpha_x)$ is achieved by time $n$.
+        *   When $t \rightarrow \infty$: $R_{x,t} \rightarrow \alpha_x$, because $0 < f_{n,x} < 1$. This means the reduction factor for age $x$ will never fall below $\alpha_x$, regardless of how far into the future the projection extends.
+    *   **Determination of Parameters:** $\alpha_x$ and $f_{n,x}$ are usually set based on expert opinion, possibly supported by analysis of recent observed mortality trends.
+*   **Advantages:**
+    *   Easy to understand and implement.
+*   **Disadvantages:**
+    *   Often underestimates future mortality improvements, particularly for long-term forecasts.
+    *   Relies heavily on expert judgment, which can be subjective.
+
+#### 14.1.2 Extrapolation-Based Methods (Stochastic Models)
+
+These approaches involve fitting statistical models to past mortality data and extrapolating observed trends into the future. They have largely superseded deterministic methods for long-term forecasting. When forecasting mortality, the central rate of mortality, $m_{x,t}$, at age $x$ at time $t$ is typically the quantity of interest.
+Mortality projection models often consider three factors:
+1.  **Age ($x$):** The age of the individual.
+2.  **Period ($t$):** The calendar year or time period.
+3.  **Cohort ($c$):** The birth cohort, where $c = t - x$.
+
+*   **Lee-Carter Model:** This is a widely used stochastic mortality model. It decomposes the logarithm of age-specific mortality rates into three components:
+    $\ln(m_{x,t}) = a_x + b_x k_t + \epsilon_{x,t}$.
+    *   **Interpretation of Components:**
+        *   $a_x$: Represents the general age pattern of mortality.
+        *   $b_x$: Represents the sensitivity of mortality at age $x$ to changes in the time-dependent index $k_t$.
+        *   $k_t$: A time-dependent index that captures the overall trend of mortality changes over time. It is typically modelled as a random walk with a drift.
+        *   $\epsilon_{x,t}$: The error term.
+    *   **Constraints for Unique Specification:** To ensure a unique solution for $b_x$ and $k_t$, constraints are usually imposed, such as $\sum b_x = 1$ and $\sum k_t = 0$.
+    *   **Forecasting:** The future values of $k_t$ are typically forecast using time series models, which then drive the projections of $m_{x,t}$.
+    *   **Advantages:** Straightforward for forecasting, allows for uncertainty assessment, and is adaptable to various datasets.
+    *   **Disadvantages:** May not fully capture complex mortality features like cohort effects (though extensions exist), and can exhibit roughness between adjacent ages if $b_x$ components incorporate data noise. The model also does not inherently provide explanatory elements. R's `survival` package includes functionalities for fitting Cox models, which are related to proportional hazards. The `MortalitySmooth` package in R can be used for p-spline forecasting.
+*   **Age-Period-Cohort Models:** These models extend the two-factor (age-period) models to explicitly include a cohort effect, often in addition to age and period effects. The cohort effect ($h_{t-x}$) is defined by the relationship between period ($t$) and age ($x$).
+    *   **Data Requirements:** These models require a sufficiently long period of past data to accurately assess how mortality has been changing over calendar time and to capture cohort-specific trends.
+*   **P-spline Regression Models:** P-splines (penalised splines) are used for both graduation and forecasting mortality. They balance adherence to the data with a desired level of smoothness by applying a penalty for roughness.
+    *   **Advantages:** A natural extension of graduation and smoothing methods, relatively straightforward to implement in R.
+    *   **Disadvantages:** When applied to ages separately, mortality forecasts can be rough between adjacent ages as they are independent. This can be mitigated by fitting in two dimensions (age and time) simultaneously. Spline function parameters lack intuitive interpretation.
+
+#### 14.1.3 Explanation-Based Methods
+
+This approach involves identifying and projecting the different causes or pathways contributing to mortality rates. The idea is that if causal factors are understood (e.g., breakthroughs in cancer treatment), this knowledge can be explicitly incorporated into mortality projections.
+
+*   **Cause-Deleted Life Table Approach:** This method examines the impact on mortality if certain causes of death were eliminated or altered. It involves recalculating life table entries based on changes to specific cause-specific mortality rates.
+*   **Multiple State Markov Jump Process Models:** More sophisticated explanation-based models can use multi-state Markov processes, where states might include 'Healthy', 'Disease state 1', 'Disease state 2', and 'Dead'. Transitions between these states are governed by specific transition intensities.
+*   **Limitations/Disadvantages:**
+    *   Cause of death reporting can be unreliable, especially at older ages.
+    *   Causes of death often act synergistically, making it unrealistic to posit a single cause of death.
+    *   Elimination of one cause might "unmask" another, previously unidentified, cause of death.
+    *   Time series data for specific causes of death are often short.
+
+### 14.2 Sources of Error in Mortality Forecasts
+
+Mortality forecasts inherently contain errors. Understanding these errors is crucial for focusing efforts on areas most likely to cause deviations from reality. The main sources of error include:
+*   **Model mis-specification:** Using an inappropriate model or incorrect parameterization for the underlying mortality patterns.
+*   **Parameter uncertainty:** Errors arising from the estimation of model parameters due to finite data.
+*   **Incorrect judgment or prior knowledge:** Reliance on flawed expert opinion or historical data that may not accurately reflect future trends.
+*   **Random variation:** Inherent randomness in the mortality process, including short-term fluctuations due to seasonal effects or epidemics.
+*   **Data errors:** Inaccuracies in data collection, such as age misstatement.
+
+### 14.3 Computational Aspects (R)
+
+The CS2 syllabus includes using appropriate computer packages, such as R, to apply mortality forecasting models.
+*   **Lee-Carter Model Estimation:** R can be used to estimate and forecast Lee-Carter models. The `survival` package is specifically mentioned for survival function estimation, which underlies mortality analysis.
+*   **P-splines:** The `MortalitySmooth` package in R supports p-spline forecasting for mortality.
+*   **General R Functions:** R functions can be constructed to calculate parameters for various models (e.g., Makeham's law, Gompertz's law) and to perform calculations for survival probabilities, hazard rates, and expected lifetimes. This includes plotting functions and applying models to datasets.
+
+---
+
+This comprehensive overview of the Mortality Projection chapter should provide you with a solid foundation for your studies and exam preparation. Remember, consistent review and practice are key to mastering these concepts!

@@ -1,1 +1,112 @@
 # Lifetime distributions {#lifetime-distributions}
+
+### **Chapter 6: Survival Models – Lifetime Distributions**
+
+This chapter introduces the fundamental concepts of modelling human lifetimes or failure times as random variables, forming the bedrock of actuarial work related to mortality and other decrements.
+
+#### **1. Introduction to Survival Models**
+At its core, a survival model treats the future lifetime of an individual (or the "failure time" of an item) as a continuous random variable. While typically applied to human mortality, the theory extends broadly to other contexts, such as:
+*   Analysing the duration of insurance policies (where "mortality" is replaced by "withdrawal").
+*   Modelling the time individuals remain in a healthy state (where "mortality" is replaced by "sickness").
+*   Studying mechanical breakdown times.
+
+#### **2. Model of Lifetime or Failure Time**
+The central concept is that the future lifetime of a person or entity is inherently uncertain.
+*   **Future Lifetime Random Variable ($T$)**: The notation $T$ often represents the future lifetime of a new-born.
+*   **Future Lifetime After Age $x$ ($T_x$)**: To account for lives at ages greater than zero, $T_x$ is defined as the random future lifetime of a life who survives to exact age $x$. $T_x$ is assumed to be a continuous random variable taking values in $[0, \omega - x]$, where $\omega$ is the limiting age. Notably, $T_0 = T$.
+
+#### **3. Key Functions and Relationships**
+For a life aged $x$, several interrelated functions define its future lifetime distribution:
+
+*   **Distribution Function ($F_x(t)$)**:
+    *   Defined as $F_x(t) = P[T_x \le t]$.
+    *   Represents the probability that a life aged $x$ dies within the next $t$ years.
+    *   Actuarial symbol: $q_x(t) = F_x(t)$.
+
+*   **Survival Function ($S_x(t)$)**:
+    *   Defined as $S_x(t) = P[T_x > t]$.
+    *   Represents the probability that a life aged $x$ survives for at least $t$ years.
+    *   Relationship with distribution function: $S_x(t) = 1 - F_x(t)$.
+    *   Actuarial symbol: $p_x(t) = S_x(t)$.
+    *   **Consistency Condition**: For any $s, t \ge 0$ and $x \ge 0$, the survival functions satisfy $p_x(s+t) = p_x(s) \cdot p_{x+s}(t)$. This implies that the probability of surviving for $s+t$ years from age $x$ is the probability of surviving $s$ years from $x$ multiplied by the probability of surviving an additional $t$ years from age $x+s$.
+
+*   **Probability Density Function ($f_x(t)$)**:
+    *   Defined as $f_x(t) = \frac{d}{dt} F_x(t)$.
+    *   Represents the instantaneous rate of death at exact age $x+t$, given survival to $x+t$.
+    *   Relationship: $f_x(t) = p_x(t) \cdot \mu_{x+t}$ for $0 \le t < \omega - x$.
+
+*   **Force of Mortality (Hazard Rate) ($\mu_{x+t}$ or $h(t)$)**:
+    *   The instantaneous rate of mortality at exact age $x+t$. In statistics, it is widely known as the hazard rate.
+    *   Definition: $\mu_{x+t} = \lim_{h \to 0} \frac{P[T_x \le t+h | T_x > t]}{h}$.
+    *   Relationship with $f_x(t)$ and $S_x(t)$: $\mu_{x+t} = \frac{f_x(t)}{S_x(t)}$. It can also be expressed as $\mu_{x+t} = -\frac{S_x'(t)}{S_x(t)}$.
+    *   Approximate relationship for small $h$: $h \mu_x \approx h q_x$.
+    *   **Integral Formulae for $p_x(t)$ and $q_x(t)$**:
+        *   $p_x(t) = \exp \left( -\int_0^t \mu_{x+s} ds \right)$. This is a very important result, also found on page 32 of the Tables.
+        *   $q_x(t) = \int_0^t p_x(s) \mu_{x+s} ds$.
+
+#### **4. Life Table Functions**
+Life tables are computational tools that summarise mortality experience, typically used to calculate probabilities of mortality and survival for a hypothetical group of lives.
+*   **$l_x$**: The expected number of lives surviving to exact age $x$ from a starting group (e.g., 100,000 at age 0).
+*   **$d_x$**: The expected number of deaths between exact age $x$ and $x+1$. $d_x = l_x - l_{x+1}$.
+*   **$q_x$ (Initial Rate of Mortality)**: The probability that a life aged exactly $x$ dies before reaching exact age $x+1$. $q_x = d_x / l_x$.
+*   **$p_x$**: The probability that a life aged exactly $x$ survives to exact age $x+1$. $p_x = l_{x+1} / l_x = 1 - q_x$.
+*   **$m_x$ (Central Rate of Mortality)**: The probability of dying between exact ages $x$ and $x+1$ per person-year lived between these ages. It is defined as $m_x = \frac{q_x}{\int_0^1 p_x(t) dt}$. $m_x$ can be expressed as a weighted average of the force of mortality $\mu_{x+t}$ over the year of age $x$ to $x+1$, with weights being the survival probabilities $p_x(t)$.
+
+#### **5. Curtate Future Lifetime ($K_x$)**
+*   **Definition**: The curtate future lifetime $K_x$ of a life aged exactly $x$ is the whole number of *complete* years lived after age $x$. It is the integer part of $T_x$, denoted as $K_x = \lfloor T_x \rfloor$.
+*   **Nature**: $K_x$ is a discrete random variable, taking integer values $0, 1, 2, \dots, \omega - x - 1$.
+*   **Probability Function**: $P[K_x = k] = p_x(k) - p_x(k+1) = {}_{k|}q_x = p_x(k) \cdot q_{x+k}$.
+
+#### **6. Expectations of Life**
+These measures quantify the average future time an individual is expected to live.
+
+*   **Complete Expectation of Life ($\mathring{e}_x$)**:
+    *   **Definition**: The expected value of the complete future lifetime $T_x$.
+    *   **Formula**: $\mathring{e}_x = E[T_x] = \int_0^\infty p_x(t) dt$. This integral formula is derived by integrating by parts from the definition $E[T_x] = \int_0^\infty t f_x(t) dt$.
+
+*   **Curtate Expectation of Life ($e_x$)**:
+    *   **Definition**: The expected value of the curtate future lifetime $K_x$.
+    *   **Formula**: $e_x = E[K_x] = \sum_{k=1}^\infty p_x(k)$. This can also be written as $e_x = p_x(1+e_{x+1})$.
+
+*   **Approximate Relation Between $\mathring{e}_x$ and $e_x$**:
+    *   $\mathring{e}_x \approx e_x + 0.5$.
+    *   This approximation assumes that, on average, deaths occur halfway between birthdays, meaning $E[T_x - K_x] \approx 0.5$. The approximation becomes exact if deaths occur uniformly between birthdays.
+
+#### **7. Variance of Future Lifetimes**
+*   **Variance of Complete Future Lifetime ($\text{var}[T_x]$)**:
+    *   $\text{var}[T_x] = \int_0^\infty t^2 p_x(t) \mu_{x+t} dt - (\mathring{e}_x)^2$.
+*   **Variance of Curtate Future Lifetime ($\text{var}[K_x]$)**:
+    *   $\text{var}[K_x] = \sum_{k=0}^{\omega-x-1} k^2 P[K_x=k] - (e_x)^2$.
+
+#### **8. Simple Parametric Survival Models**
+These models define the future lifetime distribution using a small number of parameters, making them suitable for fitting to data.
+
+*   **Exponential Model**:
+    *   Assumes a **constant force of mortality**: $\mu_x = \mu$ for all $x$.
+    *   Survival function: $p_x(t) = e^{-\mu t}$. This makes the future lifetime $T_x$ follow an exponential distribution with parameter $\mu$.
+    *   Often used for modelling risks like "death from unnatural causes, e.g., accident or murder" where the risk doesn't depend on age.
+    *   **R Implementation**: `dexp()`, `pexp()`, `qexp()`, `rexp()` functions are available.
+
+*   **Weibull Model**:
+    *   Characterised by a hazard rate (force of mortality) that can be **monotonically increasing or decreasing** depending on its parameters.
+    *   Survival function: $S_x(t) = \exp(-\alpha t^\beta)$ (where $\alpha, \beta$ are parameters).
+    *   Force of mortality: $\mu_{x+t} = \alpha\beta t^{\beta-1}$.
+    *   If $\beta=1$, it reduces to the exponential model. If $\beta < 1$, the hazard is decreasing, suitable for risks like recovering from major surgery; if $\beta > 1$, the hazard is increasing, like for items that wear out over time.
+    *   **R Implementation**: `dweibull()`, `pweibull()`, `qweibull()`, `rweibull()` are used, but note R's parameterization might differ (using shape and scale parameters).
+
+*   **Gompertz Law of Mortality**:
+    *   Assumes an **exponentially increasing force of mortality** with age: $\mu_x = B c^x$.
+    *   This law is reasonable for modelling mortality in middle and older ages.
+    *   Parameters $B$ and $c$ can be determined from mortality rates at two different ages.
+    *   Survival probabilities can be found using specific integral formulae.
+    *   **R Implementation**: The `flexsurv` package provides `dgompertz()`, `pgompertz()`, `qgompertz()`, `rgompertz()`.
+
+*   **Makeham's Law of Mortality**:
+    *   An extension of Gompertz' Law, adding a constant term: $\mu_x = A + B c^x$.
+    *   The constant term $A$ is often interpreted as an allowance for **accidental deaths** which do not depend on age.
+    *   Parameters $A, B, c$ can be determined from mortality rates at three different ages.
+    *   Gompertz' law is a special case of Makeham's law where $A=0$.
+
+***
+
+This comprehensive overview of Lifetime Distributions from Chapter 6 should serve as a robust study note for your CS2 examination preparation. Focus on understanding the interrelationships between the functions and the interpretations of the parametric models. Should you need further detail on any specific derivation or application, let me know!

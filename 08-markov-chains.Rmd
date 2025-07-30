@@ -11,21 +11,120 @@
 
 ## Theory {-#theory-markov-chains}
 
-**TO ADD THEORY ABOUT MARKOV CHAINS HERE**
+### Chapter: Markov Chains – A Comprehensive Overview
 
-## Features of a Markov chain model
+Markov chains are a cornerstone of stochastic processes in actuarial science, particularly vital for modelling systems that evolve over time in a probabilistic manner. They provide a powerful framework for understanding and predicting future states based solely on the present.
 
-## Chapman-Kolmogorov equations
+---
 
-## Stationary distribution for a Markov chain
+#### 1. State the essential features of a Markov chain model.
 
-## Frequency based experience rating
+A Markov chain is a specific type of **stochastic process** characterized by three essential features: a discrete time set, a discrete state space, and the fundamental Markov property.
 
-## Time-inhomogeneous Markov chain model
+*   **Stochastic Process Foundation**: At its core, a stochastic process is a family or set of ordered random variables, typically indexed by time. $X_t$ represents the value of the process at time $t$.
+*   **Discrete Time Set**: For a Markov chain, observations or changes occur only at specific, separated points in time. This means our time index $t$ (or $n$) belongs to a discrete set, such as $\{0, 1, 2, \dots\}$.
+*   **Discrete State Space**: The set of all possible values that the random variable $X_t$ can take is finite or countably infinite. For instance, if we're modelling a No Claims Discount (NCD) system, the states might be {0% discount, 25% discount, 50% discount}, which are discrete categories.
+*   **The Markov Property**: This is the defining characteristic. It states that the future development of the process, or the probability distribution of future values, depends *only* on the current state and not on the entire history of how that state was reached.
+    *   Mathematically, for a discrete state space, this means: $P[X_n = j | X_m = i_m, X_{m-1} = i_{m-1}, \dots, X_0 = i_0] = P[X_n = j | X_m = i_m]$ for all $n > m$ and all states.
+    *   The interpretation is profound: given the present, the past is irrelevant for predicting the future. This simplifies modelling considerably.
+*   **Transition Probabilities and Matrix**: The "key objects" describing a Markov chain are its **transition probabilities**. For a time-homogeneous Markov chain (which we'll discuss next), $p_{ij}$ denotes the probability of moving from state $i$ to state $j$ in one step. These probabilities are organised into a **transition matrix, P**, where $P_{ij} = p_{ij}$. Each row of the transition matrix must sum to 1, representing the certainty of moving to *some* state.
+*   **Transition Graph**: A visual representation of a Markov chain, where states are nodes and arrows indicate possible transitions ($p_{ij} > 0$), often with the probability values marked on the arrows.
 
-## Markov chains in modelling
+---
 
-### Simulating a Markov chain
+#### 2. State the Chapman-Kolmogorov equations that represent a Markov chain.
+
+The Chapman-Kolmogorov equations are fundamental to understanding how transition probabilities evolve over multiple steps in a Markov chain. They essentially allow us to calculate multi-step transition probabilities by "chaining together" one-step (or shorter-step) transitions.
+
+*   **Formula (Time-Homogeneous Case)**: For a time-homogeneous Markov chain (where one-step transition probabilities are constant over time), the $n$-step transition probability $p_{ij}^{(n)}$ can be found using an intermediate state $k$ at time $l$ (where $m < l < n$):
+    $p_{ij}^{(n-m)} = \sum_{k \in S} p_{ik}^{(l-m)} p_{kj}^{(n-l)}$.
+    This means the probability of going from state $i$ to state $j$ in $(n-m)$ steps is the sum over all possible intermediate states $k$ of the probability of going from $i$ to $k$ in $(l-m)$ steps, multiplied by the probability of going from $k$ to $j$ in $(n-l)$ steps.
+*   **Matrix Form**: This is where the power of linear algebra shines. The Chapman-Kolmogorov equations simplify beautifully in matrix form:
+    $P^{(n)} = P^{(l)} P^{(n-l)}$ where $P^{(n)}$ is the $n$-step transition matrix. For time-homogeneous chains, the $l$-step transition probability matrix $P^{(l)}$ is simply the $l$-th power of the one-step transition matrix $P$: $P^{(l)} = P^l$. Thus, $P^{(n-m)} = P^{(l-m)} P^{(n-l)}$.
+*   **Proof Intuition**: The proof relies on the Markov property and the law of total probability. It partitions all possible paths from state $i$ at time $m$ to state $j$ at time $n$ by considering all possible intermediate states $k$ at an intermediate time $l$. The probability of traversing a specific path through $k$ is the product of the probabilities of its segments (due to the Markov property), and summing these products over all possible intermediate $k$ gives the total probability of reaching $j$ from $i$. While you're not expected to reproduce the formal proof in exams, understanding its logical foundation is key.
+*   **Importance**: These equations fully determine the distribution of a Markov chain once the one-step transition probabilities and the initial probability distribution are specified.
+
+---
+
+#### 3. Calculate the stationary distribution for a Markov chain in simple cases.
+
+The concept of a stationary distribution (also known as an invariant or equilibrium distribution) is crucial for understanding the long-term behaviour of Markov chains.
+
+*   **Definition**: A probability distribution $\pi = (\pi_1, \pi_2, \dots, \pi_N)$ is a stationary distribution for a Markov chain with transition matrix $P$ if, when the process is in this distribution, it remains in it after one step (and thus all subsequent steps). The conditions are:
+    1.  $\pi P = \pi$ (in matrix form, where $\pi$ is a row vector). This means $\pi_j = \sum_{i \in S} \pi_i p_{ij}$ for all states $j$.
+    2.  $\pi_j \ge 0$ for all $j \in S$ (probabilities must be non-negative).
+    3.  $\sum_{j \in S} \pi_j = 1$ (the probabilities must sum to one).
+*   **Existence and Uniqueness**:
+    *   **Existence**: A Markov chain with a **finite state space** is guaranteed to have *at least one* stationary probability distribution.
+    *   **Uniqueness**: For a unique stationary distribution to exist, the chain must also be **irreducible**.
+        *   **Irreducibility**: A Markov chain is irreducible if it's possible to reach *any* state $j$ from *any other* state $i$ (either directly or indirectly). This is often assessed by examining the transition graph for connectivity.
+    *   **Convergence**: For the process to *converge* to this unique stationary distribution in the long run, the chain must also be **aperiodic**.
+        *   **Periodicity**: A state $i$ is periodic with period $d > 1$ if a return to state $i$ is possible only in a number of steps that is a multiple of $d$. If all states in an irreducible Markov chain have period $d=1$, the chain is **aperiodic**. If a chain is irreducible, all its states share the same period.
+*   **Calculation Method**: In simple cases, calculating the stationary distribution involves setting up the system of linear equations from $\pi P = \pi$ and adding the normalisation condition $\sum \pi_j = 1$. Then, you solve this system of simultaneous equations.
+    *   **Using R**: The `steadyStates()` function in the `markovchain` package is very useful for directly calculating the stationary distribution. Alternatively, you can calculate a large power of the transition matrix (e.g., $P^{40}$ or $P^{240}$) using `mc ^ n` or `Pn(P, n)` in base R, and the rows of the resulting matrix will approximate the stationary distribution. This demonstrates the "settling down" behaviour of the chain.
+
+---
+
+#### 4. Describe a system of frequency based experience rating in terms of a Markov chain and describe other simple applications.
+
+Markov chains are incredibly versatile for modelling discrete-state, discrete-time systems in actuarial work.
+
+*   **No Claims Discount (NCD) Systems in Motor Insurance**: This is a classic and frequently examined application.
+    *   **Mechanism**: Motor insurers offer discounts on premiums based on a policyholder's claim record. A claim-free year typically moves the policyholder to a higher discount level (or retains the maximum discount), while a year with claims moves them to a lower level (or retains zero discount).
+    *   **Markov Chain Formulation**: Each discount level can be defined as a state in the Markov chain. The transitions between these states occur annually (discrete time) based on the claims experience (discrete states). The crucial assumption for the Markov property is that the future discount level depends *only* on the current discount level and claims status, not on the entire past history of claims.
+    *   **State Space Nuances**: Sometimes, the definition of states might need refinement to strictly satisfy the Markov property. For instance, if a policyholder's movement depends not just on their current discount but also on *how* they arrived there (e.g., claim history impacting future transition probabilities even if the discount level is the same), additional states might be needed. This might involve splitting a seemingly single discount level into multiple states (e.g., "30% discount with claims last year" vs. "30% discount without claims last year").
+*   **Other Simple Applications**:
+    *   **Actuarial Student Exam Progress**: Modelling a student's passing/failing an exam as a state, where the outcome of the next exam depends only on the previous one (pass/fail).
+    *   **Credit-worthiness Ratings**: Assessing the credit rating of company debt (e.g., states A, B, D for defaulted debt), where the next year's rating depends on the current year's rating.
+    *   **Cumulative Claims Amount**: While often modelled by continuous-time processes, the number of accidents or cumulative claims can be seen as a discrete-state, discrete-time Markov chain if observed at discrete intervals.
+    *   **Fund Performance/Investment Quartiles**: Tracking a fund's performance by classifying it into quartiles, where movement between quartiles (or staying) depends on the current quartile.
+    *   **Project Completion (e.g., Author's Book)**: Modelling the number of completed chapters of a book, where the progress in the next week depends on the current number of completed chapters.
+    *   **Company Staff Progression**: Modelling employee movement between salary levels or departments within a company.
+    *   **Internet Browsing**: Modelling a user's movement between websites based on their current site.
+    *   **Health Status over Time**: Recording an individual's health status (e.g., healthy, sick, dead) at discrete time points (e.g., end of each year).
+    *   **Random Walks**: Often used for modelling security prices or other economic variables, where the price at time $t$ is the previous price plus a random step. A simple random walk, where steps are +1 or -1, is a classic example of a Markov chain due to its independent increments.
+
+---
+
+#### 5. Describe a time-inhomogeneous Markov chain model and describe simple applications.
+
+While many theoretical examples focus on time-homogeneous chains for simplicity, real-world actuarial phenomena often exhibit time-inhomogeneity.
+
+*   **Definition**: A Markov chain is **time-inhomogeneous** if its transition probabilities depend not only on the length of the time interval but also on the *absolute* times when the transition starts ($s$) and ends ($t$).
+    *   In contrast, a **time-homogeneous** Markov chain has one-step transition probabilities ($p_{ij}$) that remain constant over time.
+*   **Chapman-Kolmogorov Equations (Time-Inhomogeneous Case)**: These still apply, but the notation explicitly includes the start and end times:
+    $p_{ij}(s, t) = \sum_{k \in S} p_{ik}(s, u) p_{kj}(u, t)$ for all $0 \le s \le u \le t$.
+*   **Kolmogorov Equations**: For continuous-time Markov jump processes (which can be time-inhomogeneous), the Kolmogorov forward and backward differential equations also become time-dependent, meaning the generator matrix $A(t)$ varies with time.
+*   **Applications**:
+    *   **Mortality and Sickness Models**: The probabilities of mortality, sickness, or recovery change significantly with a person's age. For an individual, being "healthy" at age 20 is very different from being "healthy" at age 80, in terms of future probabilities of sickness or death. Thus, modelling health status over a lifetime as a Markov chain would typically be time-inhomogeneous.
+    *   **NCD for Young Drivers**: A young driver's accident probabilities and thus NCD progression might change as they gain experience, even if the general NCD rules are fixed. Their transition probabilities would depend on their "age" or "years of experience".
+    *   **Duration Dependence**: This is a specific type of time-inhomogeneity where transition intensities depend on how long a life has been in the *current* state (duration of stay), not just their absolute age or time. This requires expanding the state space to capture this duration information to maintain the Markov property.
+
+---
+
+#### 6. Demonstrate how Markov chains can be used as a tool for modelling and how they can be simulated.
+
+Modelling with Markov chains involves a systematic process, from defining the states to estimating parameters and simulating their behaviour.
+
+*   **Modelling Approach**:
+    *   **Define State Space**: The first critical step is to clearly define the discrete states relevant to the problem. As discussed for NCD, this might require careful thought and sometimes expanding the intuitively obvious states to ensure the Markov property holds.
+    *   **Simplicity First**: Actuarial practice often advocates starting with simple models (like time-homogeneous Markov chains) and only moving to more complex ones if initial tests prove them inadequate.
+    *   **Estimate Transition Probabilities**: Once the state space is fixed, the model is "fitted" by estimating the transition probabilities ($p_{ij}$) from observed data. The maximum likelihood estimate of $p_{ij}$ is the number of observed transitions from state $i$ to state $j$ ($n_{ij}$) divided by the total number of transitions out of state $i$ ($n_i$). $\hat{p}_{ij} = \frac{n_{ij}}{n_i}$.
+    *   **Test Markov Assumption (Triplets Test)**: Before using a Markov chain, it's essential to check if the Markov property is a reasonable assumption for the data. The **triplets test** is a common method for this. It compares observed frequencies of state sequences of length three (triplets $i \to j \to k$) with what would be expected if the Markov property held. The test statistic is based on a chi-squared distribution.
+*   **Simulation**: Simulating Markov chains is straightforward due to the Markov property; the next state only depends on the current state, simplifying the process immensely.
+    *   **Conceptual Method**: For a finite state space, you can list the conditional distributions for each state (i.e., the rows of the transition matrix) and then sequentially draw samples to generate a path.
+    *   **R Implementation**: R is a powerful tool for Markov chain modelling and simulation.
+        *   **`markovchain` Package**: This package is explicitly mentioned and recommended in the Core Reading for creating and simulating Markov chains. You can create a `markovchain` object using `new("markovchain", transitionMatrix = P, states = c("State1", "State2"))`.
+        *   **Calculating n-step Probabilities**: Use `mc ^ n` (e.g., `mc ^ 4` for 4-step probabilities) on a `markovchain` object, or define a function like `Pn = function(P,n){...}` for base R matrix multiplication (`%*%`).
+        *   **Expected Distribution After n Steps**: Given an initial distribution `d`, calculate `d * mc ^ n` (using `*` for markovchain objects) or `d %*% Pn(P, n)` (using `%*%` for base R).
+        *   **Long-Term Behaviour/Stationary Distribution**: The `steadyStates(mc)` function directly computes the stationary distribution. As an alternative, taking a high power of the transition matrix (e.g., `mc ^ 40`) will show the convergence.
+        *   **Generating a Sample Path**: The `rmarkovchain()` function from the `markovchain` package is used for this, allowing you to specify the number of transitions and starting state (e.g., `rmarkovchain(n = 10, object = mc, t0 = "State1")`).
+        *   **Fitting a Markov Chain**: The `markovchainFit()` function can estimate transition probabilities from sample data (e.g., `fit1 = markovchainFit(past18)`). It provides the estimated transition matrix and log-likelihood.
+        *   **Time-Inhomogeneous Simulation**: While more complex, approximate methods involve dividing time into small intervals and simulating discrete steps, whereas exact methods simulate the "jump chain" (sequence of states) and then the "holding times" (time spent in each state) separately.
+
+---
+
+I trust these structured notes will serve you well in your CS2 studies. Keep practicing, and remember the fundamental concepts as you work through more complex problems!
 
 ## `R` Practice {-#practice-markov-chains}
 

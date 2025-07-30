@@ -13,23 +13,116 @@
 
 ## Theory {#theory-time-series}
 
-**TO ADD THEORY ABOUT TIME SERIES HERE**
+### Time Series: A Deep Dive for CS2 Actuarial Professionals
 
-## Concept and properties of time series
+Time series analysis is a cornerstone of risk modelling and survival analysis, enabling actuaries to understand and forecast phenomena that evolve over time. At its heart, a time series is a sequence of observations indexed in time order. Unlike independent observations, the temporal ordering of data in a time series is paramount, as the observations are intrinsically related to one another. This field of study models these sequences as realisations of stochastic processes, specifically those indexed in discrete time with a continuous state space. The primary goals of time series analysis include describing the data, constructing appropriate models, forecasting future values, and identifying when a process is out of control.
 
-## Concept of stationary random series
+Let's delve into the specific learning objectives:
 
-## Concept of a filter applied to a stationary random series
+#### **1. & 2. Explaining the Concept and General Properties of Stationary, I(0), and Integrated, I(1), Univariate Time Series, and the Concept of a Stationary Random Series.**
 
-## Notation for operators
+The concept of stationarity is fundamental to time series analysis, primarily because efficient model calibration can typically only be performed on stationary processes.
 
-## The characteristic equation of time series
+*   **Strictly Stationary Process:** A stochastic process `X` is considered *strictly stationary* if the joint probability distributions of any set of observations, `X_t1, X_t2, ..., X_tn`, are identical to those of `X_{t1+k}, X_{t2+k}, ..., X_{tn+k}` for all `t` in the time set `J` and any integer `k`. This implies that all statistical properties of the process, such as probabilities, expected values, and variances, remain unchanged as time elapses.
 
-## Concept and properties of random walks
+*   **Weakly Stationary Process:** A stochastic process is *weakly stationary* if it satisfies two less stringent conditions:
+    1.  The mean of the process, `E[X_t]`, is constant and does not depend on time `t`.
+    2.  The covariance between any two observations, `cov(X_s, X_t)`, depends only on the time difference or *lag*, `t-s` (or `k` if `t-s = k`), and not on the absolute time points `s` or `t`. As variance is a special case of covariance (`var(X_t) = cov(X_t, X_t)`), it also must be constant for a weakly stationary process.
 
-## Concept of a multivariate autoregressive model
+*   **Relationship between Strict and Weak Stationarity:** If a process is strictly stationary, it is automatically weakly stationary. However, the reverse is not necessarily true. An important exception is multivariate normal processes, where strict and weak stationarity are equivalent because their distribution is fully determined by their mean vector and covariance matrix. In the study of time series, "stationary" often serves as a shorthand for "weakly stationary".
 
-## Concept of cointegrated time series
+*   **Purely Indeterministic Processes:** For a time series process to be truly considered "stationary" in our context, it must also be "purely indeterministic". This means that the predictive power of past observations, `X_1, ..., X_n`, for a future value `X_N` diminishes as `N` approaches infinity. This excludes deterministic series (e.g., repeating patterns) from our primary focus.
+
+*   **Integrated Processes – I(d) Notation:**
+    *   **I(0) Process:** A time series process `X` is denoted as `I(0)` if it is, by itself, a stationary time series process.
+    *   **I(1) Process:** A process `X` is denoted as `I(1)` if it is non-stationary, but its first difference, `∇X = X_t - X_{t-1}`, is a stationary process.
+    *   **I(d) Process:** More generally, a process `X` is integrated of order `d`, or `I(d)`, if its `d`-th difference, `∇^d X`, is a stationary process. Non-stationary random processes must be transformed into stationary ones (often by differencing) before model calibration can be efficiently performed.
+
+#### **3. Explaining the Concept of a Filter Applied to a Stationary Random Series.**
+
+A filter, represented by a collection of weights `a_k`, is applied to an input series `x_t` to produce a modified output series `y_t`, defined as `y_t = Σ_{k=-∞}^{∞} a_k x_{t-k}`. The purpose of applying a filter is to modify the input series to achieve specific objectives or to highlight certain features of the data. For instance, filters are crucial in economic time series analysis for detecting, isolating, and removing deterministic trends. In practice, such filters usually consist of a relatively small number of non-zero components.
+
+#### **4. Knowing the Notation for Backwards Shift Operator, Backwards Difference Operator, and the Concept of Roots of the Characteristic Equation of Time Series.**
+
+These operators and the concept of characteristic roots are essential tools for manipulating and understanding time series models.
+
+*   **Backward Shift Operator (B):** This operator acts on a time series `X_t` to give its value at the previous time point: `B X_t = X_{t-1}`. It can be applied multiple times, for example, `B^2 X_t = X_{t-2}`, and is useful for compacting time series equations. In R, differenced values using `B` can be generated with `diff(<time series>, lag=1, differences=1)`.
+
+*   **Backward Difference Operator (∇):** Defined as `∇ = 1 - B`, this operator calculates the difference between the current value and the previous value of a time series: `∇ X_t = X_t - X_{t-1}`. This operator is particularly important for transforming non-stationary series into stationary ones. Repeated applications are also possible, such as `∇^2 X_t = X_t - 2X_{t-1} + X_{t-2}`. For seasonal differencing, such as monthly data with a period of 12, the notation `∇_12` means `X_t - X_{t-12}`, and the R command would be `diff(<time series>, lag=12, differences=1)`.
+
+*   **Roots of the Characteristic Equation:** This concept is vital for determining the stationarity of Autoregressive (AR) models and the invertibility of Moving Average (MA) models.
+    *   **For Stationarity (AR Part):** To test if an AR process is stationary, you construct a *characteristic polynomial* from its autoregressive terms. This is done by replacing `X_t` with `1`, `X_{t-1}` with `λ`, `X_{t-2}` with `λ^2`, and so on. Setting this polynomial equal to zero, you then find its roots. The time series is stationary if *all* the roots are strictly greater than 1 in magnitude.
+    *   **For Invertibility (MA Part):** To test if an MA process is invertible, you follow a similar procedure, but using the white noise terms. Replace `e_t` with `1`, `e_{t-1}` with `λ`, `e_{t-2}` with `λ^2`, and so on. Set this polynomial to zero and find its roots. The time series is invertible if *all* the roots are strictly greater than 1 in magnitude.
+
+#### **5. Explaining the Concepts and Basic Properties of Autoregressive (AR), Moving Average (MA), Autoregressive Moving Average (ARMA) and Autoregressive Integrated Moving Average (ARIMA) Time Series.**
+
+These models form the backbone of linear time series analysis, particularly within the Box-Jenkins framework.
+
+*   **White Noise Process:** Before discussing AR and MA models, it's crucial to understand *white noise*. A white noise process is a sequence of independent and identically distributed (IID) random variables, typically assumed to have a mean of zero and a constant variance (`σ^2`). White noise processes are inherently weakly stationary and possess the Markov property in a trivial sense, as the future development is entirely independent of the past.
+
+*   **Autocovariance Function (ACF - γ_k):** For a stationary time series `X`, the autocovariance function measures the covariance between `X_t` and `X_{t-k}` (at lag `k`): `γ_k = cov(X_t, X_{t-k})`. Note that `γ_0` is simply the variance of `X_t`.
+
+*   **Autocorrelation Function (ACF - ρ_k):** The autocorrelation function is the normalized autocovariance, given by `ρ_k = γ_k / γ_0`. For purely indeterministic processes, `ρ_k` tends to zero as the lag `k` approaches infinity, indicating a diminishing connection between terms further apart.
+
+*   **Partial Autocorrelation Function (PACF - φ_k):** The PACF measures the conditional correlation between `X_{t+k}` and `X_t`, given all the intermediate observations `X_{t+1}, ..., X_{t+k-1}`. Formulae for `φ_k` are available in the Tables. For stationary ARMA processes, `φ_k` will decay towards zero as `k` approaches infinity.
+
+*   **Autoregressive (AR) Process:** An `AR(p)` process models the current value of a time series, `X_t`, as a linear combination of its `p` past values and a white noise error term `e_t`. The general form is `X_t = μ + α_1(X_{t-1}-μ) + ... + α_p(X_{t-p}-μ) + e_t`.
+    *   **Properties:** `AR(p)` processes are stationary if the roots of their characteristic equation (derived from the AR part) are strictly greater than 1 in magnitude. They are always invertible. Only `AR(1)` processes possess the Markov property. The ACF of an `AR(p)` process decays geometrically, while its PACF cuts off (becomes zero) after lag `p`. R's `arima.sim()` can simulate AR models, and `arima()` can fit them.
+
+*   **Moving Average (MA) Process:** An `MA(q)` process models `X_t` as a linear combination of the current and `q` past white noise error terms. The general form is `X_t = μ + e_t + β_1 e_{t-1} + ... + β_q e_{t-q}`. This is often described as "smoothed noise".
+    *   **Properties:** `MA(q)` processes are *always* stationary because they are a finite linear combination of stationary white noise terms. They are invertible if the roots of their characteristic equation (derived from the MA part) are strictly greater than 1 in magnitude. `MA` processes are *never* Markov. The ACF of an `MA(q)` process cuts off after lag `q`, while its PACF decays geometrically.
+
+*   **Autoregressive Moving Average (ARMA) Process:** An `ARMA(p,q)` process combines both autoregressive and moving average components. Its defining equation incorporates both past `X` values and past `e` values.
+    *   **Properties:** `ARMA(p,q)` processes are stationary if the roots of the AR part's characteristic equation are strictly greater than 1 in magnitude. They are invertible if the roots of the MA part's characteristic equation are strictly greater than 1 in magnitude. The only `ARMA` process that is Markov is `ARMA(1,0)`, which is equivalent to `AR(1)`. Both the ACF and PACF of a stationary `ARMA(p,q)` process decay exponentially as the lag increases. The `arima()` function in R can be used to fit ARMA models.
+
+*   **Autoregressive Integrated Moving Average (ARIMA) Process:** An `ARIMA(p,d,q)` process is a powerful generalization where the `d`-th difference of the time series, `∇^d X_t`, is a stationary `ARMA(p,q)` process. This model is central to the **Box-Jenkins Methodology** for time series analysis.
+    *   **Box-Jenkins Methodology:** This systematic approach involves four main stages:
+        1.  **Identification:** Determine suitable orders (`p, d, q`) for the `ARIMA` model. This involves plotting the time series to detect trends or seasonal cycles and inspecting the Sample ACF (SACF) and Sample PACF (SPACF) plots. The `d` parameter (differencing order) is chosen to make the series stationary. Statistical tests like the Phillips-Perron (PP) test can confirm stationarity by checking for unit roots (`PP.test(Xt)` in R).
+        2.  **Estimation:** Estimate the model parameters (e.g., `α` for AR, `β` for MA) using methods like Maximum Likelihood Estimation (MLE) or the Method of Moments (Yule-Walker equations).
+        3.  **Diagnosis:** Check the goodness of fit by analysing the *residuals* (the differences between observed and fitted values). The residuals should ideally resemble white noise. Diagnostic tests include visual inspection of residual plots, their SACF/SPACF, and formal statistical tests like the Ljung-Box (or "portmanteau") test (`Box.test()` in R). The Akaike Information Criterion (AIC) is also used for model selection (`AIC()` for `arima()` objects). The turning points test, though not explicitly in Paper B Core Reading, is another diagnostic tool for residuals.
+        4.  **Forecasting:** Once a satisfactory model is identified and estimated, it can be used to predict future values. For `ARIMA` processes with `d > 0`, the prediction variance will increase to infinity as the forecast horizon lengthens. R's `predict()` function is commonly used for forecasting from `arima` objects.
+
+#### **6. Explaining the Concept and Properties of Discrete Random Walks and Random Walks with Normally Distributed Increments, Both with and Without Drift.**
+
+Random walks are a fundamental class of non-stationary stochastic processes.
+
+*   **General Random Walk:** A general random walk, `X_n`, is defined as `X_n = X_{n-1} + Y_n` (or `X_n = Y_1 + Y_2 + ... + Y_n` with `X_0 = 0`), where `Y_n` are independent and identically distributed (IID) random variables. The time set is discrete. The state space can be discrete or continuous, depending on the nature of the `Y_n` (the "steps").
+    *   **Properties:** A general random walk is *not stationary* because its mean and variance typically increase linearly with time. For example, if `E[Y_n] = μ_Y` (a non-zero drift), then `E[X_n] = nμ_Y`, which is not constant. If `var(Y_n) = σ_Y^2`, then `var(X_n) = nσ_Y^2`, also not constant.
+    *   **Markov Property:** Despite being non-stationary, random walks generally possess the Markov property, as the next step (and thus the future state) depends only on the current position, not on how that position was reached.
+    *   **Integrated Process:** A random walk `X_t = X_{t-1} + e_t` (where `e_t` is white noise) is an `ARIMA(0,1,0)` process because its first difference, `∇X_t = e_t`, is stationary white noise.
+
+*   **Simple Random Walk:** This is a special case of a general random walk where each `Y_j` (step) can only take values of +1 or -1.
+    *   **Simple Symmetric Random Walk:** A further specialization where the probability of taking a +1 step equals the probability of taking a -1 step, typically 0.5 for each.
+    *   **State Space and Time Set:** For a simple random walk, the state space is typically the discrete set of integers `Z = {..., -2, -1, 0, 1, 2, ...}`, and the time set is the discrete set of non-negative integers `J = {0, 1, 2, ...}`.
+    *   **Applications:** Examples include tracking a player's profit/loss in a simple casino game or modelling No Claims Discount (NCD) levels in motor insurance, although the latter often involves more complex transition rules.
+
+*   **Boundaries:** Random walks can be further characterized by their boundaries:
+    *   **Absorbing Barrier:** A state from which the process cannot leave. If a random walk enters an absorbing state, it remains there forever.
+    *   **Reflecting Boundary:** A boundary that, when hit, forces the random walk to move back into the permissible state space.
+
+#### **7. Explaining the Basic Concept of a Multivariate Autoregressive Model.**
+
+When analyzing multiple time series simultaneously, we use multivariate models.
+
+*   **Multivariate Time Series:** An `m`-dimensional multivariate time series is a sequence of `m`-dimensional vectors, `x_t`, where each vector represents observations of `m` different variables of interest at time `t`. These are modeled using sequences of random vectors, `X_t`, where the components are denoted `X_t(1), ..., X_t(m)`.
+
+*   **Vector Autoregressive (VAR) Process:** An `m`-dimensional `VAR(p)` process models the current random vector `X_t` as a linear combination of `p` past random vectors `X_{t-1}, ..., X_{t-p}` and an `m`-dimensional white noise process `e_t`. The defining equation is `X_t = μ + A_1(X_{t-1}-μ) + ... + A_p(X_{t-p}-μ) + e_t`, where `A_j` are `m x m` matrices.
+    *   **Properties:** A `VAR(p)` process is stationary if *all* the eigenvalues of its characteristic matrix `A` (which is `A_1` for a `VAR(1)` model) are strictly less than 1 in magnitude. They are always invertible. Only `VAR(1)` processes possess the Markov property.
+    *   **Conversion from Univariate AR(p):** Interestingly, a univariate `AR(p)` process, which is not Markov for `p > 1`, can be rearranged into a multivariate `VAR(1)` model, thereby obtaining a Markov property representation. This is achieved by defining a vector of lagged variables.
+
+#### **8. Explaining the Concept of Cointegrated Time Series.**
+
+Cointegration describes a specific relationship between non-stationary time series.
+
+*   **Definition:** Two time series processes, `X` and `Y`, are *cointegrated* if they meet two key conditions:
+    1.  Both `X` and `Y` are `I(1)` random processes, meaning they are individually non-stationary but become stationary after being differenced once.
+    2.  There exists a non-zero linear combination, `αX + βY`, that *is* stationary. This vector `(α, β)` is known as the *cointegrating vector*.
+
+*   **Implication:** The core idea is that even if individual series are non-stationary and tend to wander, they do not wander too far from each other, implying a long-term equilibrium relationship between them. This can occur if one process drives the other, or if both are driven by the same underlying process.
+
+***
+
+I trust this detailed summary, drawing directly from your CS2 study materials, provides a robust foundation for your understanding of time series concepts. Should you have any further questions or require elaboration on specific points, do not hesitate to ask. Keep up the excellent work in your CS2 preparation!
 
 ## `R` Practice {-#practice-time-series}
 

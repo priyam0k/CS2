@@ -16,25 +16,184 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Theory {-#theory-09}
 
-**TO ADD THEORY ABOUT MARKOV PROCESSES HERE**
+### **Chapter: Markov Processes (Syllabus Objectives 3.3.1 - 3.3.8)**
 
-## Features of a Markov process model
+This section is vital, contributing significantly to the "Stochastic processes" syllabus topic, which holds a substantial 25% weighting in your CS2 assessment. Markov processes, particularly Markov jump processes, are continuous-time models of phenomena that evolve randomly over time, driven by their defining Markov property.
 
-## Poisson process
+---
 
-## Kolmogorov equations for a Markov process
+#### **Objective 1: State the essential features of a Markov process model.**
+A Markov process, at its heart, is a stochastic process exhibiting a unique and powerful characteristic: the **Markov property**.
 
-## Solving Kolmogorv equations
+1.  **Stochastic Process Foundation**:
+    *   A stochastic process is fundamentally a model for a time-dependent random phenomenon. It's a collection of random variables, denoted as $\{X_t : t \in J\}$, where each $X_t$ models the value of the process at time $t$ within some defined time set $J$.
+    *   Processes can be classified based on their **time set** ($J$) and **state space** ($S$):
+        *   **Continuous Time, Discrete State Space**: This is the category for a **Markov jump process**. Examples include the number of claims arriving at an insurance company, an individual's health status (healthy, sick, dead), or the number of occupied parking spaces.
+        *   **Discrete Time, Discrete State Space**: This defines a **Markov chain**. Think of no-claims discount levels in motor insurance, where changes occur at fixed yearly intervals.
+        *   **Discrete Time, Continuous State Space**: This is characteristic of **time series** (e.g., daily stock prices) or general random walks.
+        *   **Continuous Time, Continuous State Space**: Examples include Brownian motion or diffusion processes, typically covered in CM2.
+        *   **Mixed Type**: Some processes might transition between these, like pension scheme contributors (continuous time with discrete changes).
 
-### Simple cases
+2.  **The Markov Property**:
+    *   The defining feature: "A major simplification occurs if the future development of a process can be predicted from its present state alone, without any reference to its past history".
+    *   Mathematically, for any times $s_1 < s_2 < \dots < s_n < s < t$ and states $x_1, \dots, x_n, x$, and any subset $A$ of the state space $S$:
+        $P[X_t \in A | X_{s_1}=x_1, \dots, X_{s_n}=x_n, X_s=x] = P[X_t \in A | X_s=x]$.
+    *   In simpler terms, given the current state, additional knowledge of the past is irrelevant for predicting the future.
+    *   A significant implication: processes with **independent increments** (where increments over non-overlapping intervals are statistically independent) always possess the Markov property.
 
-### More general cases
+---
 
-## Sickness and marriage models
+#### **Objective 2: Define a Poisson process, derive the distribution of the number of events in a given time interval, derive the distribution of inter-event times, and apply these results.**
+The Poisson process is the simplest, yet incredibly fundamental, example of a time-homogeneous Markov jump process in continuous time.
 
-## Markov jump process
+1.  **Definition of a Poisson Process**:
+    A continuous-time, integer-valued process $\{N_t : t \ge 0\}$ with rate $\lambda > 0$ can be defined equivalently by any of the following four conditions:
+    *   **(1) Increments and Distribution**: It has stationary, independent increments, and for each $t$, $N_t$ has a Poisson distribution with parameter $\lambda t$.
+    *   **(2) Short-Time Transition Probabilities (Markov Jump Process perspective)**: It is a Markov jump process with independent increments and transition probabilities over a short time period $h$ given by:
+        *   $P[N_{t+h} - N_t = 1 | \mathcal{F}_t] = \lambda h + o(h)$.
+        *   $P[N_{t+h} - N_t = 0 | \mathcal{F}_t] = 1 - \lambda h + o(h)$.
+        *   $P[N_{t+h} - N_t \ge 2 | \mathcal{F}_t] = o(h)$.
+        (Here, $o(h)$ represents a function such that $\lim_{h \to 0} o(h)/h = 0$).
+    *   **(3) Holding Times (Inter-event times)**: The holding times (or inter-event times) $T_0, T_1, T_2, \dots$ are independent Exponential random variables with parameter $\lambda$.
+    *   **(4) Transition Rates ($\mu_{ij}$)**: It is a Markov jump process with independent increments and transition rates given by $\mu_{i,i+1} = \lambda$ and $\mu_{ii} = -\lambda$, with other rates being 0. This implies jumps only occur to the next integer state.
 
-### Simulating a Markov jump process
+2.  **Distribution of the Number of Events in a Given Time Interval**:
+    *   From definition (1) above, the number of events $N_t$ in a time interval $[0, t]$ (starting from $N_0=0$) follows a **Poisson distribution with parameter $\lambda t$**.
+    *   More generally, for any $s < t$, the increment $N_t - N_s$ is Poisson distributed with mean $\lambda(t-s)$, and it is independent of anything that occurred before time $s$.
+
+3.  **Distribution of Inter-event Times**:
+    *   As per definition (3), the successive inter-event times $T_0, T_1, T_2, \dots$ are independent and identically distributed **Exponential random variables with parameter $\lambda$**. This is a direct consequence of the memoryless property of the Exponential distribution.
+
+4.  **Applications and Properties**:
+    *   **Applications**: Poisson processes are fundamental for counting the cumulative number of occurrences of events over time, such as motor insurance claims, customer arrivals at a service point, or occurrences of claims events (e.g., accidents, fires, thefts).
+    *   **Non-Stationarity**: A Poisson process is *not* weakly stationary because its mean and variance increase linearly with time ($E[N_t] = \lambda t$ and $Var[N_t] = \lambda t$).
+    *   **Markov Property**: Yes, it satisfies the Markov property due to its independent increments.
+    *   **Sums of Poisson Processes**: If independent Poisson processes are summed, the result is another Poisson process with a rate equal to the sum of the individual rates.
+    *   **Thinning of a Poisson Process**: If events in a Poisson process are categorized into types, each type forms its own independent Poisson process, with a rate equal to the original rate multiplied by the probability of that type of event.
+
+---
+
+#### **Objective 3: Derive the Kolmogorov equations for a Markov process with time independent and time/age dependent transition intensities.**
+Kolmogorov equations are a set of differential equations that describe how transition probabilities evolve over time for Markov jump processes. They are crucial because in continuous time, the concept of a "one-step probability" is replaced by "transition rates".
+
+1.  **Transition Rates/Intensities ($\mu_{ij}$)**:
+    *   For a continuous-time process, we consider transition probabilities over a very short time interval $h$. Dividing by $h$ and taking the limit as $h \to 0$ leads to the concept of a **transition rate** (also called transition intensity or force of transition).
+    *   $\mu_{ij} = \lim_{h \to 0} \frac{P(X_{t+h}=j | X_t=i)}{h}$ for $i \ne j$. This represents the instantaneous rate of jumping from state $i$ to state $j$.
+    *   Importantly, unlike probabilities, transition rates can take values greater than 1 (e.g., annual recovery rates).
+    *   The term $\mu_{ii}$ is defined as minus the sum of the transition rates *out* of state $i$: $\mu_{ii} = - \sum_{j \ne i} \mu_{ij}$. This implies that each row of the **generator matrix** sums to zero.
+
+2.  **Time-Homogeneous Markov Jump Processes**:
+    *   **Definition**: A Markov jump process is time-homogeneous if its transition probabilities $p_{ij}(t)$ (the probability of moving from state $i$ to state $j$ in time $t$) depend *only* on the length of the time interval $t$, and not on the absolute starting time $s$ or ending time $t+s$. This implies constant transition rates.
+    *   **Chapman-Kolmogorov Equations**: For time-homogeneous processes, these are $p_{ij}(s+t) = \sum_{k \in S} p_{ik}(s) p_{kj}(t)$ for all $s, t > 0$. The derivation is identical to the discrete-time case.
+    *   **Kolmogorov's Forward Differential Equations**: These describe how the probabilities of being in different states evolve *forward* in time.
+        *   **Component form**: $\frac{d p_{ij}(t)}{dt} = \sum_{k \in S} p_{ik}(t) \mu_{kj}$ for all $i, j$.
+        *   **Matrix form**: $\frac{d \mathbf{P}(t)}{dt} = \mathbf{P}(t) \mathbf{A}$, where $\mathbf{P}(t)$ is the transition matrix and $\mathbf{A}$ is the generator matrix (with entries $\mu_{kj}$).
+    *   **Kolmogorov's Backward Differential Equations**: These describe the evolution of probabilities by considering the state at the *beginning* of a short interval.
+        *   **Component form**: $\frac{d p_{ij}(t)}{dt} = \sum_{k \in S} \mu_{ik} p_{kj}(t)$ for all $i, j$.
+        *   **Matrix form**: $\frac{d \mathbf{P}(t)}{dt} = \mathbf{A} \mathbf{P}(t)$.
+
+3.  **Time-Inhomogeneous Markov Jump Processes**:
+    *   **Definition**: A Markov jump process is time-inhomogeneous if its transition rates $\mu_{ij}(t)$ (and thus its transition probabilities $p_{ij}(s,t)$) depend not only on the length of the time interval but also on the absolute times $s$ and $t$. This is often the case when rates depend on age.
+    *   **Chapman-Kolmogorov Equations**: These remain in the same format but with time-dependent probabilities: $p_{ij}(s,t) = \sum_{k \in S} p_{ik}(s,u) p_{kj}(u,t)$ for all $s \le u \le t$. In matrix form: $\mathbf{P}(s,t) = \mathbf{P}(s,u) \mathbf{P}(u,t)$.
+    *   **Kolmogorov's Forward Differential Equations**:
+        *   **Component form**: $\frac{\partial p_{ij}(s,t)}{\partial t} = \sum_{k \in S} p_{ik}(s,t) \mu_{kj}(t)$ for all $i, j$.
+        *   **Matrix form**: $\frac{\partial \mathbf{P}(s,t)}{\partial t} = \mathbf{P}(s,t) \mathbf{A}(t)$, where $\mathbf{A}(t)$ is the time-dependent generator matrix.
+    *   **Kolmogorov's Backward Differential Equations**: This is the *only* one of the Kolmogorov differential equations where the derivative is taken with respect to the *starting time* $s$.
+        *   **Component form**: $\frac{\partial p_{ij}(s,t)}{\partial s} = - \sum_{k \in S} \mu_{ik}(s) p_{kj}(s,t)$ for all $i, j$.
+        *   **Matrix form**: $\frac{\partial \mathbf{P}(s,t)}{\partial s} = - \mathbf{A}(s) \mathbf{P}(s,t)$.
+    *   **Integrated Forms of Kolmogorov Equations**: These forms express transition probabilities as integrals involving transition rates and are particularly useful when rates are time-dependent or for conditioning on the first/last jump. For example, the probability of staying in state $i$ from $s$ to $t$ is $p_{ii}(s,t) = \exp\left(-\int_s^t \lambda_i(u) du\right)$, where $\lambda_i(u)$ is the total force of transition out of state $i$ at time $u$.
+
+---
+
+#### **Objective 4: Solve the Kolmogorov equations in simple cases.**
+Solving these differential equations provides expressions for transition probabilities. While complex in general, simpler cases often involve constant transition rates.
+
+1.  **Two-State Markov Model (Alive-Dead)**:
+    *   This is a fundamental example where transition is only in one direction (alive to dead).
+    *   **Assumptions**: It relies on the Markov assumption, a specific form for the probability of death in a short interval ($\mu_{x+t} h + o(h)$), and constant force of mortality $\mu$ over a short period.
+    *   **Kolmogorov Forward Equation Derivation**: By considering $p_{x}(t+h)$ and using the Markov assumption and the short-interval probability, one can derive $\frac{\partial p_x(t)}{\partial t} = -p_x(t)\mu_{x+t}$.
+    *   **Solution for Constant Force**: If $\mu_{x+t}$ is a constant $\mu$, the solution is $p_x(t) = e^{-\mu t}$. This is the probability of a life aged $x$ surviving for time $t$. This result is consistent with survival models formulated in terms of lifetime distributions.
+
+2.  **General Approach to Solving Simple Cases**:
+    *   For time-homogeneous processes, the solution to $\frac{d \mathbf{P}(t)}{dt} = \mathbf{A} \mathbf{P}(t)$ or $\mathbf{P}(t) \mathbf{A}$ often involves the matrix exponential, $e^{\mathbf{A}t}$. While explicit calculation of matrix exponentials can be complex, many problems involve small matrices or specific structures that allow for direct solution using standard differential equation techniques.
+    *   For instance, in a two-state machine model ('being repaired' (0) and 'working' (1)), solving the forward differential equation for $P_{00}(t)$ (probability of being in state 0 at time $t$ given starting in state 0) might lead to an expression like $P_{00}(t) = \frac{1}{5} + \frac{4}{5}e^{-5t}$.
+    *   The "Poisson process revisited" section provides a direct example where the specific structure of the generator matrix simplifies the forward equations to a form that can be solved directly, yielding the Poisson distribution for $p_{ij}(t)$.
+
+---
+
+#### **Objective 5: State the Kolmogorov equations for a model where the transition intensities depend not only on age/time, but also on the duration of stay in one or more states.**
+Duration dependence means that the transition intensities are not just a function of calendar time or age, but also of how long an individual has been in their current state.
+
+1.  **Concept of Duration Dependence**:
+    *   In real-world scenarios, a person's risk of transitioning might depend on how long they have been in their current state. For example, the probability of recovery from a sickness might change with the duration of the illness.
+    *   Such models are more complex because the Markov property, which states that future probabilities depend *only* on the current state, might be violated if "current state" doesn't implicitly contain information about "duration of stay".
+
+2.  **Handling Duration Dependence**:
+    *   The standard approach to incorporate duration dependence while retaining the Markov property is to **expand the state space**. Instead of a single "Sick" state, you might have "Sick (duration 0-1 year)", "Sick (duration 1-2 years)", etc.. Each of these new states is now distinct, and the transition probabilities from them depend only on that specific state, satisfying the Markov property.
+
+3.  **Kolmogorov Equations with Duration Dependence**:
+    *   When duration dependence is incorporated by expanding the state space, the general form of the Kolmogorov forward and backward differential equations (as described in Objective 3 for time-inhomogeneous processes) still applies. However, the generator matrix $\mathbf{A}(t)$ will become much larger and its entries will reflect the transitions between the expanded states, possibly still depending on age/time $t$ and now implicitly capturing duration through the state definition.
+    *   For instance, for a probability $P(X_t = H | X_s = S, C_s = w)$, where $C_s$ is the current holding time in state S at time s, the integral form of the Kolmogorov backward equation can be written as an integral over future possible transitions, incorporating the duration-dependent rates.
+
+---
+
+#### **Objective 6: Describe sickness and marriage models in terms of duration dependent Markov processes and describe other simple applications.**
+Markov processes are incredibly versatile for modelling various demographic and insurance-related phenomena.
+
+1.  **Sickness Models**:
+    *   **Health-Sickness-Death (HSD) Model**: A common three-state model (Healthy (H), Sick (S), Dead (D)) illustrates transitions between these health states.
+        *   **Duration Dependence in Sickness**: The rate of recovery from sickness (S to H) or mortality while sick (S to D) might depend on how long a person has been sick. For example, the longer someone is sick, the less likely they are to recover, or their mortality rate might increase.
+        *   To model this while maintaining the Markov property, you'd subdivide the "Sick" state, perhaps into "Recently Sick," "Moderately Sick," "Long-term Sick," etc.. This expansion of the state space allows the model to "remember" the duration of sickness within the current state definition.
+
+2.  **Marriage Models**:
+    *   These models track an individual's marital status over time, which can include states like bachelor/spinster (never married) (B), married (M), widowed (W), divorced (D), and dead ($\Delta$).
+    *   **Duration Dependence in Marriage**: Transition rates might depend on the duration of a marriage (e.g., divorce rates could be higher in early years of marriage, then stabilize) or the duration of widowhood/divorce.
+    *   Similar to sickness models, subdividing states like "Married" into "Married (duration <5 years)", "Married (duration $\ge$5 years)" would allow for duration-dependent transition rates while preserving the Markov property.
+
+3.  **Other Simple Applications**:
+    *   **Machine Status**: Modelling a machine that transitions between "working" and "being repaired" states, with specific breakdown and repair rates.
+    *   **Insurance Claims Processing**: Tracking the progress of claims through different stages like "awaiting classification," "under investigation," "awaiting further details," "settled".
+    *   **No Claims Discount (NCD) Systems**: While typically modelled as Markov chains (discrete time), the underlying continuous transitions (e.g., probability of a claim occurring at any moment) can be conceptualized as a jump process.
+    *   **Population Models**: Tracking populations through various states like healthy, infected, dead, or even animal populations with birth/death/infection rates.
+    *   **Company Credit Ratings**: Assessing the creditworthiness of debt, with ratings like A, B, D (defaulted), and transitions between them.
+
+---
+
+#### **Objective 7: Demonstrate how Markov jump processes can be used as a tool for modelling and how they can be simulated.**
+Markov jump processes are powerful modelling tools, and their simulation allows for forecasting and scenario analysis.
+
+1.  **Modelling with Markov Jump Processes**:
+    *   The **generator matrix** $\mathbf{A}$ (or $\mathbf{A}(t)$ for time-inhomogeneous processes) is the fundamental element, fully characterizing the process's distribution.
+    *   Maximum Likelihood Estimators (MLEs) for constant transition rates $\mu_{ij}$ are typically calculated as the number of observed transitions from state $i$ to state $j$ ($n_{ij}$) divided by the total observed waiting time in state $i$ ($t_i$): $\hat{\mu}_{ij} = n_{ij} / t_i$. These estimators are asymptotically normally distributed.
+    *   The model assumes constant transition rates (for time-homogeneous models) and that the Markov property holds.
+
+2.  **Simulation of Markov Jump Processes**:
+    Simulating a Markov jump process means generating a sample path, which involves two main components: the sequence of states visited and the time spent in each state. There are two main approaches.
+
+    *   **Jump Chain (Embedded Chain)**:
+        *   This is the sequence of states that the Markov jump process enters, *ignoring the time spent in each state*. Its time set is discrete, comprising only the times at which transitions occur.
+        *   The key insight is that the jump chain itself possesses the Markov property and is a **Markov chain**. This is because the destination of the next jump (when leaving state $i$) is independent of the holding time and depends only on the current state $i$.
+        *   The transition probability from state $i$ to state $j$ in the jump chain is given by the ratio of the transition rate from $i$ to $j$ to the total force of transition out of state $i$: $p_{ij} = \mu_{ij} / \lambda_i$.
+        *   Questions "dealing solely with the sequence of states visited... can be answered equally well with reference to the jump chain... Questions dealing with the time taken to visit a state, however, are likely to have very different answers... and are only accessible using the theory of Markov jump processes".
+
+    *   **Approximate Method of Simulation**:
+        *   "Divide time into very short intervals of width $h$, say, where $\mu_{ij}h$ is much smaller than 1 for each $i$ and $j$".
+        *   Then, the transition matrix $\mathbf{P}(h)$ of the Markov chain (over this short interval) is approximated by $\mathbf{P}(h) \approx \mathbf{I} + h\mathbf{A}$.
+        *   A discrete-time Markov chain $\{Y_n\}$ is simulated using these approximate transition probabilities, and the Markov jump process $X_t$ is defined as $Y_{[t/h]}$.
+        *   **Limitations**: This method is "not very satisfactory" because "its long-term distribution may differ significantly from that of the process being modelled" due to accumulating errors from the approximation.
+
+    *   **Exact Method of Simulation**:
+        *   This method leverages the structural decomposition of the jump process.
+        *   **Step 1**: Simulate the jump chain of the process as a Markov chain using the transition probabilities $p_{ij} = \mu_{ij} / \lambda_i$. This generates the sequence of states visited ($\hat{X}_0, \hat{X}_1, \dots$).
+        *   **Step 2**: Simulate the holding times. For each state $\hat{X}_n$ entered, the holding time $T_n$ is an independent Exponential random variable with rate parameter $\lambda_{\hat{X}_n}$ (the total force of transition out of that state).
+        *   By summing these holding times, you obtain the exact times at which the Markov process jumps between states.
+        *   For time-inhomogeneous processes, determining the density function of the time until the next transition and its destination is "in principle possible" for exact simulation, but "cumbersome in the extreme" in practice, making the approximate method more usual.
+
+    *   **R Implementation**: The `markovchain` package in R can be used to create Markov chain objects for jump chains, calculate n-step transition probabilities, and compute expected rewards. R functions can also calculate survival probabilities and expected life directly, often through numerical integration for time-inhomogeneous models.
+
+---
+
+This comprehensive overview should equip you with a robust understanding of Markov processes, their underlying theory, practical applications, and the vital techniques for their analysis and simulation. Keep practicing the exam-style questions to solidify these concepts!
 
 ## `R` Practice {-#practice-09}
 

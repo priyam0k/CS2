@@ -7,10 +7,103 @@
 
 ## Theory {-#theory-evt}
 
-**TO ADD THEORY ABOUT EXTREME VALUE THEORY HERE**
+### Chapter 16: Extreme Value Theory
 
-## Extreme value distributions
+This chapter is designed to equip you with the mathematical and statistical tools to effectively model and understand rare, high-impact events, often termed 'extreme events'. These are events that occur with very low frequency but can lead to very high severity. Think of natural catastrophes like earthquakes, man-made disasters such as aeroplane crashes, or significant financial market disruptions like stock market crashes.
 
-## Calcuating and interpreting tail weights
+#### The Challenges of Modelling Extreme Events with Standard Distributions
+
+A common initial thought might be to simply fit a standard statistical distribution to your entire dataset and then use its tails to estimate the probability of future extreme events. However, this approach presents several significant problems that make it inadequate for actuarial work involving large losses:
+*   **Lack of Historic Data in the Tails**: Extreme events, by their very nature, are rare. This means there's usually insufficient historical data available in the extreme tails of the distribution to accurately inform parameter estimates.
+*   **Influence of the Bulk of Data**: When a distribution is fitted to the entire dataset, the parameter estimates are heavily influenced by the 'bulk' or central part of the data, which consists of non-extreme observations. Consequently, the fitted distribution tends to underestimate the probability of future extreme events because relatively little weight is placed on the extreme data during the fitting process.
+*   **Leptokurtic and Skewed Nature of Financial Data**: Empirical evidence often shows that the 'true' distribution of many types of financial data (e.g., asset price movements) is more **leptokurtic** (more peaked in the centre and possessing fatter tails) and more skewed than the symmetrical Normal distribution often assumed. This means it has a higher probability of producing extreme values than a normal distribution would predict.
+*   **Heteroscedasticity**: Financial variables often exhibit 'volatility clustering,' meaning periods of sustained high volatility followed by periods of sustained low volatility. This indicates that the volatility of asset return data is not constant but is **heteroscedastic** (varying over time). Standard models that assume constant volatility will fail to capture this crucial aspect of extreme risk.
+
+To address these inherent difficulties, Extreme Value Theory provides a more sophisticated approach by focusing specifically on modelling the *tails* of distributions rather than the entire dataset. This allows for better assessment of risks like the probability of a policyholder dying or a claim under a motor insurance policy.
+
+#### Learning Objective 1: Recognise extreme value distributions, suitable for modelling the distribution of severity of loss and their relationships.
+
+EVT posits that the asymptotic behaviour of the tails of most distributions can be accurately described by certain families of distributions. Specifically, the maximum values of a distribution (when appropriately standardised) and the values exceeding a specified high threshold (known as threshold exceedances) converge to two particular families of distributions as the sample size increases.
+
+These two primary approaches to modelling extreme events are:
+
+**1. The Generalised Extreme Value (GEV) Distribution (Block Maxima Approach)**
+This approach focuses on the distribution of **block maxima**. A block maximum, denoted $M_n = \max\{X_1, X_2, \ldots, X_n\}$, is simply the maximum value observed within a set of $n$ values, often taken from predefined, equal-sized blocks of data.
+
+*   **Concept**: The Extreme Value Theorem states that, for a large class of underlying distributions, the distribution of the appropriately standardised block maxima will converge to a **Generalised Extreme Value (GEV) distribution** as the number of observations ($n$) increases. The standardised form of a block maximum is $ (M_n - \alpha_n) / \beta_n $, where $\alpha_n$ is a location parameter and $\beta_n$ is a scale parameter (with $\beta_n > 0$), both of which depend on the underlying distribution of the data.
+
+*   **Cumulative Distribution Function (CDF)**: The GEV distribution is a flexible family described by the following CDF:
+    $$ H(x) = \begin{cases} \exp\left(-\left(1 + \frac{\gamma(x-\alpha)}{\beta}\right)^{-1/\gamma}\right) & \text{if } \gamma \neq 0 \\ \exp\left(-\exp\left(-\frac{x-\alpha}{\beta}\right)\right) & \text{if } \gamma = 0 \end{cases} $$
+    This distribution has three key parameters:
+    *   $\alpha$: A **location parameter**.
+    *   $\beta$: A **scale parameter** (must be positive).
+    *   $\gamma$: A **shape parameter**. This parameter is crucial as it determines the 'type' of GEV distribution, reflecting the tail behaviour of the original data.
+
+*   **Types of GEV Distributions and their Relationships:**
+    *   **Fréchet Type ($\gamma > 0$)**: This type of GEV distribution is associated with underlying distributions that have **heavy tails** (or 'power decay' tails), meaning their higher-order moments can be infinite. There is no upper bound to the values that $x$ can take in this distribution. Fréchet-type GEV distributions are most suitable for modelling extreme financial (loss) events because their tails decay slowly to zero, capturing the likelihood of very large, unbounded losses. Examples of underlying distributions that lead to a Fréchet GEV include Burr, Pareto, F, and t-distributions.
+    *   **Weibull Type ($\gamma < 0$)**: This type is associated with underlying distributions that have a **finite upper limit** (or 'finite end point'). This implies there is a maximum possible value for the random variable. Examples of underlying distributions that lead to a Weibull GEV include Beta, Uniform, and Triangular distributions.
+    *   **Gumbel Type ($\gamma = 0$)**: This is the limiting form for most underlying distributions that have **light tails** and finite moments of all orders, exhibiting exponential-like decay. The Gumbel distribution is a particular type of extreme value distribution that arises, for example, from an exponential underlying distribution. Examples of underlying distributions that lead to a Gumbel GEV include Gamma, Normal, Exponential, Lognormal, and Weibull distributions.
+
+*   **R Implementation**: To work with GEV distributions in R, you would typically:
+    *   Calculate block maxima using functions like `aggregate()`.
+    *   Fit a GEV distribution by finding the maximum likelihood estimates (MLEs) of its parameters ($\alpha, \beta, \gamma$). This often involves defining a negative log-likelihood function and using a numerical minimisation algorithm like `nlm()`.
+
+**2. The Generalised Pareto Distribution (GPD) (Threshold Exceedances Approach)**
+As an alternative to focusing on block maxima, this approach considers the distribution of all values of a variable that exceed some high, specified **threshold** ($u$). These are known as **threshold exceedances**, $W = X - u \mid X > u$.
+
+*   **Concept**: For large samples, the distribution of these threshold exceedances converges to the **Generalised Pareto Distribution (GPD)**, regardless of the underlying distribution of the data. This makes it an incredibly powerful tool for modelling the extreme tail of a distribution by simply selecting a suitably high threshold and fitting a GPD to the observed values that exceed it. For example, in reinsurance, it can be used to model claim amounts above a retention limit in excess of loss reinsurance.
+
+*   **Cumulative Distribution Function (CDF)**: The GPD is described by the following CDF:
+    $$ G(x) = \begin{cases} 1 - \left(1 + \frac{\gamma x}{\beta}\right)^{-1/\gamma} & \text{if } \gamma \neq 0 \\ 1 - \exp\left(-\frac{x}{\beta}\right) & \text{if } \gamma = 0 \end{cases} $$
+    This distribution has two key parameters:
+    *   $\beta$: A **scale parameter** (must be positive).
+    *   $\gamma$: A **shape parameter**. The sign of $\gamma$ again dictates the tail behavior, similar to the GEV distribution.
+
+*   **Memoryless Property**: An important relationship to note is that if the underlying claims distribution is exponential, the threshold exceedances will also follow an exponential distribution, regardless of the chosen threshold. This demonstrates the memoryless property of the exponential distribution.
+
+*   **Key Advantage**: The GPD method offers a significant advantage over the GEV block maxima approach: it utilises a larger proportion of the extreme data (all claims above the threshold) rather than just the single highest value from each block. This can provide a more robust estimation of the tail.
+
+*   **R Implementation**: In R, you can calculate threshold exceedances using `pmax(0, x - u)`. Similar to GEV, you would then fit a GPD using `nlm()` for MLE.
+
+#### Learning Objective 2: Calculate various measures of tail weight and interpret the results to compare the tail weights.
+
+**Tail weight** is a crucial concept in EVT; it's a measure of how quickly the upper tail of a probability density function (PDF) tends to zero. A distribution with a "heavier" or "thicker" tail indicates a higher probability of observing very large values compared to a distribution with a "lighter" tail. When comparing tail weights, it's often useful to establish a baseline, such as the exponential, normal, or lognormal distribution.
+
+Here are four primary measures of tail weight:
+
+**1. Existence of Moments**
+*   **Concept**: This measure assesses whether all moments of a distribution, $E[X^k]$ for all positive integers $k$, exist.
+*   **Interpretation**:
+    *   If all moments exist (i.e., the integral $\int_{-\infty}^{\infty} x^k f(x) dx$ converges for all $k$), the distribution is considered to have a relatively **light tail**. Examples include the Normal, Exponential, and Gamma distributions.
+    *   If moments exist only up to a certain positive integer $k$ (i.e., $E[X^k]$ exists but $E[X^{k+1}]$ does not), it indicates that the distribution has a **heavier tail**. For instance, for a Pareto distribution with parameter $\alpha$, the $k$-th moment only exists when $\alpha > k$. This means a Pareto distribution with a low $\alpha$ will have a much thicker tail, as fewer moments will exist.
+
+**2. Limiting Density Ratios**
+*   **Concept**: This method compares the thickness of the tails of two distributions by examining the ratio of their density functions as $x$ tends to infinity.
+*   **Interpretation**: If we consider the limit of $f_A(x) / f_B(x)$ as $x \to \infty$:
+    *   If the limit is 0, then distribution A has a **lighter tail** than distribution B.
+    *   If the limit is $\infty$, then distribution A has a **heavier tail** than distribution B.
+    *   If the limit is a non-zero constant, the tails are considered to be of the same weight.
+    *   **Example**: Comparing a Gamma distribution to a Pareto distribution using limiting density ratios will show that the Gamma distribution has a lighter tail.
+*   **R Implementation**: You can calculate vectors of density values for two distributions using their respective density functions (e.g., `dgamma()`, `dpareto()`) and then plot their ratio for large $x$ values.
+
+**3. The Hazard Rate (or Force of Mortality)**
+*   **Definition**: For a continuous random variable $X$, the hazard rate (or force of mortality) at $x$ is given by $h(x) = f(x) / (1 - F(x))$, where $f(x)$ is the PDF and $F(x)$ is the CDF. This represents the instantaneous rate of the event occurring given that it has not occurred up to time $x$.
+*   **Interpretation**:
+    *   An **increasing hazard rate** corresponds to a **lighter tail**. This implies that the instantaneous risk of an event increases over time.
+    *   A **decreasing hazard rate** corresponds to a **heavier tail**. This suggests that the instantaneous risk decreases over time, making large values more likely.
+    *   **Examples**:
+        *   The Exponential distribution has a **constant hazard rate** ($\lambda$), demonstrating its memoryless property.
+        *   The Pareto distribution has a **decreasing hazard rate** as $x \to \infty$, confirming its heavy tail. For any Pareto distribution, the hazard rate will eventually be below the constant hazard rate of any exponential distribution, thus all Pareto distributions have heavier tails than all exponential distributions.
+        *   The Weibull distribution can exhibit an increasing, decreasing, or constant hazard rate depending on its shape parameter.
+*   **R Implementation**: You can calculate and plot the hazard rate using R functions like `dweibull()` and `pweibull()` (e.g., `dweibull(x,g,b)/(1-pweibull(x,g,b))`).
+
+**4. The Mean Residual Life (MRL)**
+*   **Definition**: The mean residual life, $e(x)$, is the expected additional lifetime of an individual given that they have already survived to age $x$. It is calculated as $\int_x^\infty (1 - F(y)) dy / (1 - F(x))$.
+*   **Interpretation**:
+    *   An **increasing mean residual life** indicates a **heavier tail**. This means that the longer an event has not occurred, the longer you expect it to take to occur in the future.
+    *   A **decreasing mean residual life** indicates a **lighter tail**. This means that the longer an event has not occurred, the less time you expect it to take in the future.
+*   **R Implementation**: To calculate MRL, you typically define the survival function (`Sy`) and then use `integrate()` to find the integral, dividing by the survival function value at $x$ (e.g., `integrate(Sy,x,Inf)$value/Sy(x)`).
+
+By understanding these measures and the characteristics of GEV and GPD, you'll be well-prepared to tackle exam questions on Extreme Value Theory, confidently analysing and modelling the severity of loss distributions in various actuarial contexts. Keep reviewing these concepts, practice your R implementations, and you'll master this crucial topic for your CS2 exam!
 
 ## `R` Practice {-#practice-evt}

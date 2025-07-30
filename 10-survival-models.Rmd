@@ -1,1 +1,135 @@
 # Survival models {#survival-models}
+
+### **Chapter 6: Survival Models – The Foundation of Life Contingencies**
+
+This chapter introduces the powerful concept of modelling the future lifetime of an individual as a continuous random variable. While primarily applied to human mortality in actuarial science, the underlying theory is versatile, extending to other decrements such as policy withdrawals or sickness in insurance, or even mechanical failure of equipment. A deep understanding of these models is crucial for actuarial work, enabling accurate risk assessment and robust financial valuations.
+
+Let's dissect each learning objective from your syllabus for Chapter 6, providing detailed explanations and highlighting interconnections, which is key for your exam success.
+
+---
+
+#### **Syllabus Objective 4.1.1: Describe the model of lifetime or failure time from age x as a random variable.**
+
+At the very core of survival analysis, we treat an individual's remaining lifespan not as a fixed duration, but as an uncertain quantity. This uncertainty is precisely why it is modelled as a **continuous random variable**.
+
+*   **Notation:** We denote the **complete future lifetime** of a life currently aged exactly $x$ as $T_x$. This is the exact time until death for an individual aged $x$.
+*   **Domain:** $T_x$ is assumed to take values within the interval $[0, \omega - x]$. Here, $\omega$ represents the limiting age, which is the maximum possible age a human can attain, typically set between 100-120 years in practical work. The model, for simplicity, excludes the possibility of survival beyond this age.
+*   **Connection to Chapter 3 (Two-State Markov Model):** It's important to note the relationship with the two-state Markov model (alive to dead) discussed in Chapter 3. While Chapter 6 formulates the problem in terms of $T_x$, the Chapter 3 model is based on a transition intensity between states. The sources clarify that these two formulations can be equivalent under certain mild conditions, particularly for a single decrement. However, they lead in different directions when dealing with multiple decrements. We will delve deeper into the specific two-state model under objective 4.1.8.
+
+---
+
+#### **Syllabus Objective 4.1.2: State the consistency condition between the random variable representing lifetimes from different ages.**
+
+This objective is fundamental for ensuring logical coherence when dealing with survival probabilities over consecutive time periods. It establishes a chain-linking property for survival.
+
+*   **The Condition:** The probability that a life aged $x$ survives for a period of $t+s$ years is identical to the probability of that life surviving the initial $t$ years *and then* surviving the subsequent $s$ years from the newly attained age $x+t$.
+*   **Formulaic Expression:** This is expressed as:
+    $${_{t+s}p_x} = {_{t}p_x} \times {_{s}p_{x+t}}$$
+    where $_t p_x$ is the probability of a life aged $x$ surviving for at least $t$ years. This consistency condition is a cornerstone for building multi-period actuarial functions.
+
+---
+
+#### **Syllabus Objective 4.1.3: Define the distribution and density functions of the random future lifetime, the survival function, the force of mortality or hazard rate, and derive relationships between them.**
+
+This objective introduces the core mathematical functions used to describe and quantify mortality, along with their vital interrelationships.
+
+*   **Distribution Function ($F_x(t)$ or $_t q_x$):**
+    *   **Definition:** This function gives the probability that a life aged $x$ dies within the next $t$ years.
+    *   **Notation:** $F_x(t) = P(T_x \le t)$, also commonly denoted as $_t q_x$.
+*   **Survival Function ($S_x(t)$ or $_t p_x$):**
+    *   **Definition:** This function gives the probability that a life aged $x$ survives for at least $t$ years.
+    *   **Notation:** $S_x(t) = P(T_x > t)$, also commonly denoted as $_t p_x$.
+    *   **Fundamental Relationship:** The distribution and survival functions are complements: $F_x(t) + S_x(t) = 1$.
+*   **Probability Density Function (PDF) ($f_x(t)$):**
+    *   **Definition:** The PDF, $f_x(t)$, represents the instantaneous rate of death at exact age $x+t$ for an individual who was aged $x$ at the outset. It is derived as the first derivative of the distribution function with respect to time: $f_x(t) = \frac{d}{dt} F_x(t)$.
+    *   **Relationship with Survival Function and Force of Mortality:** One of the most important results in survival models is the relationship $f_x(t) = {_{t}p_x} \times \mu_{x+t}$. This indicates that the probability density of dying at time $t$ after age $x$ is the product of the probability of surviving up to time $t$ and the instantaneous rate of death at that exact moment.
+*   **Force of Mortality (Hazard Rate) ($\mu_{x+t}$):**
+    *   **Definition:** The force of mortality, or hazard rate, $\mu_{x+t}$, is the instantaneous rate of mortality at exact age $x+t$. It is formally defined as the conditional probability of dying in the next infinitesimal time interval $h$, given survival up to that time, divided by the length of the interval, as $h \to 0$.
+    *   **Formula:** $\mu_{x+t} = \frac{f_x(t)}{S_x(t)}$. This means the instantaneous death rate is the probability density of death divided by the probability of survival to that point.
+    *   **Interpretation for small $h$:** For a small time interval $h$, the force of mortality can be approximately interpreted as $\mu_{x+t} \approx \frac{_h q_{x+t}}{h}$. This highlights that $\mu_{x+t}$ is essentially the instantaneous death rate per unit of time.
+
+---
+
+#### **Syllabus Objective 4.1.4: Define the actuarial symbols $_t p_x$ and $_t q_x$ and derive integral formulae for them.**
+
+These symbols are the bedrock of actuarial notation, and their integral forms provide a crucial link to the force of mortality.
+
+*   **Definitions:**
+    *   **$_t p_x$**: The probability that a life aged $x$ survives for at least $t$ years. When $t=1$, it is simply $p_x$.
+    *   **$_t q_x$**: The probability that a life aged $x$ dies within the next $t$ years. When $t=1$, it is simply $q_x$. Note that $_t q_x$ is also referred to as a rate of mortality.
+*   **Integral Formulae:** These formulae connect the survival and death probabilities directly to the force of mortality.
+    *   **Probability of dying within $t$ years (${_t q_x}$):**
+        $${_t q_x} = \int_0^t {_{s}p_x} \mu_{x+s} \, ds$$
+        This formula implies that the probability of dying within $t$ years is the sum (integral) of the infinitesimal probabilities of dying at each moment $s$ within the interval $[0, t]$, given that the individual has survived up to moment $s$.
+    *   **Probability of surviving $t$ years (${_t p_x}$):**
+        $${_t p_x} = \exp\left(-\int_0^t \mu_{x+s} \, ds\right)$$
+        This is an extremely important result. It shows that the probability of surviving for $t$ years is an exponential function of the negative cumulative force of mortality over that period. This formula is also provided on page 32 of the "Formulae and Tables for Examinations of the Faculty of Actuaries and the Institute of Actuaries" (Yellow Tables). If the force of mortality is constant over the period, say $\mu$, then this simplifies to ${_t p_x} = e^{-\mu t}$.
+
+---
+
+#### **Syllabus Objective 4.1.5: State the Gompertz and Makeham laws of mortality.**
+
+These are widely used parametric models for the force of mortality, particularly effective for human populations at certain age ranges. They simplify mortality modelling by expressing $\mu_x$ as a function of age using a few parameters.
+
+*   **Gompertz' Law:**
+    *   **Formula:** $\mu_x = B c^x$. This formula is also given on page 32 of the Yellow Tables.
+    *   **Characteristics:** This law posits an exponentially increasing force of mortality with age. It provides a reasonable description of human mortality, especially at middle and older ages.
+    *   **Parameter Estimation:** If a life table follows Gompertz' Law, its parameters $B$ and $c$ can be determined if the force of mortality is known at any two ages.
+*   **Makeham's Law:**
+    *   **Formula:** $\mu_x = A + B c^x$. This formula also appears on page 32 of the Yellow Tables.
+    *   **Characteristics:** Makeham's Law extends Gompertz's Law by introducing a constant term, $A$. This constant term is often interpreted as representing deaths due to causes unrelated to age (e.g., accidental deaths), which are not expected to vary with age.
+    *   **Parameter Estimation:** For Makeham's Law, the three parameters $A, B,$ and $c$ can be determined if the force of mortality is known at any three ages.
+*   **Gompertz-Makeham Family:** Both Gompertz' and Makeham's laws are part of a broader family of curves used to model mortality. This family consists of functions of the form $\mu_x = \alpha_1 + \alpha_2 c^x + \alpha_3 2^x + \dots$.
+*   **R Implementation:** The `flexsurv` package in R provides functions for working with the Gompertz distribution, allowing for calculations of densities, probabilities, quantiles, hazard, and cumulative hazard.
+
+---
+
+#### **Syllabus Objective 4.1.6: Define the curtate future lifetime from age x and state its probability function.**
+
+While complete future lifetime ($T_x$) deals with continuous time, **curtate future lifetime** focuses on the number of *complete years* lived.
+
+*   **Curtate Future Lifetime ($K_x$):**
+    *   **Definition:** $K_x$ is the integer part of the complete future lifetime $T_x$. It quantifies the number of complete years that a life aged $x$ survives.
+    *   **Nature:** It is a discrete random variable, taking non-negative integer values (0, 1, 2, ...).
+*   **Probability Function:** The probability that a life aged $x$ lives exactly $k$ complete years is given by:
+    $$P(K_x = k) = {_{k}p_x} - {_{k+1}p_x}$$
+    This can also be expressed as $P(K_x = k) = {_{k}p_x} \times q_{x+k}$. This implies surviving for $k$ complete years and then dying within the $(k+1)^{th}$ year of age.
+
+---
+
+#### **Syllabus Objective 4.1.7: Define the symbols $e_x$ and $\stackrel{\circ}{e}_x$ and derive an approximate relation between them. Define the expected value and variance of the complete and curtate future lifetimes and derive expressions for them.**
+
+These symbols and measures are critical for actuarial valuations, as they quantify the expected duration of life and its variability.
+
+*   **Complete Expectation of Life ($\stackrel{\circ}{e}_x$):**
+    *   **Definition:** This is the **expected future lifetime** of a life aged exactly $x$. It is the average total time an individual is expected to live after age $x$.
+    *   **Formula:** $\stackrel{\circ}{e}_x = E[T_x] = \int_0^{\omega-x} {_{t}p_x} \, dt$. This is the integral of the survival function over all possible future durations, from time 0 until the limiting age $\omega-x$.
+    *   **Variance:** $\text{Var}[T_x] = E[T_x^2] - (E[T_x])^2 = \int_0^{\omega-x} 2t {_{t}p_x} \mu_{x+t} \, dt - (\stackrel{\circ}{e}_x)^2$. Alternatively, a common form is $\text{Var}[T_x] = \int_0^{\omega-x} 2t {_{t}p_x} \, dt - (\stackrel{\circ}{e}_x)^2$.
+*   **Curtate Expectation of Life ($e_x$):**
+    *   **Definition:** This represents the **expected number of complete future years lived** by a life aged $x$. It's the sum of the probabilities of surviving to each successive integer age.
+    *   **Formula:** $e_x = E[K_x] = \sum_{k=1}^{\infty} {_{k}p_x}$. This is the sum of the probabilities of surviving for 1 year, 2 years, 3 years, and so on.
+    *   **Variance:** $\text{Var}[K_x] = E[K_x^2] - (E[K_x])^2 = \sum_{k=1}^{\infty} (2k+1) {_{k+1}p_x} - (e_x)^2$.
+*   **Approximate Relationship between $\stackrel{\circ}{e}_x$ and $e_x$:**
+    *   A widely used approximation states: $\stackrel{\circ}{e}_x \approx e_x + 0.5$.
+    *   **Rationale:** This approximation holds well if it is assumed that deaths are uniformly distributed over each year of age. This means, on average, a person who dies within a given year of age lives for an additional half-year beyond their last birthday. If deaths occur precisely at the mid-point of each year of age, this approximation becomes exact.
+*   **R Implementation:** R can be used to calculate these expectations. For instance, for Gompertz or Weibull models, you can approximate $\stackrel{\circ}{e}_x$ by summing probabilities of survival, or for $e_x$ directly sum the $_k p_x$ values using functions like `pgompertz(..., lower.tail = FALSE)`.
+
+---
+
+#### **Syllabus Objective 4.1.8: Describe the two-state model of a single decrement and compare its assumptions with those of the random lifetime model.**
+
+While Chapter 6 mainly focuses on the random lifetime model, this objective directs you to Chapter 3 for a detailed understanding of the two-state Markov model, and to compare its assumptions.
+
+*   **The Two-State Markov Model:** This model simplifies mortality by considering only two states: "alive" and "dead". Transitions are one-directional, from alive to dead. The core of this model is the age-dependent **transition intensity** (or force of mortality) $\mu_x$.
+*   **Assumptions of the Two-State Markov Model:**
+    1.  **Markov Assumption:** The probabilities of a life being in either state at a future age depend *only* on the current age and the current state. Past history before the current state is irrelevant.
+    2.  **Instantaneous Rate of Death:** For a short time interval $dt$, the probability of dying is approximately $\mu_{x+t} dt + o(dt)$, where $\mu_{x+t}$ is the transition intensity. This is equivalent to assuming that $_h q_{x+t} \approx h \mu_{x+t}$ for small $h$.
+    3.  **Constant Force of Mortality (often assumed for simplification):** $\mu_{x+t}$ is constant, say $\mu$, for a given age interval like $x$ to $x+1$. While this simplifies calculations (e.g., $_t p_x = e^{-\mu t}$), the actual force of mortality likely varies over a year of age.
+*   **Comparison with the Random Lifetime Model (from Chapter 6):**
+    *   **Formulation:** The key difference lies in their starting assumptions. The random lifetime model (Chapter 6) starts by defining $T_x$ as a continuous random variable. The two-state Markov model (Chapter 3) begins with a transition intensity between states.
+    *   **Equivalence under Conditions:** The sources state that it is "easy to impose some mild conditions under which the models are equivalent". For instance, if the continuous random variable $T_x$ has a density function $f_x(t)$ and survival function $S_x(t)$, and the two-state model has a force of mortality $\mu_{x+t}$, then their equivalence is established via the fundamental relationship $\mu_{x+t} = f_x(t) / S_x(t)$.
+    *   **Divergence for Multiple Decrements:** However, the sources explicitly warn that when considering more than one decrement (e.g., multiple causes of death, or alive/sick/dead states), these two formulations "lead in different directions". This highlights the importance of choosing the appropriate modelling framework based on the complexity of the decrements being analysed. The Markov framework, as seen in Chapters 4 and 5, is more readily extended to multi-state models.
+
+---
+
+This comprehensive summary covers all the stated learning objectives for "Survival Models" (Chapter 6) from your CS2 syllabus, drawing directly from the provided source materials. Remember, for your exams, it's not just about recalling definitions but also understanding the relationships between these concepts and being able to apply them in practical scenarios. Keep practising, and you'll master this crucial area of actuarial science!

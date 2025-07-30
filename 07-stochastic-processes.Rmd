@@ -9,25 +9,111 @@
 
 ## Theory {-#theory-stochastic-processes}
 
-**TO ADD THEORY ABOUT STOCHASTIC PROCESSES HERE**
+### Chapter 1: Stochastic Processes
 
-## Defining stochastic process
+This chapter lays the essential groundwork for understanding random phenomena that evolve over time, which is fundamental to actuarial work. We'll define what these processes are, how to classify them, explore their applications, and critically, understand the pivotal "Markov property".
 
-### Defining a counting process
+---
 
-## Classifying stochastic processes
+#### 1. Define in general terms a stochastic process and in particular a counting process. [28, 29, 3.1.1]
 
-### Time basis
+At its core, a **stochastic process** is a mathematical model designed to represent a random phenomenon that changes or evolves over time. Unlike a single random variable that describes a static random event, a stochastic process is a *collection* or *family* of random variables. Each random variable in this collection is indexed by a subscript, typically representing time, such that $X_t$ models the value of the process at time $t$. The process is formally denoted as $\{X_t : t \in J\}$.
 
-Continous or discrete time
+To fully define a stochastic process, you need to specify two key components:
 
-### State space
+*   **Time Set (or Time Domain), J**: This is the set of all points in time at which the value of the process can be observed or changes can occur. The time set can be either **discrete** (e.g., observations taken annually or daily) or **continuous** (e.g., changes occurring at any instant). For instance, a time series typically has a discrete time set.
+*   **State Space, S**: This refers to the comprehensive set of all possible values that any of the random variables ($X_t$) within the stochastic process can take. Like the time set, the state space can be either **discrete** (e.g., whole numbers, categories) or **continuous** (e.g., any real number within a range). While the state space encompasses all possible values, for specific random variables in the set, some values might have a zero probability of occurring.
 
-Continous or discrete state space
+A **sample path** is a single, joint realisation or trajectory of the random variables $X_t$ for all $t$ in the time set $J$. Think of it as one specific sequence of observed values over time that the random phenomenon could take.
 
-### Mixed type stochastic process
+Now, let's narrow our focus to a specific type: a **counting process**. A counting process, denoted $X(t)$, is a stochastic process that operates in either discrete or continuous time. Its defining characteristics are:
+*   Its state space $S$ is restricted to the collection of natural numbers $\{0, 1, 2, ...\}$.
+*   $X(t)$ is a non-decreasing function of $t$. This means the count can only increase or stay the same; it can never decrease.
+*   It typically starts at $X(0) = 0$.
 
-## Applications of mixed processes
+A prime example of a counting process in actuarial science is the **number of claims arising from a portfolio of policies up to time $t$**. The Poisson process, which we'll discuss further, is a classic example of a continuous-time counting process.
+
+---
+
+#### 2. Classify a stochastic process. [28, 29, 3.1.2]
+
+The fundamental classification of a stochastic process stems from whether its **time set** and **state space** are discrete or continuous. This gives rise to a four-way classification system, as shown in the table:
+
+| Time Set        | State Space: Discrete             | State Space: Continuous           |
+| :-------------- | :-------------------------------- | :-------------------------------- |
+| **Discrete**    | (1) Discrete Time, Discrete State | (2) Discrete Time, Continuous State |
+| **Continuous**  | (3) Continuous Time, Discrete State | (4) Continuous Time, Continuous State |
+
+Let's explore each category with actuarial applications:
+
+1.  **Discrete Time, Discrete State Space**:
+    *   **Description:** Both observations occur at specific, separated points in time (e.g., annually, monthly) and the process can only take on distinct, countable values (e.g., integers, categories).
+    *   **Examples of Statistical Models:** Markov chains, simple random walks, and discrete-time white noise processes with discrete state spaces.
+    *   **Actuarial Application:** A prominent example is a **no claims discount (NCD) system** in motor insurance. Here, the discrete random variable $X_t$ represents the discount level (e.g., 0%, 25%, 40%, 60%) received by a policyholder in year $t$. Changes in discount level happen at discrete time steps (e.g., policy renewal annually).
+
+2.  **Discrete Time, Continuous State Space**:
+    *   **Description:** Observations occur at discrete time points, but the values the process can take are continuous (e.g., real numbers).
+    *   **Examples of Statistical Models:** General random walks, time series, and white noise processes with continuous state spaces.
+    *   **Actuarial Application:** Modelling the **cumulative claim amount from a portfolio of insurance policies at the end of each month**. Other relevant applications include the daily closing price of the FTSE100 index, or the share price of a company at the end of each trading day.
+
+3.  **Continuous Time, Discrete State Space**:
+    *   **Description:** The process can change its value at any instant in time, but the values it can take are distinct and countable.
+    *   **Examples of Statistical Models:** Markov jump processes (including the Poisson process as a special case), and counting processes with continuous time sets.
+    *   **Actuarial Application:** A **health, sickness, death model**. Here, the discrete random variable $X_t$ takes values like 'healthy', 'sick', or 'dead' for any time $t \ge 0$. Transitions between these states can occur at any moment, not just fixed intervals. Another common use is in modeling **claims arriving at an insurance company** via a Poisson process.
+
+4.  **Continuous Time, Continuous State Space**:
+    *   **Description:** Changes can occur at any moment in time, and the values the process can take are continuous.
+    *   **Examples of Statistical Models:** Brownian motion, diffusion processes, and compound Poisson processes with continuous state spaces. (Note: Brownian motion and diffusion processes are typically covered in Subject CM2).
+    *   **Actuarial Application:** Modelling the **cumulative claim amount from a portfolio of policies up to time $t$**, where individual claim amounts are continuous random variables. The share price of a company at any given time $t$ since trading began is another example.
+
+---
+
+#### 3. Describe possible applications of mixed processes. [28, 29, 3.1.3]
+
+A **stochastic process of mixed type** is one that exhibits characteristics from both continuous and discrete time processes. Specifically, it operates in continuous time, meaning changes can happen at any instant, but it also features **predetermined discrete points in time** where the value of the process can change.
+
+This dual nature makes mixed processes particularly useful for modelling real-world scenarios where both continuous and discrete events interact.
+
+A key application in actuarial science is modelling the **number of contributors to a pension scheme**. In such a model:
+*   Deaths can occur at **any time** (continuous time aspect), leading to a continuous decrement from the number of contributors.
+*   However, members may only be allowed to retire on specific **birthdays** (e.g., between ages 60 and 65). These retirement ages represent predetermined discrete points in time where a change in the number of contributors can occur.
+
+This combination of continuous events (deaths) and discrete, scheduled events (retirements) makes it a classic example of a mixed-type stochastic process.
+
+---
+
+#### 4. Explain what is meant by the Markov property in the context of a stochastic process and in terms of filtrations. [28, 29, 3.1.4]
+
+The **Markov property** is a fundamental simplifying assumption for many stochastic processes, stating that the future development of a process depends *only* on its **present state**, and is entirely independent of its **past history**. This means that once you know the current state of the process, any additional knowledge about how it reached that state is irrelevant for predicting its future.
+
+Formally, for a stochastic process $\{X_t : t \in J\}$, the Markov property can be stated as:
+$P[X_t \in A | X_{s_1}=x_1, X_{s_2}=x_2, ..., X_{s_n}=x_n, X_s=x] = P[X_t \in A | X_s=x]$
+for all times $s_1 < s_2 < ... < s_n < s < t$ in $J$, all states $x_1, x_2, ..., x_n$ and $x$ in $S$, and all subsets $A$ of $S$. The use of subsets $A \subseteq S$ is necessary to cover continuous state spaces where the probability of $X_t$ taking a *particular* value is zero.
+
+**Filtrations** provide a formal way to describe the information available about a stochastic process up to a certain time. For any stochastic process $X_t$, there are underlying structures:
+*   A **sample space $\Omega$**: Each outcome $\omega$ in $\Omega$ determines a unique sample path $(X_t(\omega))$.
+*   A set of **events $\mathcal{F}$**: A collection of subsets of $\Omega$ to which probabilities can be assigned.
+*   For each time $t$, a smaller collection of events $\mathcal{F}_t \subseteq \mathcal{F}$: This set comprises all events whose truth or falsity is known by time $t$. In simpler terms, an event $A$ belongs to $\mathcal{F}_t$ if its occurrence depends solely on the process's values up to time $t$, i.e., $\{X_s : 0 \le s \le t\}$.
+
+As time $t$ increases, the information available generally expands, meaning $\mathcal{F}_t \subseteq \mathcal{F}_u$ for $t \le u$. This collection of sets $\{\mathcal{F}_t : t \ge 0\}$ is known as the **(natural) filtration associated with the stochastic process**. It encapsulates the "history" or "information gained by observing the process" up to time $t$.
+
+In terms of filtrations, the Markov property can be concisely stated as:
+$P[X_t \in A | \mathcal{F}_s] = P[X_t \in A | X_s]$ for all $t \ge s \ge 0$. This reiterates that the future distribution of the process, given all past information up to time $s$ ($\mathcal{F}_s$), depends only on the current state $X_s$.
+
+**Key relationship: Independent increments implies Markov property**
+A crucial result is that any stochastic process with **independent increments** also possesses the Markov property.
+*   **Independent increments** means that for any $t$ and any $u > 0$, the increment $X_{t+u} - X_t$ is independent of all the past values of the process up to and including time $t$ (i.e., $\{X_s : 0 \le s \le t\}$).
+*   The proof essentially leverages this independence: by knowing the current state $X_s$, the future increment $X_t - X_s$ is independent of previous history ($X_{s_1}, ..., X_{s_n}$), thus the future state $X_t$ only depends on $X_s$.
+
+Let's look at how specific processes exhibit (or don't exhibit) the Markov property:
+
+*   **White Noise Process**: A sequence of independent random variables. This process trivially satisfies the Markov property because its future development is *completely* independent of its past. Each observation is independent of all previous observations, so knowing the "current" state provides no more information than knowing nothing about the past (beyond the current state itself).
+*   **General Random Walk**: Defined as $X_n = Y_1 + Y_2 + ... + Y_n$, where $Y_j$ are independent and identically distributed random variables. Since the increments ($X_n - X_{n-1} = Y_n$) are independent, a general random walk *has* the Markov property. However, it is *not* stationary, as its mean and variance typically increase linearly with time.
+    *   A **simple random walk** is a special case where $Y_j$ can only take values +1 or -1. A **simple symmetric random walk** is a simple random walk where $P(Y_j=1) = P(Y_j=-1) = 0.5$.
+*   **Poisson Process**: A continuous-time counting process with independent, stationary Poisson-distributed increments. Because it has independent increments, a Poisson process *satisfies the Markov property*. It is *not* stationary, as its mean and variance increase linearly with time.
+*   **Compound Poisson Process**: Defined as $X_t = \sum_{j=1}^{N_t} Y_j$, where $N_t$ is a Poisson process and $Y_j$ are independent and identically distributed random variables. This process also has independent increments, and therefore *has the Markov property*. Similar to the Poisson process, it is *not* weakly stationary, as its expected value and variance change over time.
+
+This foundational understanding of stochastic processes, their classifications, and particularly the Markov property, is crucial as we progress to more specific models like Markov Chains and Markov Jump Processes in subsequent chapters. Keep practicing, and you'll master CS2 in no time!
 
 ## `R` Practice {-#practice-stochastic-processes}
 
