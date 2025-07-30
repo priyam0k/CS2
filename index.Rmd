@@ -1,15 +1,15 @@
 --- 
 title: "Risk Modelling and Survival Analysis"
-author: "Alex Garbiak"
-date: "`r format (Sys.time(), '%d %B, %Y')`"
+author: "Priyam"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: agarbiak/CS2
-description: "Risk modelling and survival analysis for actuaries providing R code examples."
+github-repo: priyam0k/CS2
+description: "A modified version of the book on Risk Modelling and Survival Analysis, with additional notes and examples."
 favicon: img/favicon.ico
 ---
 

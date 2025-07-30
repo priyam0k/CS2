@@ -6,12 +6,12 @@ bookdown::gitbook:
       scroll_highlight: yes
       before: |
         <li><a href="./">Risk Modelling and Survival Analysis</a></li>
-      after: |
-        <li><a href="https://github.com/agarbiak" target="blank">A book by Alex Garbiak</a></li>
+      after: 
+        <li>Adapted by <a href="https://github.com/priyam0k">Priyam</a> from the original by <a href="https://github.com/agarbiak" target="blank">Alex Garbiak</a>.</li>
     toolbar:
       position: fixed
     edit:
-      link: https://github.com/agarbiak/CS2/edit/main/%s
+      link: https://github.com/priyam0k/CS2/edit/main/%s
       text: "Edit"
     search: yes
     fontsettings:
