@@ -19,6 +19,8 @@ This book is **unpublished** and should be considered an **early build** version
 
 ## Motivation {-}
 
+This book is a modified version of the original work by **Alex Garbiak**. As an adapted version, there may be changes, bugs, typos, or errors. Please report any issues you find [here](https://github.com/priyam0k/CS2/issues).
+
 The purpose of this book is to help actuaries studying [Risk Modelling and Survival Analysis (CS2)](https://www.actuaries.org.uk/studying/curriculum/actuarial-statistics) from the Institute and Faculty of Actuaries by providing `R` code examples across the following topic areas:
 
 1. Random variables and distributions for risk modelling
