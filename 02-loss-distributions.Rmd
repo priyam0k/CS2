@@ -11,40 +11,160 @@
 
 ## Theory {-#theory-loss-distributions}
 
-`R` was designed to be used for statistical computing - so it handles **randomness** well!
+**Introduction to Loss Distributions**
+In general insurance, understanding and modelling claims experience is paramount for various actuarial functions, including premium rating, reserving, reviewing reinsurance arrangements, and testing for solvency. Loss distributions are specifically designed statistical distributions used to model the amounts of individual claims.
 
-```{r loss-distributions-randomness}
-set.seed(42) # Fixes result
-die_throws <- sample(1:6, 10000, replace = TRUE)
-mean(die_throws)
-```
+**1. Properties of Statistical Distributions for Modelling Individual and Aggregate Losses**
 
-## Probability distributions for modelling insurance losses
+When modelling claim amounts, actuaries often encounter a typical pattern: a high frequency of small claims, peaking, and then gradually tapering off with a few very large claims. This characteristic shape means that loss distributions tend to be **positively skewed and long-tailed**. This "long-tailed" property is particularly crucial as it indicates a higher probability of extreme values compared to lighter-tailed distributions.
 
-`R` has in-built functions for probability distributions:
+**1.1. Individual Loss Distributions**
+These model the monetary amount of a single claim or loss event. A range of statistical techniques are used to describe the variation in claim amounts, aiming to find a distribution that adequately describes actual claims. Key distributions frequently employed include:
 
-- **d***\<distribution-name\>* $:=$ **d**ensity (PDF), *i.e.* $f_X(x)$
-- **p***\<distribution-name\>* $:=$ **p**robability distribution cumulative function (CDF), *i.e.* $F_X(x) =\boldsymbol{P}(X \leq x)$
-- **q***\<distribution-name\>* $:=$ **q**uantile function, *i.e.* return $x$ such that $\boldsymbol{P}(X \leq x) = p$
-- **r***\<distribution-name\>* $:=$ **r**andom deviates, *i.e.* (*psuedo*) random number generator for a given distribution
-- *Where \<distribution-name\>* $=$ Normal, uniform, lognormal, Student's t, Poisson, binormal, Weibull ... see `?distributions()`{.R} for more information
+*   **Exponential Distribution:** Characterised by a constant hazard rate and the memoryless property, meaning the probability of an event occurring in the future is independent of how long it has already been "alive". Its PDF is $f(x) = \lambda e^{-\lambda x}$ for $x>0$, with mean $1/\lambda$ and variance $1/\lambda^2$. It's useful for "risk of death from unnatural causes, eg accident or murder".
+*   **Gamma Distribution:** A flexible distribution suitable for modelling positive losses, it is skewed and includes the exponential distribution as a special case. Its PDF involves shape parameter $\alpha$ and rate parameter $\lambda$.
+*   **Normal Distribution:** While often used in general statistics, it has limited use for modelling individual losses because it is symmetric and can produce negative values, which are impossible for claim amounts.
+*   **Lognormal Distribution:** This distribution is positively skewed and only takes positive values, making it more suitable for claims data than the normal distribution. A random variable $X$ has a lognormal distribution if $\log X$ has a normal distribution.
+*   **Pareto Distribution:** Known for being fat-tailed (or heavy-tailed), the Pareto distribution is frequently used for modelling large losses or income distributions, as it assigns a higher probability to extreme values.
+*   **Weibull Distribution:** This is a versatile distribution capable of modelling increasing, decreasing, or constant hazard rates depending on its parameters, making it useful for various tail behaviours in survival analysis and loss modelling.
+*   **Burr Distribution:** A generalisation of the Pareto distribution, it offers flexibility in modelling heavy-tailed data and has a closed-form CDF.
 
-| R Code | Definition |
-|-|-|
-| `rnorm(1)`{.R} | Generates $x_1$ where $X \sim \mathcal{N}(0,\,1)$ |
-| `rnorm(y, mean=10, sd=2)`{.R} | Generates $\{y_1,\,y_2,\,\dots\}$ with $Y \sim \mathcal{N}(10,\,2^2)$ |
-| `runif(3, min=5, max=10)`{.R} | Generates $\{z_1,\,z_2,\,z_3\}$  where $Z \sim \mathcal{U}(5,\,10)$ |
-| `dbinom(4, size=5, prob=0.5)`{.R} | Computes $\boldsymbol{P}(X = 4)$ where $X \sim \mathcal{Bin}(5,\,0.5)$ |
-| `pgamma(0.2, shape=2, rate=2)`{.R} | Computes $F_Y(0.2)$ where $Y \sim \mathcal{\Gamma}(2,\,2)$, i.e.  $\boldsymbol{P}(Y\leq 0.2)$|
-| `qexp(0.5, rate = 2)`{.R} | Determines smallest value of $z$ for $\boldsymbol{P}(Z \leq z) = 0.5$ where $Z \sim Exp(2)$ |
+**1.2. Aggregate Loss Distributions**
+Aggregate losses represent the total sum of individual claims arising from an insurance portfolio over a specified period. These are typically modelled using **compound distributions**, which are sums of a random number of random variables. The total aggregate claims $S$ is expressed as $S = \sum_{j=1}^N X_j$, where $N$ is the number of claims (frequency) and $X_j$ are the individual claim amounts (severity). Key simplifying assumptions include that the number of claims $N$ is independent of the individual claim amounts $X_j$, and the $X_j$s are independent and identically distributed (IID).
 
-## Mechanisms for limiting insurance losses
+Common types of compound distributions for aggregate losses include:
 
-## Proportional and Excess of Loss reinsurance
+*   **Compound Poisson Distribution:** Here, the number of claims $N$ follows a Poisson distribution. A significant property is that the sum of independent compound Poisson variables also follows a compound Poisson distribution.
+    *   Mean: $E[S] = \lambda E[X]$.
+    *   Variance: $\text{var}[S] = \lambda E[X^2]$.
+    *   Coefficient of Skewness: $\text{skew}[S] = \lambda E[X^3] / (\lambda E[X^2])^{3/2}$.
+    *   MGF: $M_S(t) = \exp(\lambda(M_X(t)-1))$.
+*   **Compound Binomial Distribution:** The number of claims $N$ follows a binomial distribution.
+*   **Compound Negative Binomial Distribution:** The number of claims $N$ follows a negative binomial distribution.
 
-## Estimating parameters of loss distributions with complete data
+Compound distributions can be positively skewed. The calculation of their moments (mean, variance, skewness) relies on the moments of both the claim frequency distribution and the individual claim amount distribution.
 
-## Estimating parameters of loss distributions with incomplete data
+**2. Concepts of Excesses (Deductibles) and Retention Limits**
+
+These concepts are fundamental in risk sharing mechanisms, particularly in insurance and reinsurance.
+
+*   **Excess (Deductible):** This is the first part of any claim that the policyholder is required to pay. For example, in car insurance, the policyholder might pay the first £200 of a claim, with the insurer covering the remainder. The insurer's claim amount is reduced by the excess amount.
+*   **Retention Limit:** This term has different meanings depending on the context:
+    *   In **Individual Excess of Loss (XOL) Reinsurance**, it refers to a specified monetary amount ($M$) up to which the direct insurer pays the claim in full. Any claim amount above this limit is borne by the reinsurer.
+    *   In **Proportional Reinsurance**, the retained proportion ($\alpha$) can also be referred to as a "retention level," but it signifies the fixed percentage of the claim that the insurer retains, rather than a monetary limit.
+
+**3. Operation of Proportional and Excess of Loss Reinsurance**
+
+Reinsurance serves as a critical risk management tool for insurers, allowing them to protect themselves from large claims and manage their exposure. Two primary simple forms are:
+
+*   **Proportional Reinsurance:**
+    *   **Operation:** Under this arrangement, the insurer (direct writer) and the reinsurer agree to share all claims and premiums in predefined, fixed proportions. If $\alpha$ is the retained proportion (where $0 < \alpha < 1$), the insurer pays $\alpha$ of each claim, and the reinsurer pays $(1-\alpha)$.
+    *   **Forms:** This can take two forms:
+        *   **Quota Share Reinsurance:** The proportions are identical for all risks in the portfolio.
+        *   **Surplus Reinsurance:** The proportions may vary from one risk to another. In CS2, the focus is generally on quota share reinsurance.
+*   **Individual Excess of Loss (XOL) Reinsurance:**
+    *   **Operation:** This is a non-proportional reinsurance arrangement where the reinsurer only becomes involved if an individual claim amount exceeds a specified monetary threshold, known as the retention limit ($M$). The insurer pays the claim in full up to $M$, and the reinsurer pays the amount above $M$. There might also be an upper limit for the reinsurer's payment.
+    *   **Implication for Reinsurer's Data:** The reinsurer typically only has a record of claims that are greater than $M$, observing claims from a *truncated distribution*.
+
+**4. Derivation of Distribution and Moments in Presence of Excesses/Reinsurance**
+
+To analyse the financial impact of these arrangements, it's essential to derive the distributions and moments of the amounts paid by both the insurer and the reinsurer.
+
+**4.1. Notation**
+*   $X$: Gross claim amount random variable.
+*   $Y$: Net claim amount, paid by the insurer after reinsurance recovery.
+*   $Z$: Amount paid by the reinsurer.
+
+**4.2. Excess of Loss Reinsurance**
+With a retention limit $M$:
+*   **Insurer's Payment ($Y$):**
+    *   If $X \le M$, $Y = X$.
+    *   If $X > M$, $Y = M$.
+    *   This can be compactly written as $Y = \min(X, M)$.
+    *   **Mean:** $E[Y] = \int_0^M x f(x) dx + M P(X > M)$.
+    *   **Variance:** $\text{var}(Y) = E[Y^2] - (E[Y])^2$, where $E[Y^2] = \int_0^M x^2 f(x) dx + M^2 P(X > M)$.
+    *   **MGF:** $M_Y(t) = \int_0^M e^{tx} f(x) dx + e^{tM} P(X > M)$.
+*   **Reinsurer's Payment ($Z$):**
+    *   If $X \le M$, $Z = 0$.
+    *   If $X > M$, $Z = X - M$.
+    *   This can be compactly written as $Z = \max(0, X - M)$.
+    *   **Conditional Distribution of Reinsurer's Payments ($W$):** The reinsurer is only informed of claims greater than $M$. This means they observe claims from a truncated distribution, $W = Z | Z > 0$, which is equivalent to $W = X - M | X > M$.
+        *   The PDF of $W$ is given by $g(w) = \frac{f(w+M)}{P(X>M)}$.
+        *   **Example (Exponential $X$):** If the underlying claims $X$ are exponentially distributed, the threshold exceedances $W$ (and thus the reinsurer's payments when involved) also follow the same exponential distribution. This is due to the memoryless property of the exponential distribution.
+        *   **Example (Pareto $X$):** If the underlying claims $X$ follow a Pareto distribution with parameters $\alpha$ and $\lambda$, the threshold exceedances $W$ follow a Pareto distribution with parameters $\alpha$ and $\lambda+M$.
+        *   **Mean of Conditional Payment:** The mean amount paid by the reinsurer on claims in which it is involved is $E[W] = \frac{E[Z]}{P(Z>0)}$.
+
+**4.3. Policy Excess**
+When a policy excess (deductible) of level $L$ applies, the policyholder pays the first part of each loss up to $L$, and the insurer pays amounts greater than $L$. The positions are analogous to XOL reinsurance:
+*   The policyholder's payment is like the insurer's payment under XOL ($min(X, L)$).
+*   The insurer's payment (net of policyholder's contribution) is like the reinsurer's payment under XOL ($max(0, X-L)$).
+*   The insurer's conditional distribution of claims paid takes the same form as the reinsurer's conditional distribution under XOL.
+
+**4.4. Proportional Reinsurance**
+With a retained proportion $\alpha$:
+*   **Insurer's Payment ($Y$):** $Y = \alpha X$.
+*   **Reinsurer's Payment ($Z$):** $Z = (1-\alpha) X$ (since $Y+Z=X$).
+*   **Mean:**
+    *   $E[Y] = \alpha E[X]$.
+    *   $E[Z] = (1-\alpha) E[X]$.
+*   **Variance:**
+    *   $\text{var}(Y) = \alpha^2 \text{var}(X)$.
+    *   $\text{var}(Z) = (1-\alpha)^2 \text{var}(X)$.
+*   **Skewness:**
+    *   $\text{skew}(Y) = \alpha \text{skew}(X)$.
+    *   $\text{skew}(Z) = (1-\alpha) \text{skew}(X)$.
+*   **MGF:**
+    *   $M_Y(t) = M_X(\alpha t)$.
+    *   $M_Z(t) = M_X((1-\alpha)t)$.
+
+**4.5. Impact of Inflation**
+If claims are inflated by a factor $k$ (e.g., $kX$ instead of $X$), but the retention limit $M$ remains fixed:
+*   **Insurer's Payment:** $Y = \min(kX, M)$.
+*   **Reinsurer's Payment:** $Z = \max(0, kX - M)$.
+Similar adjustments apply to proportional reinsurance (e.g., $Y = \alpha k X$).
+
+**5. Parameter Estimation for Complete and Incomplete Data**
+
+Once the form of the loss distribution is chosen, its parameters must be estimated from data.
+
+**5.1. Method of Moments (MoM)**
+*   **Principle:** For a distribution with $r$ unknown parameters, the method of moments involves equating the first $r$ theoretical (population) moments of the distribution to the first $r$ sample moments (calculated from the observed data).
+*   **Procedure:** A system of simultaneous equations is set up and solved to find the estimates of the parameters.
+*   **Limitation:** It may not be available when data are incomplete, for example, if the mean claim amount cannot be computed due to censoring.
+
+**5.2. Maximum Likelihood Estimation (MLE)**
+*   **Principle:** MLE chooses the parameter values that maximise the likelihood of observing the given dataset. This is often done by maximising the logarithm of the likelihood function (log-likelihood).
+*   **For Complete Data:** If the log-likelihood function $l(\theta)$ is differentiable with respect to the parameter $\theta$, the MLE $\hat{\theta}$ is found by setting the derivative to zero: $\frac{dl(\theta)}{d\theta} = 0$. For multiple parameters, partial derivatives are used.
+*   **For Incomplete (Censored) Data:** This method is crucial when data are incomplete due to policy excesses or reinsurance arrangements, where some claims might be capped or unobserved if below a threshold.
+    *   A **censored sample** occurs when some values are recorded exactly, while others are known only to exceed a certain value (e.g., the retention limit $M$).
+    *   The likelihood function for a censored sample is composed of two parts:
+        *   A product of the probability density functions ($f(x_i)$) for all exact observations.
+        *   A product of the probabilities of exceeding the retention limit ($P(X > M)$) for all censored observations (those known to be above $M$).
+    *   The complete likelihood function is $L(\theta) = \left( \prod_{i=1}^{n_1} f(x_i; \theta) \right) \times [P(X > M; \theta)]^{n_2}$, where $n_1$ is the number of exact observations and $n_2$ is the number of censored observations that exceed $M$. Numerical optimisation methods (e.g., `nlm()` in R) are often required for complex distributions.
+
+**5.3. Method of Percentiles**
+*   **Principle:** This method involves equating selected population percentiles (e.g., median, quartiles) of the theoretical distribution to their corresponding sample percentiles from the observed data.
+*   **Limitation:** It can be very unreliable for estimating parameters of heavy-tailed distributions like the Pareto, especially with small samples.
+
+**6. Fitting a Statistical Distribution to a Dataset and Goodness-of-Fit Measures**
+
+After estimating the parameters, it's crucial to assess how well the chosen distribution fits the observed data.
+
+*   **Fitting a Distribution:**
+    *   The objective is to find a loss distribution that adequately describes the variation in claim amounts.
+    *   Software like R provides built-in functions for various standard distributions (e.g., `dexp`, `dgamma`, `dlnorm`, `dweibull` for density, `pexp` for CDF, `qexp` for quantiles, `rexp` for random variates).
+    *   For MLE in R, numerical optimisation functions like `nlm()` are commonly used to maximise the (log-)likelihood function.
+    *   Visual inspection through plotting the fitted probability density function (PDF) against the empirical density function of the data is a common first step.
+
+*   **Goodness-of-Fit Measures:**
+    *   **Chi-squared Test ($\chi^2$ test):** This is a statistical test used to assess the overall goodness of fit by comparing observed frequencies (e.g., number of claims within specific bands) to expected frequencies under the fitted distribution.
+        *   The test statistic is $\sum \frac{(O-E)^2}{E}$, where $O$ is the observed count and $E$ is the expected count in a category.
+        *   While it indicates overall fit, it "tells us nothing about the direction of any bias or the nature of any lack of adherence to data of a graduation". It does not detect individual ages where the fit is poor or the consistency of the "shape".
+    *   **Q-Q Plots (Quantile-Quantile Plots):** These are graphical tools used to compare the quantiles of the observed data against the quantiles of the fitted theoretical distribution.
+        *   If the fitted distribution is a good representation of the data, the points on the Q-Q plot should lie approximately along a straight line ($y=x$). Deviations from this line suggest a poor fit, especially in the tails.
+        *   In R, functions like `qqplot()` are used, often combined with an `abline(0, 1)` for the reference line.
+
+By systematically applying these models, estimation techniques, and goodness-of-fit assessments, actuaries can build robust foundations for understanding and managing various insurance risks.
 
 ## `R` Practice {-#practice-loss-distributions}
 

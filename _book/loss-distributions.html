@@ -153,26 +153,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#objectives-loss-distributions"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#theory-loss-distributions"><i class="fa fa-check"></i>Theory</a></li>
-<li class="chapter" data-level="2.1" data-path="loss-distributions.html"><a href="loss-distributions.html#probability-distributions-for-modelling-insurance-losses"><i class="fa fa-check"></i><b>2.1</b> Probability distributions for modelling insurance losses</a></li>
-<li class="chapter" data-level="2.2" data-path="loss-distributions.html"><a href="loss-distributions.html#mechanisms-for-limiting-insurance-losses"><i class="fa fa-check"></i><b>2.2</b> Mechanisms for limiting insurance losses</a></li>
-<li class="chapter" data-level="2.3" data-path="loss-distributions.html"><a href="loss-distributions.html#proportional-and-excess-of-loss-reinsurance"><i class="fa fa-check"></i><b>2.3</b> Proportional and Excess of Loss reinsurance</a></li>
-<li class="chapter" data-level="2.4" data-path="loss-distributions.html"><a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-complete-data"><i class="fa fa-check"></i><b>2.4</b> Estimating parameters of loss distributions with complete data</a></li>
-<li class="chapter" data-level="2.5" data-path="loss-distributions.html"><a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-incomplete-data"><i class="fa fa-check"></i><b>2.5</b> Estimating parameters of loss distributions with incomplete data</a></li>
 <li class="chapter" data-level="" data-path="loss-distributions.html"><a href="loss-distributions.html#practice-loss-distributions"><i class="fa fa-check"></i><code>R</code> Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html"><i class="fa fa-check"></i><b>3</b> Compound loss distributions</a>
 <ul>
 <li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#objectives-compound-loss-distributions"><i class="fa fa-check"></i>Learning Objectives</a></li>
-<li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#theory-compound-loss-distributions"><i class="fa fa-check"></i>Theory</a></li>
-<li class="chapter" data-level="3.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#modelling-frequency-of-insurance-claims"><i class="fa fa-check"></i><b>3.1</b> Modelling frequency of insurance claims</a></li>
-<li class="chapter" data-level="3.2" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#modelling-severity-of-insurance-claims"><i class="fa fa-check"></i><b>3.2</b> Modelling severity of insurance claims</a></li>
-<li class="chapter" data-level="3.3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-loss-distributions-1"><i class="fa fa-check"></i><b>3.3</b> Compound loss distributions</a>
+<li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#theory-compound-loss-distributions"><i class="fa fa-check"></i>Theory</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-binomial"><i class="fa fa-check"></i><b>3.3.1</b> Compound binomial</a></li>
-<li class="chapter" data-level="3.3.2" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-poisson"><i class="fa fa-check"></i><b>3.3.2</b> Compound Poisson</a></li>
-<li class="chapter" data-level="3.3.3" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-negative-binomial"><i class="fa fa-check"></i><b>3.3.3</b> Compound negative binomial</a></li>
+<li class="chapter" data-level="3.0.1" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#chapter-compound-loss-distributions"><i class="fa fa-check"></i><b>3.0.1</b> <strong>Chapter: Compound Loss Distributions</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#compound-loss-distributions-after-reinsurance"><i class="fa fa-check"></i><b>3.4</b> Compound loss distributions after reinsurance</a></li>
 <li class="chapter" data-level="" data-path="compound-loss-distributions.html"><a href="compound-loss-distributions.html#practice-compound-loss-distributions"><i class="fa fa-check"></i><code>R</code> Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="copulas.html"><a href="copulas.html"><i class="fa fa-check"></i><b>4</b> Copulas</a>
@@ -311,72 +300,157 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="theory-loss-distributions" class="section level2 unnumbered hasAnchor">
 <h2>Theory<a href="loss-distributions.html#theory-loss-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><code>R</code> was designed to be used for statistical computing - so it handles <strong>randomness</strong> well!</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="loss-distributions.html#cb16-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Fixes result</span></span>
-<span id="cb16-2"><a href="loss-distributions.html#cb16-2" tabindex="-1"></a>die_throws <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">10000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-3"><a href="loss-distributions.html#cb16-3" tabindex="-1"></a><span class="fu">mean</span>(die_throws)</span></code></pre></div>
-<pre><code>## [1] 3.4627</code></pre>
-</div>
-<div id="probability-distributions-for-modelling-insurance-losses" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Probability distributions for modelling insurance losses<a href="loss-distributions.html#probability-distributions-for-modelling-insurance-losses" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><code>R</code> has in-built functions for probability distributions:</p>
+<p><strong>Introduction to Loss Distributions</strong>
+In general insurance, understanding and modelling claims experience is paramount for various actuarial functions, including premium rating, reserving, reviewing reinsurance arrangements, and testing for solvency. Loss distributions are specifically designed statistical distributions used to model the amounts of individual claims.</p>
+<p><strong>1. Properties of Statistical Distributions for Modelling Individual and Aggregate Losses</strong></p>
+<p>When modelling claim amounts, actuaries often encounter a typical pattern: a high frequency of small claims, peaking, and then gradually tapering off with a few very large claims. This characteristic shape means that loss distributions tend to be <strong>positively skewed and long-tailed</strong>. This “long-tailed” property is particularly crucial as it indicates a higher probability of extreme values compared to lighter-tailed distributions.</p>
+<p><strong>1.1. Individual Loss Distributions</strong>
+These model the monetary amount of a single claim or loss event. A range of statistical techniques are used to describe the variation in claim amounts, aiming to find a distribution that adequately describes actual claims. Key distributions frequently employed include:</p>
 <ul>
-<li><strong>d</strong><em>&lt;distribution-name&gt;</em> <span class="math inline">\(:=\)</span> <strong>d</strong>ensity (PDF), <em>i.e.</em> <span class="math inline">\(f_X(x)\)</span></li>
-<li><strong>p</strong><em>&lt;distribution-name&gt;</em> <span class="math inline">\(:=\)</span> <strong>p</strong>robability distribution cumulative function (CDF), <em>i.e.</em> <span class="math inline">\(F_X(x) =\boldsymbol{P}(X \leq x)\)</span></li>
-<li><strong>q</strong><em>&lt;distribution-name&gt;</em> <span class="math inline">\(:=\)</span> <strong>q</strong>uantile function, <em>i.e.</em> return <span class="math inline">\(x\)</span> such that <span class="math inline">\(\boldsymbol{P}(X \leq x) = p\)</span></li>
-<li><strong>r</strong><em>&lt;distribution-name&gt;</em> <span class="math inline">\(:=\)</span> <strong>r</strong>andom deviates, <em>i.e.</em> (<em>psuedo</em>) random number generator for a given distribution</li>
-<li><em>Where &lt;distribution-name&gt;</em> <span class="math inline">\(=\)</span> Normal, uniform, lognormal, Student’s t, Poisson, binormal, Weibull … see <code class="sourceCode r">?<span class="fu">distributions</span>()</code> for more information</li>
+<li><strong>Exponential Distribution:</strong> Characterised by a constant hazard rate and the memoryless property, meaning the probability of an event occurring in the future is independent of how long it has already been “alive”. Its PDF is <span class="math inline">\(f(x) = \lambda e^{-\lambda x}\)</span> for <span class="math inline">\(x&gt;0\)</span>, with mean <span class="math inline">\(1/\lambda\)</span> and variance <span class="math inline">\(1/\lambda^2\)</span>. It’s useful for “risk of death from unnatural causes, eg accident or murder”.</li>
+<li><strong>Gamma Distribution:</strong> A flexible distribution suitable for modelling positive losses, it is skewed and includes the exponential distribution as a special case. Its PDF involves shape parameter <span class="math inline">\(\alpha\)</span> and rate parameter <span class="math inline">\(\lambda\)</span>.</li>
+<li><strong>Normal Distribution:</strong> While often used in general statistics, it has limited use for modelling individual losses because it is symmetric and can produce negative values, which are impossible for claim amounts.</li>
+<li><strong>Lognormal Distribution:</strong> This distribution is positively skewed and only takes positive values, making it more suitable for claims data than the normal distribution. A random variable <span class="math inline">\(X\)</span> has a lognormal distribution if <span class="math inline">\(\log X\)</span> has a normal distribution.</li>
+<li><strong>Pareto Distribution:</strong> Known for being fat-tailed (or heavy-tailed), the Pareto distribution is frequently used for modelling large losses or income distributions, as it assigns a higher probability to extreme values.</li>
+<li><strong>Weibull Distribution:</strong> This is a versatile distribution capable of modelling increasing, decreasing, or constant hazard rates depending on its parameters, making it useful for various tail behaviours in survival analysis and loss modelling.</li>
+<li><strong>Burr Distribution:</strong> A generalisation of the Pareto distribution, it offers flexibility in modelling heavy-tailed data and has a closed-form CDF.</li>
 </ul>
-<table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
-<thead>
-<tr>
-<th>R Code</th>
-<th>Definition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code class="sourceCode r"><span class="fu">rnorm</span>(<span class="dv">1</span>)</code></td>
-<td>Generates <span class="math inline">\(x_1\)</span> where <span class="math inline">\(X \sim \mathcal{N}(0,\,1)\)</span></td>
-</tr>
-<tr>
-<td><code class="sourceCode r"><span class="fu">rnorm</span>(y, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">2</span>)</code></td>
-<td>Generates <span class="math inline">\(\{y_1,\,y_2,\,\dots\}\)</span> with <span class="math inline">\(Y \sim \mathcal{N}(10,\,2^2)\)</span></td>
-</tr>
-<tr>
-<td><code class="sourceCode r"><span class="fu">runif</span>(<span class="dv">3</span>, <span class="at">min=</span><span class="dv">5</span>, <span class="at">max=</span><span class="dv">10</span>)</code></td>
-<td>Generates <span class="math inline">\(\{z_1,\,z_2,\,z_3\}\)</span> where <span class="math inline">\(Z \sim \mathcal{U}(5,\,10)\)</span></td>
-</tr>
-<tr>
-<td><code class="sourceCode r"><span class="fu">dbinom</span>(<span class="dv">4</span>, <span class="at">size=</span><span class="dv">5</span>, <span class="at">prob=</span><span class="fl">0.5</span>)</code></td>
-<td>Computes <span class="math inline">\(\boldsymbol{P}(X = 4)\)</span> where <span class="math inline">\(X \sim \mathcal{Bin}(5,\,0.5)\)</span></td>
-</tr>
-<tr>
-<td><code class="sourceCode r"><span class="fu">pgamma</span>(<span class="fl">0.2</span>, <span class="at">shape=</span><span class="dv">2</span>, <span class="at">rate=</span><span class="dv">2</span>)</code></td>
-<td>Computes <span class="math inline">\(F_Y(0.2)\)</span> where <span class="math inline">\(Y \sim \mathcal{\Gamma}(2,\,2)\)</span>, i.e. <span class="math inline">\(\boldsymbol{P}(Y\leq 0.2)\)</span></td>
-</tr>
-<tr>
-<td><code class="sourceCode r"><span class="fu">qexp</span>(<span class="fl">0.5</span>, <span class="at">rate =</span> <span class="dv">2</span>)</code></td>
-<td>Determines smallest value of <span class="math inline">\(z\)</span> for <span class="math inline">\(\boldsymbol{P}(Z \leq z) = 0.5\)</span> where <span class="math inline">\(Z \sim Exp(2)\)</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="mechanisms-for-limiting-insurance-losses" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Mechanisms for limiting insurance losses<a href="loss-distributions.html#mechanisms-for-limiting-insurance-losses" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="proportional-and-excess-of-loss-reinsurance" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Proportional and Excess of Loss reinsurance<a href="loss-distributions.html#proportional-and-excess-of-loss-reinsurance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="estimating-parameters-of-loss-distributions-with-complete-data" class="section level2 hasAnchor" number="2.4">
-<h2><span class="header-section-number">2.4</span> Estimating parameters of loss distributions with complete data<a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-complete-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="estimating-parameters-of-loss-distributions-with-incomplete-data" class="section level2 hasAnchor" number="2.5">
-<h2><span class="header-section-number">2.5</span> Estimating parameters of loss distributions with incomplete data<a href="loss-distributions.html#estimating-parameters-of-loss-distributions-with-incomplete-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>1.2. Aggregate Loss Distributions</strong>
+Aggregate losses represent the total sum of individual claims arising from an insurance portfolio over a specified period. These are typically modelled using <strong>compound distributions</strong>, which are sums of a random number of random variables. The total aggregate claims <span class="math inline">\(S\)</span> is expressed as <span class="math inline">\(S = \sum_{j=1}^N X_j\)</span>, where <span class="math inline">\(N\)</span> is the number of claims (frequency) and <span class="math inline">\(X_j\)</span> are the individual claim amounts (severity). Key simplifying assumptions include that the number of claims <span class="math inline">\(N\)</span> is independent of the individual claim amounts <span class="math inline">\(X_j\)</span>, and the <span class="math inline">\(X_j\)</span>s are independent and identically distributed (IID).</p>
+<p>Common types of compound distributions for aggregate losses include:</p>
+<ul>
+<li><strong>Compound Poisson Distribution:</strong> Here, the number of claims <span class="math inline">\(N\)</span> follows a Poisson distribution. A significant property is that the sum of independent compound Poisson variables also follows a compound Poisson distribution.
+<ul>
+<li>Mean: <span class="math inline">\(E[S] = \lambda E[X]\)</span>.</li>
+<li>Variance: <span class="math inline">\(\text{var}[S] = \lambda E[X^2]\)</span>.</li>
+<li>Coefficient of Skewness: <span class="math inline">\(\text{skew}[S] = \lambda E[X^3] / (\lambda E[X^2])^{3/2}\)</span>.</li>
+<li>MGF: <span class="math inline">\(M_S(t) = \exp(\lambda(M_X(t)-1))\)</span>.</li>
+</ul></li>
+<li><strong>Compound Binomial Distribution:</strong> The number of claims <span class="math inline">\(N\)</span> follows a binomial distribution.</li>
+<li><strong>Compound Negative Binomial Distribution:</strong> The number of claims <span class="math inline">\(N\)</span> follows a negative binomial distribution.</li>
+</ul>
+<p>Compound distributions can be positively skewed. The calculation of their moments (mean, variance, skewness) relies on the moments of both the claim frequency distribution and the individual claim amount distribution.</p>
+<p><strong>2. Concepts of Excesses (Deductibles) and Retention Limits</strong></p>
+<p>These concepts are fundamental in risk sharing mechanisms, particularly in insurance and reinsurance.</p>
+<ul>
+<li><strong>Excess (Deductible):</strong> This is the first part of any claim that the policyholder is required to pay. For example, in car insurance, the policyholder might pay the first £200 of a claim, with the insurer covering the remainder. The insurer’s claim amount is reduced by the excess amount.</li>
+<li><strong>Retention Limit:</strong> This term has different meanings depending on the context:
+<ul>
+<li>In <strong>Individual Excess of Loss (XOL) Reinsurance</strong>, it refers to a specified monetary amount (<span class="math inline">\(M\)</span>) up to which the direct insurer pays the claim in full. Any claim amount above this limit is borne by the reinsurer.</li>
+<li>In <strong>Proportional Reinsurance</strong>, the retained proportion (<span class="math inline">\(\alpha\)</span>) can also be referred to as a “retention level,” but it signifies the fixed percentage of the claim that the insurer retains, rather than a monetary limit.</li>
+</ul></li>
+</ul>
+<p><strong>3. Operation of Proportional and Excess of Loss Reinsurance</strong></p>
+<p>Reinsurance serves as a critical risk management tool for insurers, allowing them to protect themselves from large claims and manage their exposure. Two primary simple forms are:</p>
+<ul>
+<li><strong>Proportional Reinsurance:</strong>
+<ul>
+<li><strong>Operation:</strong> Under this arrangement, the insurer (direct writer) and the reinsurer agree to share all claims and premiums in predefined, fixed proportions. If <span class="math inline">\(\alpha\)</span> is the retained proportion (where <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>), the insurer pays <span class="math inline">\(\alpha\)</span> of each claim, and the reinsurer pays <span class="math inline">\((1-\alpha)\)</span>.</li>
+<li><strong>Forms:</strong> This can take two forms:
+<ul>
+<li><strong>Quota Share Reinsurance:</strong> The proportions are identical for all risks in the portfolio.</li>
+<li><strong>Surplus Reinsurance:</strong> The proportions may vary from one risk to another. In CS2, the focus is generally on quota share reinsurance.</li>
+</ul></li>
+</ul></li>
+<li><strong>Individual Excess of Loss (XOL) Reinsurance:</strong>
+<ul>
+<li><strong>Operation:</strong> This is a non-proportional reinsurance arrangement where the reinsurer only becomes involved if an individual claim amount exceeds a specified monetary threshold, known as the retention limit (<span class="math inline">\(M\)</span>). The insurer pays the claim in full up to <span class="math inline">\(M\)</span>, and the reinsurer pays the amount above <span class="math inline">\(M\)</span>. There might also be an upper limit for the reinsurer’s payment.</li>
+<li><strong>Implication for Reinsurer’s Data:</strong> The reinsurer typically only has a record of claims that are greater than <span class="math inline">\(M\)</span>, observing claims from a <em>truncated distribution</em>.</li>
+</ul></li>
+</ul>
+<p><strong>4. Derivation of Distribution and Moments in Presence of Excesses/Reinsurance</strong></p>
+<p>To analyse the financial impact of these arrangements, it’s essential to derive the distributions and moments of the amounts paid by both the insurer and the reinsurer.</p>
+<p><strong>4.1. Notation</strong>
+* <span class="math inline">\(X\)</span>: Gross claim amount random variable.
+* <span class="math inline">\(Y\)</span>: Net claim amount, paid by the insurer after reinsurance recovery.
+* <span class="math inline">\(Z\)</span>: Amount paid by the reinsurer.</p>
+<p><strong>4.2. Excess of Loss Reinsurance</strong>
+With a retention limit <span class="math inline">\(M\)</span>:
+* <strong>Insurer’s Payment (<span class="math inline">\(Y\)</span>):</strong>
+* If <span class="math inline">\(X \le M\)</span>, <span class="math inline">\(Y = X\)</span>.
+* If <span class="math inline">\(X &gt; M\)</span>, <span class="math inline">\(Y = M\)</span>.
+* This can be compactly written as <span class="math inline">\(Y = \min(X, M)\)</span>.
+* <strong>Mean:</strong> <span class="math inline">\(E[Y] = \int_0^M x f(x) dx + M P(X &gt; M)\)</span>.
+* <strong>Variance:</strong> <span class="math inline">\(\text{var}(Y) = E[Y^2] - (E[Y])^2\)</span>, where <span class="math inline">\(E[Y^2] = \int_0^M x^2 f(x) dx + M^2 P(X &gt; M)\)</span>.
+* <strong>MGF:</strong> <span class="math inline">\(M_Y(t) = \int_0^M e^{tx} f(x) dx + e^{tM} P(X &gt; M)\)</span>.
+* <strong>Reinsurer’s Payment (<span class="math inline">\(Z\)</span>):</strong>
+* If <span class="math inline">\(X \le M\)</span>, <span class="math inline">\(Z = 0\)</span>.
+* If <span class="math inline">\(X &gt; M\)</span>, <span class="math inline">\(Z = X - M\)</span>.
+* This can be compactly written as <span class="math inline">\(Z = \max(0, X - M)\)</span>.
+* <strong>Conditional Distribution of Reinsurer’s Payments (<span class="math inline">\(W\)</span>):</strong> The reinsurer is only informed of claims greater than <span class="math inline">\(M\)</span>. This means they observe claims from a truncated distribution, <span class="math inline">\(W = Z | Z &gt; 0\)</span>, which is equivalent to <span class="math inline">\(W = X - M | X &gt; M\)</span>.
+* The PDF of <span class="math inline">\(W\)</span> is given by <span class="math inline">\(g(w) = \frac{f(w+M)}{P(X&gt;M)}\)</span>.
+* <strong>Example (Exponential <span class="math inline">\(X\)</span>):</strong> If the underlying claims <span class="math inline">\(X\)</span> are exponentially distributed, the threshold exceedances <span class="math inline">\(W\)</span> (and thus the reinsurer’s payments when involved) also follow the same exponential distribution. This is due to the memoryless property of the exponential distribution.
+* <strong>Example (Pareto <span class="math inline">\(X\)</span>):</strong> If the underlying claims <span class="math inline">\(X\)</span> follow a Pareto distribution with parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>, the threshold exceedances <span class="math inline">\(W\)</span> follow a Pareto distribution with parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda+M\)</span>.
+* <strong>Mean of Conditional Payment:</strong> The mean amount paid by the reinsurer on claims in which it is involved is <span class="math inline">\(E[W] = \frac{E[Z]}{P(Z&gt;0)}\)</span>.</p>
+<p><strong>4.3. Policy Excess</strong>
+When a policy excess (deductible) of level <span class="math inline">\(L\)</span> applies, the policyholder pays the first part of each loss up to <span class="math inline">\(L\)</span>, and the insurer pays amounts greater than <span class="math inline">\(L\)</span>. The positions are analogous to XOL reinsurance:
+* The policyholder’s payment is like the insurer’s payment under XOL (<span class="math inline">\(min(X, L)\)</span>).
+* The insurer’s payment (net of policyholder’s contribution) is like the reinsurer’s payment under XOL (<span class="math inline">\(max(0, X-L)\)</span>).
+* The insurer’s conditional distribution of claims paid takes the same form as the reinsurer’s conditional distribution under XOL.</p>
+<p><strong>4.4. Proportional Reinsurance</strong>
+With a retained proportion <span class="math inline">\(\alpha\)</span>:
+* <strong>Insurer’s Payment (<span class="math inline">\(Y\)</span>):</strong> <span class="math inline">\(Y = \alpha X\)</span>.
+* <strong>Reinsurer’s Payment (<span class="math inline">\(Z\)</span>):</strong> <span class="math inline">\(Z = (1-\alpha) X\)</span> (since <span class="math inline">\(Y+Z=X\)</span>).
+* <strong>Mean:</strong>
+* <span class="math inline">\(E[Y] = \alpha E[X]\)</span>.
+* <span class="math inline">\(E[Z] = (1-\alpha) E[X]\)</span>.
+* <strong>Variance:</strong>
+* <span class="math inline">\(\text{var}(Y) = \alpha^2 \text{var}(X)\)</span>.
+* <span class="math inline">\(\text{var}(Z) = (1-\alpha)^2 \text{var}(X)\)</span>.
+* <strong>Skewness:</strong>
+* <span class="math inline">\(\text{skew}(Y) = \alpha \text{skew}(X)\)</span>.
+* <span class="math inline">\(\text{skew}(Z) = (1-\alpha) \text{skew}(X)\)</span>.
+* <strong>MGF:</strong>
+* <span class="math inline">\(M_Y(t) = M_X(\alpha t)\)</span>.
+* <span class="math inline">\(M_Z(t) = M_X((1-\alpha)t)\)</span>.</p>
+<p><strong>4.5. Impact of Inflation</strong>
+If claims are inflated by a factor <span class="math inline">\(k\)</span> (e.g., <span class="math inline">\(kX\)</span> instead of <span class="math inline">\(X\)</span>), but the retention limit <span class="math inline">\(M\)</span> remains fixed:
+* <strong>Insurer’s Payment:</strong> <span class="math inline">\(Y = \min(kX, M)\)</span>.
+* <strong>Reinsurer’s Payment:</strong> <span class="math inline">\(Z = \max(0, kX - M)\)</span>.
+Similar adjustments apply to proportional reinsurance (e.g., <span class="math inline">\(Y = \alpha k X\)</span>).</p>
+<p><strong>5. Parameter Estimation for Complete and Incomplete Data</strong></p>
+<p>Once the form of the loss distribution is chosen, its parameters must be estimated from data.</p>
+<p><strong>5.1. Method of Moments (MoM)</strong>
+* <strong>Principle:</strong> For a distribution with <span class="math inline">\(r\)</span> unknown parameters, the method of moments involves equating the first <span class="math inline">\(r\)</span> theoretical (population) moments of the distribution to the first <span class="math inline">\(r\)</span> sample moments (calculated from the observed data).
+* <strong>Procedure:</strong> A system of simultaneous equations is set up and solved to find the estimates of the parameters.
+* <strong>Limitation:</strong> It may not be available when data are incomplete, for example, if the mean claim amount cannot be computed due to censoring.</p>
+<p><strong>5.2. Maximum Likelihood Estimation (MLE)</strong>
+* <strong>Principle:</strong> MLE chooses the parameter values that maximise the likelihood of observing the given dataset. This is often done by maximising the logarithm of the likelihood function (log-likelihood).
+* <strong>For Complete Data:</strong> If the log-likelihood function <span class="math inline">\(l(\theta)\)</span> is differentiable with respect to the parameter <span class="math inline">\(\theta\)</span>, the MLE <span class="math inline">\(\hat{\theta}\)</span> is found by setting the derivative to zero: <span class="math inline">\(\frac{dl(\theta)}{d\theta} = 0\)</span>. For multiple parameters, partial derivatives are used.
+* <strong>For Incomplete (Censored) Data:</strong> This method is crucial when data are incomplete due to policy excesses or reinsurance arrangements, where some claims might be capped or unobserved if below a threshold.
+* A <strong>censored sample</strong> occurs when some values are recorded exactly, while others are known only to exceed a certain value (e.g., the retention limit <span class="math inline">\(M\)</span>).
+* The likelihood function for a censored sample is composed of two parts:
+* A product of the probability density functions (<span class="math inline">\(f(x_i)\)</span>) for all exact observations.
+* A product of the probabilities of exceeding the retention limit (<span class="math inline">\(P(X &gt; M)\)</span>) for all censored observations (those known to be above <span class="math inline">\(M\)</span>).
+* The complete likelihood function is <span class="math inline">\(L(\theta) = \left( \prod_{i=1}^{n_1} f(x_i; \theta) \right) \times [P(X &gt; M; \theta)]^{n_2}\)</span>, where <span class="math inline">\(n_1\)</span> is the number of exact observations and <span class="math inline">\(n_2\)</span> is the number of censored observations that exceed <span class="math inline">\(M\)</span>. Numerical optimisation methods (e.g., <code>nlm()</code> in R) are often required for complex distributions.</p>
+<p><strong>5.3. Method of Percentiles</strong>
+* <strong>Principle:</strong> This method involves equating selected population percentiles (e.g., median, quartiles) of the theoretical distribution to their corresponding sample percentiles from the observed data.
+* <strong>Limitation:</strong> It can be very unreliable for estimating parameters of heavy-tailed distributions like the Pareto, especially with small samples.</p>
+<p><strong>6. Fitting a Statistical Distribution to a Dataset and Goodness-of-Fit Measures</strong></p>
+<p>After estimating the parameters, it’s crucial to assess how well the chosen distribution fits the observed data.</p>
+<ul>
+<li><strong>Fitting a Distribution:</strong>
+<ul>
+<li>The objective is to find a loss distribution that adequately describes the variation in claim amounts.</li>
+<li>Software like R provides built-in functions for various standard distributions (e.g., <code>dexp</code>, <code>dgamma</code>, <code>dlnorm</code>, <code>dweibull</code> for density, <code>pexp</code> for CDF, <code>qexp</code> for quantiles, <code>rexp</code> for random variates).</li>
+<li>For MLE in R, numerical optimisation functions like <code>nlm()</code> are commonly used to maximise the (log-)likelihood function.</li>
+<li>Visual inspection through plotting the fitted probability density function (PDF) against the empirical density function of the data is a common first step.</li>
+</ul></li>
+<li><strong>Goodness-of-Fit Measures:</strong>
+<ul>
+<li><strong>Chi-squared Test (<span class="math inline">\(\chi^2\)</span> test):</strong> This is a statistical test used to assess the overall goodness of fit by comparing observed frequencies (e.g., number of claims within specific bands) to expected frequencies under the fitted distribution.
+<ul>
+<li>The test statistic is <span class="math inline">\(\sum \frac{(O-E)^2}{E}\)</span>, where <span class="math inline">\(O\)</span> is the observed count and <span class="math inline">\(E\)</span> is the expected count in a category.</li>
+<li>While it indicates overall fit, it “tells us nothing about the direction of any bias or the nature of any lack of adherence to data of a graduation”. It does not detect individual ages where the fit is poor or the consistency of the “shape”.</li>
+</ul></li>
+<li><strong>Q-Q Plots (Quantile-Quantile Plots):</strong> These are graphical tools used to compare the quantiles of the observed data against the quantiles of the fitted theoretical distribution.
+<ul>
+<li>If the fitted distribution is a good representation of the data, the points on the Q-Q plot should lie approximately along a straight line (<span class="math inline">\(y=x\)</span>). Deviations from this line suggest a poor fit, especially in the tails.</li>
+<li>In R, functions like <code>qqplot()</code> are used, often combined with an <code>abline(0, 1)</code> for the reference line.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>By systematically applying these models, estimation techniques, and goodness-of-fit assessments, actuaries can build robust foundations for understanding and managing various insurance risks.</p>
 </div>
 <div id="practice-loss-distributions" class="section level2 unnumbered hasAnchor">
 <h2><code>R</code> Practice<a href="loss-distributions.html#practice-loss-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -385,42 +459,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><span class="math inline">\(X \sim Exp(0.01)\)</span></li>
 <li>Unlimited excess of loss reinsurance, with a retention level of <span class="math inline">\(M = 400\)</span></li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="loss-distributions.html#cb18-1" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># Data manipulation</span></span>
-<span id="cb18-2"><a href="loss-distributions.html#cb18-2" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="loss-distributions.html#cb18-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Fix result</span></span>
-<span id="cb18-4"><a href="loss-distributions.html#cb18-4" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rexp</span>(</span>
-<span id="cb18-5"><a href="loss-distributions.html#cb18-5" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">1000</span>,</span>
-<span id="cb18-6"><a href="loss-distributions.html#cb18-6" tabindex="-1"></a>  <span class="at">rate =</span> <span class="fl">0.01</span></span>
-<span id="cb18-7"><a href="loss-distributions.html#cb18-7" tabindex="-1"></a>)</span>
-<span id="cb18-8"><a href="loss-distributions.html#cb18-8" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="loss-distributions.html#cb18-9" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="dv">400</span></span>
-<span id="cb18-10"><a href="loss-distributions.html#cb18-10" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="loss-distributions.html#cb18-11" tabindex="-1"></a><span class="fu">summary</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="loss-distributions.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># Data manipulation</span></span>
+<span id="cb1-2"><a href="loss-distributions.html#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="loss-distributions.html#cb1-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Fix result</span></span>
+<span id="cb1-4"><a href="loss-distributions.html#cb1-4" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rexp</span>(</span>
+<span id="cb1-5"><a href="loss-distributions.html#cb1-5" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb1-6"><a href="loss-distributions.html#cb1-6" tabindex="-1"></a>  <span class="at">rate =</span> <span class="fl">0.01</span></span>
+<span id="cb1-7"><a href="loss-distributions.html#cb1-7" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="loss-distributions.html#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="loss-distributions.html#cb1-9" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb1-10"><a href="loss-distributions.html#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="loss-distributions.html#cb1-11" tabindex="-1"></a><span class="fu">summary</span>(X)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ##   0.0281  33.4354  75.5324 107.7943 145.8514 846.2336</code></pre>
 <p>We want to determine the proportion of claims that are fully covered by the insurer:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="loss-distributions.html#cb20-1" tabindex="-1"></a>Proportion <span class="ot">&lt;-</span> <span class="fu">sum</span>(X <span class="sc">&lt;=</span> M) <span class="sc">/</span> <span class="fu">length</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="loss-distributions.html#cb3-1" tabindex="-1"></a>Proportion <span class="ot">&lt;-</span> <span class="fu">sum</span>(X <span class="sc">&lt;=</span> M) <span class="sc">/</span> <span class="fu">length</span>(X)</span></code></pre></div>
 <p>The proportion of claims that are fully covered by the insurer is 97.8%.</p>
 <p>Next, for each claim, we want to calculate the net (<em>of reinsurance</em>) amount paid by the insurer. We will record this in a vector called <code>Y</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="loss-distributions.html#cb21-1" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> M, M, X)</span>
-<span id="cb21-2"><a href="loss-distributions.html#cb21-2" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="loss-distributions.html#cb21-3" tabindex="-1"></a><span class="fu">summary</span>(Y)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="loss-distributions.html#cb4-1" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> M, M, X)</span>
+<span id="cb4-2"><a href="loss-distributions.html#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="loss-distributions.html#cb4-3" tabindex="-1"></a><span class="fu">summary</span>(Y)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ##   0.0281  33.4354  75.5324 105.0863 145.8514 400.0000</code></pre>
 <p>Likewise, for each claim, we want to calculate the amount paid by the <strong>re</strong>insurer. We will record this in a vector called <code>Z</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="loss-distributions.html#cb23-1" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> M, X <span class="sc">-</span> M, <span class="dv">0</span>)</span>
-<span id="cb23-2"><a href="loss-distributions.html#cb23-2" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="loss-distributions.html#cb23-3" tabindex="-1"></a><span class="fu">summary</span>(Z)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="loss-distributions.html#cb6-1" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> M, X <span class="sc">-</span> M, <span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="loss-distributions.html#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="loss-distributions.html#cb6-3" tabindex="-1"></a><span class="fu">summary</span>(Z)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   0.000   0.000   2.708   0.000 446.234</code></pre>
 <p>Now let us assume that the underlying gross claims distribution follows an exponential distribution of some unknown rate <span class="math inline">\(\lambda\)</span>. We will estimate <span class="math inline">\(\lambda\)</span> using only the retained claim amounts which we have recorded in vector <code>Y</code>.</p>
 <p>First let’s calculate the log-likelihood as a function of the parameter <span class="math inline">\(\lambda\)</span> and claims data <code>Y</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="loss-distributions.html#cb25-1" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="loss-distributions.html#cb8-1" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
 <p>We now determine the value of <span class="math inline">\(\lambda\)</span> at which the log-likelihood function reaches its maximum:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="loss-distributions.html#cb26-1" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="loss-distributions.html#cb9-1" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
 <p>Finally let’s plot the results:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="loss-distributions.html#cb27-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb27-2"><a href="loss-distributions.html#cb27-2" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="loss-distributions.html#cb10-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-2"><a href="loss-distributions.html#cb10-2" tabindex="-1"></a><span class="co">#TO DO</span></span></code></pre></div>
 
 </div>
 </div>

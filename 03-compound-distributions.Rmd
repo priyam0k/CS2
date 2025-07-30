@@ -10,20 +10,305 @@
 
 ## Theory {-#theory-compound-loss-distributions}
 
-**TO ADD THEORY ABOUT COMPOUND MODELLING HERE**
+As your dedicated Actuarial Note Builder and Exam Coach for CS2: Risk Modelling and Survival Analysis, let's construct a comprehensive set of structured notes on **Compound Loss Distributions**, covering all the learning objectives as per your CS2 CMP. This topic is central to understanding aggregate claims in short-term insurance contracts.
 
-## Modelling frequency of insurance claims
+---
 
-## Modelling severity of insurance claims
+### **Chapter: Compound Loss Distributions**
 
-## Compound loss distributions
+This section primarily falls under Syllabus Topic 1: Random variables and distributions for risk modelling, specifically focusing on loss distributions. We aim to provide you with the foundational knowledge and practical application skills required for modelling aggregate claims.
 
-### Compound binomial
+#### **1. Construct models appropriate for short term insurance contracts in terms of the numbers of claims and the amounts of individual claims.**
 
-### Compound Poisson
+Short-term insurance contracts are typically defined as policies lasting for a fixed, relatively short period, often one year. During this term, the insurance company receives premiums and, in return, pays claims that arise. Unlike long-term business, premiums for short-term contracts are generally set to cover claims arising *only* during that short term.
 
-### Compound negative binomial
+A fundamental aspect of risk modelling in general insurance is the assessment of the **aggregate claim amount (S)**, which represents the total claims paid by the insurer over a specified period for a given risk or portfolio. To construct these models, a crucial first step is to decompose $S$ into two main components:
+*   **Number of claims (N):** A random variable representing the frequency of claims occurring during the period.
+*   **Amount of each individual claim (X_i):** A sequence of random variables representing the severity of each claim.
 
-## Compound loss distributions after reinsurance
+The relationship is expressed as:
+$S = X_1 + X_2 + \dots + X_N$.
+If $N=0$, then $S$ is taken to be zero.
+
+This decomposition is highly advantageous because the factors influencing claim numbers (frequency) and claim amounts (severity) are often different, allowing for separate analysis. For example, bad weather might affect claim numbers in motor insurance, while inflation impacts individual claim amounts. This approach of considering claims from a group of policies as a whole is known as the **collective risk model**. The random variable $S$, being the sum of a random number of random quantities, is thus said to have a **compound distribution**.
+
+The primary purposes for which general insurance companies investigate claims experience using these mathematical techniques include:
+*   Premium rating (deciding what premium rates to charge policyholders).
+*   Reserving (assessing money for claims).
+*   Reviewing reinsurance arrangements.
+*   Testing for solvency.
+
+#### **2. Describe the major simplifying assumptions underlying such models.**
+
+The models for short-term insurance contracts, particularly the collective risk model, rely on several simplifying assumptions. These assumptions allow for mathematical tractability, though it's important to be aware of their practical implications.
+
+The two most important assumptions are:
+*   The individual claim amount random variables $\{X_i\}_{i=1}^N$ are **independent and identically distributed (IID)**. This implies:
+    *   The amount of a given individual claim is not affected by any other individual claim.
+    *   The distribution of individual claim amounts does not change over the (short) term of the policy.
+*   The random variable $N$ (number of claims) is **independent** of the individual claim amounts $\{X_i\}_{i=1}^N$. This means the number of claims is not affected by the amount of individual claims.
+
+Other major simplifying assumptions typically made in elementary models include:
+*   **Known parameters:** The moments, and sometimes the distributions, of $N$ and $X_i$ are known with certainty.
+*   **Immediate settlement:** Claims are settled more or less as soon as the incident causing the claim occurs. In practice, there can be significant delays.
+*   **Ignoring expenses and interest:** These financial factors, though important in real operations, are often ignored in elementary models for simplicity.
+*   **Non-negative claim amounts:** It is assumed that all claims are for non-negative amounts.
+
+These simplifications enable the derivation of theoretical properties for compound distributions.
+
+#### **3. Define a compound Poisson distribution and show that the sum of independent random variables each having a compound Poisson distribution also has a compound Poisson distribution.**
+
+**Definition of a Compound Poisson Distribution:**
+A compound Poisson process is a stochastic process that represents the sum of independent and identically distributed random variables, where the number of terms in the sum is a Poisson process.
+Specifically, for aggregate claims $S = \sum_{j=1}^N X_j$, if the number of claims $N$ follows a Poisson distribution with mean $\lambda$ (i.e., $N \sim \text{Poi}(\lambda)$), then $S$ is said to have a **compound Poisson distribution** with parameter $\lambda$. The individual claim amounts $X_j$ are IID random variables, independent of $N$. A Poisson process itself models events occurring randomly and independently over time at a constant average rate.
+
+**Additive Property: Sum of Independent Compound Poisson Random Variables:**
+A very useful property of the compound Poisson distribution is that **the sum of independent compound Poisson random variables is itself a compound Poisson random variable**.
+
+Let $S_1, S_2, \dots, S_n$ be independent random variables, where each $S_i$ has a compound Poisson distribution with parameter $\lambda_i$ and individual claim amount CDF $F_i(x)$.
+Let $A = S_1 + S_2 + \dots + S_n$.
+
+**Proof using Moment Generating Functions (MGFs):**
+The MGF of a compound Poisson random variable $S$ with Poisson parameter $\lambda$ and individual claim amount MGF $M_X(t)$ is given by:
+$M_S(t) = \exp\{\lambda(M_X(t) - 1)\}$
+
+For each $S_i$, its MGF is $M_{S_i}(t) = \exp\{\lambda_i(M_{X_i}(t) - 1)\}$.
+Since $S_1, S_2, \dots, S_n$ are independent, the MGF of their sum $A$ is the product of their individual MGFs:
+$M_A(t) = M_{S_1}(t) \times M_{S_2}(t) \times \dots \times M_{S_n}(t)$.
+$M_A(t) = \exp\{\lambda_1(M_{X_1}(t) - 1)\} \times \exp\{\lambda_2(M_{X_2}(t) - 1)\} \times \dots \times \exp\{\lambda_n(M_{X_n}(t) - 1)\}$.
+$M_A(t) = \exp\{\sum_{i=1}^n \lambda_i (M_{X_i}(t) - 1)\}$.
+$M_A(t) = \exp\{\left(\sum_{i=1}^n \lambda_i\right) \left(\frac{\sum_{i=1}^n \lambda_i M_{X_i}(t)}{\sum_{i=1}^n \lambda_i} - 1\right)\}$.
+
+Let $\Lambda = \sum_{i=1}^n \lambda_i$.
+And let $M_X^*(t) = \frac{\sum_{i=1}^n \lambda_i M_{X_i}(t)}{\sum_{i=1}^n \lambda_i}$.
+Then, $M_A(t) = \exp\{\Lambda(M_X^*(t) - 1)\}$.
+
+This form is precisely the MGF of a compound Poisson distribution with Poisson parameter $\Lambda$ and a new individual claim amount MGF $M_X^*(t)$. By the uniqueness property of MGFs, $A$ indeed has a compound Poisson distribution. The individual claim amount distribution for $A$ has CDF $F(x) = \frac{\sum_{i=1}^n \lambda_i F_i(x)}{\Lambda}$.
+
+This property is highly beneficial for modelling combined portfolios. For example, if claims from two independent insurance companies, A and B, follow Poisson processes with rates $\lambda_A$ and $\lambda_B$ respectively, their combined number of claims is a Poisson process with rate $\lambda_A + \lambda_B$.
+
+#### **4. Derive the mean, variance and coefficient of skewness for compound binomial, compound Poisson and compound negative binomial random variables.**
+
+For a general compound distribution $S = \sum_{i=1}^N X_i$, where $N$ is the number of claims and $X_i$ are IID individual claim amounts, the mean, variance, and MGF can be derived using conditional expectation. These general formulae are crucial and often provided in actuarial tables:
+
+*   **Mean of S:**
+    $E[S] = E[N] E[X]$.
+    (Where $E[X]$ is the mean of a single individual claim amount, $m_1$).
+
+*   **Variance of S:** (using the conditional variance formula)
+    $\text{Var}[S] = E[N] \text{Var}[X] + \text{Var}[N] (E[X])^2$.
+    (Where $\text{Var}[X]$ is the variance of a single individual claim amount).
+
+*   **Moment Generating Function of S:**
+    $M_S(t) = M_N(\ln(M_X(t)))$.
+    This shows how the MGF of the aggregate claim amount is expressed in terms of the MGFs of the number of claims and individual claim amounts.
+
+Now, let's apply these general formulae to specific claim number distributions:
+
+**a) Compound Poisson Distribution:**
+If $N \sim \text{Poi}(\lambda)$, then $E[N] = \lambda$ and $\text{Var}[N] = \lambda$.
+Let $m_1 = E[X]$, $m_2 = E[X^2]$, and $m_3 = E[X^3]$ be the moments about zero for the individual claim amounts. Note that $\text{Var}[X] = m_2 - m_1^2$.
+
+*   **Mean of S:**
+    $E[S] = \lambda E[X] = \lambda m_1$.
+
+*   **Variance of S:**
+    $\text{Var}[S] = \lambda \text{Var}[X] + \lambda (E[X])^2 = \lambda (m_2 - m_1^2) + \lambda m_1^2 = \lambda m_2$.
+
+*   **Coefficient of Skewness of S:**
+    The third central moment of $S$ is $\text{Skew}[S] = \lambda m_3$.
+    The coefficient of skewness is $\frac{\text{Skew}[S]}{(\text{Var}[S])^{1.5}} = \frac{\lambda m_3}{(\lambda m_2)^{1.5}}$.
+    Since $\lambda > 0$ and $m_3 > 0$ for non-negative claims, a compound Poisson distribution is always positively skewed.
+
+**b) Compound Binomial Distribution:**
+If $N \sim \text{Bin}(n, p)$, then $E[N] = np$ and $\text{Var}[N] = np(1-p)$.
+Let $m_1 = E[X]$ and $m_2 = E[X^2]$.
+
+*   **Mean of S:**
+    $E[S] = np E[X] = np m_1$.
+
+*   **Variance of S:**
+    $\text{Var}[S] = np \text{Var}[X] + np(1-p) (E[X])^2 = np(m_2 - m_1^2) + np(1-p)m_1^2$.
+
+**c) Compound Negative Binomial Distribution:**
+If $N$ has a negative binomial distribution with parameters $k$ and $p$ (e.g., Type 2 negative binomial), then $E[N] = \frac{kq}{p}$ and $\text{Var}[N] = \frac{kq}{p^2}$ where $q = 1-p$.
+Let $m_1 = E[X]$ and $m_2 = E[X^2]$.
+
+*   **Mean of S:**
+    $E[S] = \frac{kq}{p} E[X] = \frac{kq}{p} m_1$.
+
+*   **Variance of S:**
+    $\text{Var}[S] = \frac{kq}{p} \text{Var}[X] + \frac{kq}{p^2} (E[X])^2 = \frac{kq}{p}(m_2 - m_1^2) + \frac{kq}{p^2}m_1^2$.
+
+The MGFs for these specific compound distributions can be derived by substituting the respective MGFs of $N$ into the general formula $M_S(t) = M_N(\ln(M_X(t)))$.
+
+#### **5. Repeat this for both the insurer and the reinsurer after the operation of simple forms of proportional and excess of loss reinsurance.**
+
+Reinsurance is an essential tool for insurers to protect themselves against large claims and reduce the uncertainty or volatility of their claims experience. When reinsurance is in place, the distribution of claim amounts paid by the insurer and reinsurer will change.
+
+We use the following notation:
+*   $X$: Gross claim amount random variable.
+*   $Y$: Net claim amount paid by the insurer (after reinsurance recovery).
+*   $Z$: Amount paid by the reinsurer.
+Note that $X = Y + Z$ for any given claim.
+
+**a) Proportional Reinsurance:**
+Under proportional reinsurance, the insurer and reinsurer agree to split every claim in fixed proportions. If $\alpha$ is the **retained proportion** (where $0 < \alpha < 1$), then:
+*   The insurer pays $Y = \alpha X$.
+*   The reinsurer pays $Z = (1-\alpha)X$.
+
+Since $Y$ and $Z$ are simply scaled versions of $X$, their distributions, moments, and MGFs can be easily derived from those of $X$. If $S$ is the aggregate gross claims, then the aggregate claims paid by the insurer ($S_I$) and reinsurer ($S_R$) are $S_I = \alpha S$ and $S_R = (1-\alpha)S$ respectively.
+
+**For the Insurer (Y or $S_I = \alpha S$):**
+*   **Mean:** $E[Y] = \alpha E[X]$.
+    $E[S_I] = \alpha E[S] = \alpha E[N] E[X]$.
+*   **Variance:** $\text{Var}[Y] = \alpha^2 \text{Var}[X]$.
+    $\text{Var}[S_I] = \alpha^2 \text{Var}[S]$.
+*   **Coefficient of Skewness:** $\text{Skew}[Y] = \alpha^3 \text{Skew}[X]$.
+    $\text{Skew}[S_I] = \alpha^3 \text{Skew}[S]$.
+*   **MGF:** $M_Y(t) = M_X(\alpha t)$.
+    $M_{S_I}(t) = M_N(\ln(M_X(\alpha t)))$.
+
+**For the Reinsurer (Z or $S_R = (1-\alpha)S$):**
+Similar formulae apply by replacing $\alpha$ with $(1-\alpha)$.
+*   **Mean:** $E[Z] = (1-\alpha)E[X]$.
+    $E[S_R] = (1-\alpha)E[S]$.
+*   **Variance:** $\text{Var}[Z] = (1-\alpha)^2 \text{Var}[X]$.
+    $\text{Var}[S_R] = (1-\alpha)^2 \text{Var}[S]$.
+*   **Coefficient of Skewness:** $\text{Skew}[Z] = (1-\alpha)^3 \text{Skew}[X]$.
+    $\text{Skew}[S_R] = (1-\alpha)^3 \text{Skew}[S]$.
+*   **MGF:** $M_Z(t) = M_X((1-\alpha)t)$.
+    $M_{S_R}(t) = M_N(\ln(M_X((1-\alpha)t)))$.
+
+**b) Individual Excess of Loss (XoL) Reinsurance:**
+Under XoL reinsurance, the insurer pays claims up to a specified **retention limit (M)**, and the reinsurer pays the amount exceeding $M$.
+
+*   **Insurer's payment (Y):**
+    $Y = \min(X, M)$.
+    This means if $X \le M$, $Y=X$; if $X > M$, $Y=M$. The insurer's data is thus "capped" or "censored" at $M$.
+
+*   **Reinsurer's payment (Z):**
+    $Z = \max(0, X - M)$.
+    This means if $X \le M$, $Z=0$; if $X > M$, $Z=X-M$. The reinsurer typically only observes claims that exceed $M$, leading to a **truncated distribution**. The reinsurer's conditional claim payment, given it is involved (i.e., $Z>0$), is $W = Z | Z>0 = X-M | X>M$.
+
+**Deriving Moments and Distributions:**
+Unlike proportional reinsurance, the impact of XoL is not a simple scaling. Calculating moments often involves integrals, as the functions $\min(X,M)$ and $\max(0,X-M)$ are non-linear.
+
+**For the Insurer (Y):**
+*   **Mean:** $E[Y] = \int_0^M x f(x) dx + M P(X > M)$.
+*   **Variance:** $\text{Var}[Y] = E[Y^2] - (E[Y])^2$, where $E[Y^2] = \int_0^M x^2 f(x) dx + M^2 P(X > M)$.
+*   **MGF:** $M_Y(t) = \int_0^M e^{tx} f(x) dx + e^{tM} P(X > M)$.
+
+**For the Reinsurer (Z):**
+*   **Mean:** $E[Z] = \int_M^\infty (x-M) f(x) dx$.
+*   **Variance:** $\text{Var}[Z] = E[Z^2] - (E[Z])^2$, where $E[Z^2] = \int_M^\infty (x-M)^2 f(x) dx$.
+*   **MGF:** $M_Z(t) = \int_M^\infty e^{t(x-M)} f(x) dx$.
+
+**Reinsurer's Conditional Claim Payment (W):**
+The PDF of $W = Z | Z>0$ is $f_W(w) = \frac{f_X(w+M)}{P(X > M)}$ for $w>0$.
+For certain distributions, the conditional distribution of exceedances over a threshold retains the same distributional form (e.g., exponential distribution remains exponential, Pareto remains Pareto with adjusted parameters).
+
+**Impact on Aggregate Claims ($S_I$ and $S_R$):**
+If $N$ follows a Poisson distribution, $S_I$ and $S_R$ will also have compound Poisson distributions, but with individual claim amount distributions $Y$ and $Z$ respectively. The Poisson parameter $\lambda$ remains unchanged, as it's the frequency of *gross* claims.
+
+**Parameter Estimation with Incomplete Data:**
+When XoL reinsurance is in place, the observed data may be incomplete (censored or truncated). For instance, the insurer's claims are capped, and the reinsurer may only be notified of claims above the retention. Maximum Likelihood Estimation (MLE) is a suitable method to estimate parameters in such cases, often requiring custom negative log-likelihood functions for numerical optimization.
+
+The process involves defining a log-likelihood function that accounts for both completely observed claims and partially observed (censored/truncated) claims. For example, claims below $M$ are fully observed, while those above $M$ contribute their probability $P(X>M)$ to the likelihood for censored data (insurer's perspective). For truncated data (reinsurer's perspective), it involves the conditional density of $W$.
+
+```R
+# R Practice Scenario (Continued from previous turn, integrating reinsurance aspects)
+
+# Re-run data loading and Pareto function definitions if not in current session
+# Load the data (assuming Losses.txt is in your working directory)
+Losses_df <- read.table("Losses.txt", header = TRUE)
+Losses <- Losses_df[, 1]
+
+# Define the Probability Density Function (PDF) for the two-parameter Pareto distribution
+dpareto <- function(x, a, lambda) {
+  a * (lambda^a) / ((lambda + x)^(a + 1))
+}
+
+# Define the Cumulative Distribution Function (CDF) for the two-parameter Pareto distribution
+ppareto <- function(q, a, lambda) {
+  1 - (lambda / (lambda + q))^a
+}
+
+# Define the negative log-likelihood for Pareto MLE (as used previously)
+neg_log_likelihood_pareto <- function(params, data_vector) {
+  a <- params
+  lambda <- params
+  if (a <= 0 || lambda <= 0) {
+    return(Inf)
+  }
+  log_likelihood_values <- log(dpareto(data_vector, a, lambda))
+  -sum(log_likelihood_values)
+}
+
+# Re-estimate parameters if needed (from previous turn)
+initial_params <- c(5, 1500) # Re-using example starting values
+mle_result <- nlm(neg_log_likelihood_pareto, p = initial_params, data_vector = Losses)
+estimated_alpha <- mle_result$estimate
+estimated_lambda <- mle_result$estimate
+
+cat("Estimated alpha:", estimated_alpha, "\n")
+cat("Estimated lambda:", estimated_lambda, "\n")
+cat("Optimization convergence code (1 or 2 is good):", mle_result$code, "\n\n")
+
+
+# --- New Section: Applying Reinsurance to Simulated Loss Data ---
+# For demonstration, let's simulate a larger dataset based on the estimated Pareto parameters
+# This allows us to work with a dataset where the true underlying distribution is known
+# In a real scenario, you'd apply this to the actual observed 'Losses' data, or aggregate simulated data.
+
+set.seed(42) # For reproducibility
+simulated_losses <- qpareto(runif(10000), estimated_alpha, estimated_lambda) # Generate 10,000 losses
+
+cat("Simulated Losses Summary:\n")
+print(summary(simulated_losses))
+cat("\n")
+
+# Scenario 1: Proportional Reinsurance
+# Retained proportion (alpha) = 75%
+alpha_retained <- 0.75
+
+# Insurer's payments (Y) and Reinsurer's payments (Z)
+# For individual claims (conceptual, if applied to aggregate, you'd scale S directly)
+insurer_payments_prop <- alpha_retained * simulated_losses # Y = alpha * X
+reinsurer_payments_prop <- (1 - alpha_retained) * simulated_losses # Z = (1-alpha) * X
+
+cat("--- Proportional Reinsurance (alpha = 75%) ---\n")
+cat("Mean Insurer Payment (Proportional):", mean(insurer_payments_prop), "\n")
+cat("Mean Reinsurer Payment (Proportional):", mean(reinsurer_payments_prop), "\n")
+cat("Variance Insurer Payment (Proportional):", var(insurer_payments_prop), "\n")
+cat("Variance Reinsurer Payment (Proportional):", var(reinsurer_payments_prop), "\n\n")
+
+# Verify: E[Y] = alpha * E[X] and Var[Y] = alpha^2 * Var[X]
+# Note: For Pareto, variance only exists if alpha > 2
+# From Tables for Actuarial Examinations: Mean(Pa(a,l)) = l/(a-1) for a > 1; Var(Pa(a,l)) = (l^2 * a) / ((a-1)^2 * (a-2)) for a > 2
+# Let's use empirical mean/var of simulated_losses as E[X], Var[X]
+mean_X <- mean(simulated_losses)
+var_X <- var(simulated_losses)
+
+cat("Empirical Mean of X:", mean_X, "\n")
+cat("Empirical Var of X:", var_X, "\n")
+cat("Expected Mean Insurer Payment (Proportional) via formula:", alpha_retained * mean_X, "\n")
+cat("Expected Var Insurer Payment (Proportional) via formula:", alpha_retained^2 * var_X, "\n\n")
+
+
+# Scenario 2: Individual Excess of Loss Reinsurance
+# Retention limit (M) = 25000 (example value for a heavy-tailed distribution)
+retention_M <- 25000
+
+# Insurer's payments (Y) and Reinsurer's payments (Z)
+insurer_payments_xol <- pmin(simulated_losses, retention_M) # Y = min(X, M)
+reinsurer_payments_xol <- pmax(0, simulated_losses - retention_M) # Z = max(0, X - M)
+
+cat("--- Individual Excess of Loss Reinsurance (M = £", retention_M, ") ---\n")
+cat("Mean Insurer Payment (XoL):", mean(insurer_payments_xol), "\n")
+cat("Mean Reinsurer Payment (XoL):", mean(reinsurer_payments_xol), "\n")
+cat("Variance Insurer Payment (XoL):", var(insurer_payments_xol), "\n")
+cat("Variance Reinsurer Payment (XoL):", var(reinsurer_payments_xol), "\
+```
 
 ## `R` Practice {-#practice-compound-loss-distributions}
